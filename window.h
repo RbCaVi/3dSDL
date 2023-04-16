@@ -3,6 +3,7 @@
 
 #include "shared.h"
 
+#include <list>
 #include <unordered_map>
 #include <filesystem>
 

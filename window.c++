@@ -46,10 +46,10 @@ void Window::makeShader(std::filesystem::path vertex_shader_path, std::filesyste
 }
 
 void Window::mainLoop(){
-  for(auto attr:attrs){
+  for(auto attr:handleis){
     DEBUGP("%s %i\n",attr.first,attr.second);
     DEBUG(errno=0);
-    glEnableVertexAttribArray(attr.second);
+    glEnableVertexAttribArray(glGetAttribLocation(program,attr.first));
     DEBUGP("enable %i\n",errno);
   }
   
@@ -77,9 +77,9 @@ void Window::mainLoop(){
     }
   }
   
-  for(auto attr:attrs){
+  for(auto attr:handleis){
     DEBUGP("%s %i\n",attr.first,attr.second);
-    glDisableVertexAttribArray(attr.second);
+    glDisableVertexAttribArray(glGetAttribLocation(program,attr.first));
   }
 }
 
@@ -107,7 +107,6 @@ void Window::addVertexData(const char* name,GLfloat data[],GLint size,GLint floa
   int handlei=numhandles++;
   handles_array=(GLuint*)realloc(handles_array,numhandles*sizeof(GLuint));
   handleis[name]=handlei;
-  attrs[name]=attribute;
   handles_array[handlei]=handle;
   DEBUG(errno=0);
   DEBUGP("%i\n",errno);

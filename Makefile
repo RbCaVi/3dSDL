@@ -16,11 +16,11 @@ shaders.o: shaders.c++ shaders.h shared.h
 window.o: window.c++ window.h shared.h
 	g++ $(flags) $(compileflags) -c window.c++ -o window.o
 
-perspective.o: perspective.c++ perspective.h shared.h
-	g++ $(flags) $(compileflags) -c window.c++ -o window.o
+matrix.o: matrix.c++ matrix.h shared.h
+	g++ $(flags) $(compileflags) -c matrix.c++ -o matrix.o
 
-main: main.o shaders.o window.o perspective.o
-	g++ $(flags) $(linkflags) main.o shaders.o window.o -lSDL2 -lGL -lGLEW -o $@
+main: main.o shaders.o window.o matrix.o
+	g++ $(flags) $(linkflags) main.o shaders.o window.o matrix.o -lSDL2 -lGL -lGLEW -o $@
 
 clean:
 	rm main.o
