@@ -16,7 +16,6 @@ public:
   SDL_Window *window;
   GLuint program;
   std::unordered_map<const char*,int> handleis;
-  std::unordered_map<const char*,GLint> attrs;
   GLuint* handles_array;
   int numhandles;
   GLenum draw_mode;
