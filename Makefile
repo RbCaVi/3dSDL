@@ -16,7 +16,10 @@ shaders.o: shaders.c++ shaders.h shared.h
 window.o: window.c++ window.h shared.h
 	g++ $(flags) $(compileflags) -c window.c++ -o window.o
 
-main: main.o shaders.o window.o
+perspective.o: perspective.c++ perspective.h shared.h
+	g++ $(flags) $(compileflags) -c window.c++ -o window.o
+
+main: main.o shaders.o window.o perspective.o
 	g++ $(flags) $(linkflags) main.o shaders.o window.o -lSDL2 -lGL -lGLEW -o $@
 
 clean:
