@@ -12,19 +12,19 @@
 static const GLuint WIDTH = 512;
 static const GLuint HEIGHT = 512;
 static GLfloat vertices[] = {
-   0.3,  0.3, 0.5,
-   0.3, -0.3, 0.5,
-  -0.3,  0.3, 0.5,
-   0.3, -0.3, 0.5,
-  -0.3,  0.3, 0.5,
-  -0.3, -0.3, 0.5,
+   0.3,  0.3, -2.5,
+   0.3, -0.3, -2.5,
+  -0.3,  0.3, -2.5,
+   0.3, -0.3, -2.5,
+  -0.3,  0.3, -2.5,
+  -0.3, -0.3, -2.5,
   
-   0.7,  0.7, 0.6,
-   0.8, -0.8, 0.5,
-  -0.8,  0.8, 0.5,
-   0.8, -0.8, 0.5,
-  -0.8,  0.8, 0.5,
-  -0.8, -0.8, 0.4,
+   0.7,  0.7, -2.6,
+   0.8, -0.8, -2.5,
+  -0.8,  0.8, -2.5,
+   0.8, -0.8, -2.5,
+  -0.8,  0.8, -2.5,
+  -0.8, -0.8, -2.4,
 };
 static GLfloat normals[] = {
    0.0,  0.0, 1.0,
@@ -88,6 +88,12 @@ int main(int argc, char *argv[]) {
    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
   
   window->makeShader(assetsdir/"shader.vert", assetsdir/"shader.frag");
+  
+  matrix4x4 m;
+  
+  setPerspective(m,45.0f, (float)HEIGHT/WIDTH, 0.1f, 100.0f);
+  
+  window->addUniformMat4x4("projection",m);
   
   window->addVertexData("coord2d",vertices,sizeof(vertices),3);
   window->addVertexData("in_color",colors,sizeof(colors),3);
