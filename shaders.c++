@@ -7,6 +7,7 @@ shader_compile_exception::~shader_compile_exception() noexcept {}
 const char* shader_compile_exception::what() const noexcept {
    return msg;
 }
+
 // A function that will read a file at a path into an allocated char pointer buffer 
 char* pathtobuf(std::filesystem::path path) {
   FILE *fptr;
