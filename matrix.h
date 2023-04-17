@@ -25,7 +25,10 @@ struct matrix4x4{ // a 4x4 column major matrix
 };
 typedef matrix4x4 matrix4x4;
 
-void setPerspective(matrix4x4 &matrix, float fovyInDegrees, float aspectRatio, float znear, float zfar);
-void setFrustrum(matrix4x4 &matrix, float left, float right, float bottom, float top, float znear, float zfar);
+matrix4x4 &getPerspective(float fovyInDegrees, float aspectRatio, float znear, float zfar);
+matrix4x4 &getFrustrum(float left, float right, float bottom, float top, float znear, float zfar);
+matrix4x4 &getIdentity();
+matrix4x4 &getRotation(int a1,int a2,float theta);
+matrix4x4 &getTranslation(float x,float y,float z);
 
 #endif

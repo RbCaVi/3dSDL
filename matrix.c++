@@ -11,7 +11,12 @@ const char* matrix_exception::what() const noexcept {
    return msg;
 }
 
-matrix4x4::matrix4x4(){}
+matrix4x4::matrix4x4(){
+  int i;
+  for(i=0;i<16;i++){
+    this->contents[i]=0;
+  }
+}
 
 matrix4x4 &matrix4x4::operator=(const matrix4x4 &other){
   int i;
@@ -51,39 +56,45 @@ matrix4x4 &matrix4x4::operator *(matrix4x4 &other){
 // Matrix will receive the calculated perspective matrix. in column major
 // You would have to upload to your shader
 // or use glLoadMatrixf if you aren't using shaders.
-void setPerspective(matrix4x4 &matrix, float fovyInDegrees, float aspectRatio, float znear, float zfar){
+matrix4x4 &getPerspective(float fovyInDegrees, float aspectRatio, float znear, float zfar){
     float ymax, xmax;
     ymax = znear * tanf(fovyInDegrees * M_PI / 360.0);
     xmax = ymax * aspectRatio;
-    setFrustrum(matrix, -xmax, xmax, -ymax, ymax, znear, zfar);
+    return getFrustrum(-xmax, xmax, -ymax, ymax, znear, zfar);
 }
 
-void setFrustrum(matrix4x4 &matrix, float left, float right, float bottom, float top, float znear, float zfar){
-    float temp, temp2, temp3, temp4;
-    temp = 2.0 * znear;
-    temp2 = right - left;
-    temp3 = top - bottom;
-    temp4 = zfar - znear;
-    matrix[0] = temp / temp2;
-    matrix[1] = 0.0;
-    matrix[2] = 0.0;
-    matrix[3] = 0.0;
-    matrix[4] = 0.0;
-    matrix[5] = temp / temp3;
-    matrix[6] = 0.0;
-    matrix[7] = 0.0;
-    matrix[8] = (right + left) / temp2;
-    matrix[9] = (top + bottom) / temp3;
-    matrix[10] = (-zfar - znear) / temp4;
-    matrix[11] = -1.0;
-    matrix[12] = 0.0;
-    matrix[13] = 0.0;
-    matrix[14] = (-temp * zfar) / temp4;
-    matrix[15] = 0.0;
+matrix4x4 &getFrustrum(float left, float right, float bottom, float top, float znear, float zfar){
+  matrix4x4 &matrix=*new matrix4x4();
+  float temp, temp2, temp3, temp4;
+  temp = 2.0 * znear;
+  temp2 = right - left;
+  temp3 = top - bottom;
+  temp4 = zfar - znear;
+  matrix[0] = temp / temp2;
+  matrix[1] = 0.0;
+  matrix[2] = 0.0;
+  matrix[3] = 0.0;
+  matrix[4] = 0.0;
+  matrix[5] = temp / temp3;
+  matrix[6] = 0.0;
+  matrix[7] = 0.0;
+  matrix[8] = (right + left) / temp2;
+  matrix[9] = (top + bottom) / temp3;
+  matrix[10] = (-zfar - znear) / temp4;
+  matrix[11] = -1.0;
+  matrix[12] = 0.0;
+  matrix[13] = 0.0;
+  matrix[14] = (-temp * zfar) / temp4;
+  matrix[15] = 0.0;
+  return matrix;
 }
 
 matrix4x4 &getIdentity(){
+  int i;
   matrix4x4 &m=*new matrix4x4();
+  for(i=0;i<4;i++){
+    m[i*5]=1;
+  }
   return m;
 }
 

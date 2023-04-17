@@ -13,6 +13,7 @@ void __printArray__(GLfloat data[],int length){
   for(i=0;i<length;i++){
     DEBUGP("%f ",data[i]);
   }
+  DEBUGP("\n");
 }
 
 #define printArray(data,len) DEBUG(__printArray__(data,len))
@@ -103,6 +104,11 @@ void Window::addVertexData(const char* name,GLfloat data[],GLint size,GLint floa
 
 void Window::addUniformMat4x4(const char* name,matrix4x4 &matrix){
   GLint uniform = glGetUniformLocation(program, name);
+  DEBUGP("%s",name);
+  printArray(matrix.contents,4);
+  printArray(matrix.contents+4,4);
+  printArray(matrix.contents+8,4);
+  printArray(matrix.contents+12,4);
   glUniformMatrix4fv(uniform, 1, GL_FALSE, matrix.contents);
 }
 

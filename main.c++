@@ -89,11 +89,9 @@ int main(int argc, char *argv[]) {
   
   window->makeShader(assetsdir/"shader.vert", assetsdir/"shader.frag");
   
-  matrix4x4 m;
-  
-  setPerspective(m,45.0f, (float)HEIGHT/WIDTH, 0.1f, 100.0f);
-  
-  window->addUniformMat4x4("projection",m);
+  window->addUniformMat4x4("projection",getPerspective(45.0f, (float)HEIGHT/WIDTH, 0.1f, 100.0f));
+  window->addUniformMat4x4("view",getTranslation(0,0,-5));
+  window->addUniformMat4x4("model",getIdentity());
   
   window->addVertexData("coord2d",vertices,sizeof(vertices),3);
   window->addVertexData("in_color",colors,sizeof(colors),3);

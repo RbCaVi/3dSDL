@@ -1,5 +1,5 @@
 
-flags := -ggdb -g -Og -gdwarf-4
+flags := $(flags) -ggdb -g -Og -gdwarf-4
 compileflags := -std=c++20 -Wall -Wpedantic
 linkflags := -Wl,-rpath=/opt/gcc-12.2.0/lib64
 
@@ -26,4 +26,5 @@ clean:
 	rm main.o
 	rm shaders.o
 	rm window.o
+	rm matrix.o
 	rm main
