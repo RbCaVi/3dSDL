@@ -1,13 +1,13 @@
 
 flags := $(flags) -ggdb -g -Og -gdwarf-4
-compileflags := -std=c++20 -Wall -Wpedantic
+compileflags := -std=c++20 -Wall -Wpedantic -pedantic-errors -Wextra
 linkflags := -Wl,-rpath=/opt/gcc-12.2.0/lib64
 
 .PHONY: all clean
 
 all: main
 
-main.o: main.c++ window.h shaders.h shared.h
+main.o: main.c++ window.h shaders.h matrix.h shared.h
 	g++ $(flags) $(compileflags) -c main.c++ -o main.o
 
 shaders.o: shaders.c++ shaders.h shared.h

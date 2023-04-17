@@ -1,8 +1,10 @@
 #version 120
 
-uniform mat4x4 projection;
-uniform mat4x4 view;
 uniform mat4x4 model;
+uniform mat4x4 view;
+uniform mat4x4 projection;
+
+uniform mat4x4 mvp;
 
 attribute vec3 coord2d;
 attribute vec3 in_color;

@@ -131,9 +131,9 @@ GLuint compile_shader(std::filesystem::path vertex_shader_path, std::filesystem:
 
 void deleteProgram(GLuint program){ // not needed unless shaders are kept for multiple programs
   GLint numShaders;
-  GLuint *shaders;
+  GLuint *shaders=NULL;
   glGetProgramiv(program,GL_ATTACHED_SHADERS,&numShaders);
-   // get the shaders attached to 'program' and store it in 'shaders'
+   // get the shaders attached to 'program' and store them in 'shaders'
   glGetAttachedShaders(program,(GLsizei)numShaders,NULL,shaders);
   int i;
   for(i=0;i<numShaders;i++){

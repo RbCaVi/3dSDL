@@ -18,6 +18,13 @@ matrix4x4::matrix4x4(){
   }
 }
 
+matrix4x4::matrix4x4(const matrix4x4 &other){
+  int i;
+  for(i=0;i<16;i++){
+    this->contents[i]=other.contents[i];
+  }
+}
+
 matrix4x4 &matrix4x4::operator=(const matrix4x4 &other){
   int i;
   for(i=0;i<16;i++){

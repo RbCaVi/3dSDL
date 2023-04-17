@@ -18,6 +18,7 @@ struct matrix4x4{ // a 4x4 column major matrix
   float contents[16];
   
   matrix4x4();
+  matrix4x4(const matrix4x4 &other);
   matrix4x4 &operator=(const matrix4x4 &other);
   float &operator [](int i);
   matrix4x4 &operator *(int n);

@@ -8,15 +8,18 @@
 #include "shaders.h"
 #include "window.h"
 
+#ifdef DEBUG
 void __printArray__(GLfloat data[],int length){
   int i;
   for(i=0;i<length;i++){
-    DEBUGP("%f ",data[i]);
+    printf("%f ",data[i]);
   }
-  DEBUGP("\n");
+  printf("\n");
 }
-
-#define printArray(data,len) DEBUG(__printArray__(data,len))
+#define printArray(data,len) DEBUGR(__printArray__(data,len))
+#else
+#define printArray(data,len) DEBUGR(data),DEBUGR(len)
+#endif
 
 Window::Window(int width, int height, const char* name):program(0),handles_array(NULL),numhandles(0){
   window = SDL_CreateWindow(name, 0, 0,
@@ -49,7 +52,7 @@ void Window::makeShader(std::filesystem::path vertex_shader_path, std::filesyste
 void Window::mainLoop(){
   for(auto attr:handles){
     DEBUGP("%s %i\n",attr.first,attr.second);
-    DEBUG(errno=0);
+    DEBUGR(errno=0);
     glEnableVertexAttribArray(glGetAttribLocation(program,attr.first));
     DEBUGP("enable %i\n",errno);
   }
