@@ -46,7 +46,7 @@ void Window::makeShader(std::filesystem::path vertex_shader_path, std::filesyste
 }
 
 void Window::mainLoop(){
-  for(auto attr:handleis){
+  for(auto attr:handles){
     DEBUGP("%s %i\n",attr.first,attr.second);
     DEBUG(errno=0);
     glEnableVertexAttribArray(glGetAttribLocation(program,attr.first));
@@ -77,7 +77,7 @@ void Window::mainLoop(){
     }
   }
   
-  for(auto attr:handleis){
+  for(auto attr:handles){
     DEBUGP("%s %i\n",attr.first,attr.second);
     glDisableVertexAttribArray(glGetAttribLocation(program,attr.first));
   }
@@ -85,31 +85,29 @@ void Window::mainLoop(){
 
 void Window::addVertexData(const char* name,GLfloat data[],GLint size,GLint floatspervertex){
   GLuint handle;
-  printArray(data,size/sizeof(GLfloat));
-  DEBUG(errno=0);
-  GLint attribute = glGetAttribLocation(program, name);
-  DEBUGP("getattrib %i\n",errno);
-  DEBUG(errno=0);
-  glGenBuffers(1, &handle);
-  DEBUGP("genbuffers %i\n",errno);
-  DEBUG(errno=0);
+  if(!handles.contains(name)){
+    GLint attribute = glGetAttribLocation(program, name);
+    glGenBuffers(1, &handle);
+    int handlei=numhandles++;
+    handles_array=(GLuint*)realloc(handles_array,numhandles*sizeof(GLuint));
+    handles[name]=handlei;
+    handles_array[handlei]=handle;
+  }else{
+    handle=handles_array[handles[name]];
+  }
   glBindBuffer(GL_ARRAY_BUFFER, handle);
-  DEBUGP("bindbuffer %i\n",errno);
-  DEBUG(errno=0);
   glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-  DEBUGP("bufferdata %i\n",errno);
-  DEBUG(errno=0);
   glVertexAttribPointer(attribute, floatspervertex, GL_FLOAT, GL_FALSE, 0, 0);
-  DEBUGP("vertexattrib %i\n",errno);
-  DEBUG(errno=0);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
-  DEBUGP("unbind %i\n",errno);
-  int handlei=numhandles++;
-  handles_array=(GLuint*)realloc(handles_array,numhandles*sizeof(GLuint));
-  handleis[name]=handlei;
-  handles_array[handlei]=handle;
-  DEBUG(errno=0);
-  DEBUGP("%i\n",errno);
+}
+
+void Window::addUniformMat4x4(const char* name,matrix4x4 &matrix){
+  GLint uniform = glGetUniformLocation(program, name);
+  glUniformMatrix4fv(uniform, 1, GL_FALSE, matrix.contents);
+  //int handlei=numhandles++;
+  //handles_array=(GLuint*)realloc(handles_array,numhandles*sizeof(GLuint));
+  //handles[name]=handlei;
+  //handles_array[handlei]=handle;
 }
 
 Window::~Window(){

@@ -1,6 +1,6 @@
 
 flags := -ggdb -g -Og -gdwarf-4
-compileflags := -Wall -Wpedantic
+compileflags := -std=c++20 -Wall -Wpedantic
 linkflags := -Wl,-rpath=/opt/gcc-12.2.0/lib64
 
 .PHONY: all clean

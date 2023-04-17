@@ -10,12 +10,14 @@
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 
+#include "matrix.h"
+
 class Window{
 public:
   SDL_GLContext gl_context;
   SDL_Window *window;
   GLuint program;
-  std::unordered_map<const char*,int> handleis;
+  std::unordered_map<const char*,int> handles;
   GLuint* handles_array;
   int numhandles;
   GLenum draw_mode;
@@ -25,6 +27,7 @@ public:
   void makeShader(std::filesystem::path vertex_shader_path, std::filesystem::path fragment_shader_path);
   void mainLoop();
   void addVertexData(const char* name,GLfloat data[],GLint size,GLint floatspervertex);
+  void addUniformMat4x4(const char* name,matrix4x4 &matrix);
   ~Window();
 };
 
