@@ -5,8 +5,8 @@
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 
-#include "shaders.h"
-#include "window.h"
+#include "shaders.h++"
+#include "window.h++"
 
 #ifdef DEBUG
 void __printArray__(GLfloat data[],int length){

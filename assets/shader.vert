@@ -7,8 +7,8 @@ uniform mat4x4 projection;
 uniform mat4x4 mvp;
 
 attribute vec3 coord2d;
-attribute vec3 in_color;
-varying vec3 color;
+attribute vec4 in_color;
+varying vec4 color;
 
 void main() {
 //      gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;

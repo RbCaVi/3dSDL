@@ -1,7 +1,7 @@
 #ifndef SHADERS_H
 #define SHADERS_H
 
-#include "shared.h"
+#include "shared.h++"
 
 #include <filesystem>
 

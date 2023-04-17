@@ -1,7 +1,7 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-#include "shared.h"
+#include "shared.h++"
 
 #include <exception>
 

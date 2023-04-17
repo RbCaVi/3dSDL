@@ -1,7 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "shared.h"
+#include "shared.h++"
 
 #include <list>
 #include <unordered_map>
@@ -10,7 +10,7 @@
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 
-#include "matrix.h"
+#include "matrix.h++"
 
 class Window{
 public:

@@ -1,4 +1,4 @@
-#include "shared.h"
+#include "shared.h++"
 
 #include <filesystem>
 #include <exception>
@@ -6,8 +6,8 @@
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 
-#include "shaders.h"
-#include "window.h"
+#include "shaders.h++"
+#include "window.h++"
 
 static const GLuint WIDTH = 512;
 static const GLuint HEIGHT = 512;
@@ -18,7 +18,7 @@ static GLfloat vertices[] = {
    0.3, -0.3,  0.0,
   -0.3,  0.3,  0.0,
   -0.3, -0.3,  0.0,
-  
+
    0.7,  0.8,  0.1,
    0.8, -0.8,  0.0,
   -0.8,  0.8,  0.0,
@@ -33,6 +33,7 @@ static GLfloat normals[] = {
    0.0, -0.0, 1.0,
   -0.0,  0.0, 1.0,
   -0.0, -0.0, 1.0,
+
    0.0,  0.0, 1.0,
    0.0, -0.0, 1.0,
   -0.0,  0.0, 1.0,
@@ -41,18 +42,19 @@ static GLfloat normals[] = {
   -0.0, -0.0, 1.0,
 };
 static GLfloat colors[] = {
-  1.0, 1.0, 1.0,
-  1.0, 1.0, 0.0,
-  0.0, 1.0, 1.0,
-  1.0, 1.0, 0.0,
-  0.0, 1.0, 1.0,
-  0.0, 1.0, 0.0,
-  1.0, 0.0, 1.0,
-  1.0, 0.0, 0.0,
-  0.0, 0.0, 1.0,
-  1.0, 0.0, 0.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 0.0,
+  1.0, 1.0, 1.0, 1.0,
+  1.0, 1.0, 0.0, 1.0,
+  0.0, 1.0, 1.0, 1.0,
+  1.0, 1.0, 0.0, 1.0,
+  0.0, 1.0, 1.0, 1.0,
+  0.0, 1.0, 0.0, 1.0,
+
+  1.0, 0.0, 1.0, 1.0,
+  1.0, 0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0, 1.0,
+  1.0, 0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0, 1.0,
+  0.0, 0.0, 0.0, 1.0,
 };
 
 
@@ -99,7 +101,7 @@ int main(int argc, char *argv[]) {
   window->addUniformMat4x4("mvp",projection*view*model);
   
   window->addVertexData("coord2d",vertices,sizeof(vertices),3);
-  window->addVertexData("in_color",colors,sizeof(colors),3);
+  window->addVertexData("in_color",colors,sizeof(colors),4);
 
   glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
