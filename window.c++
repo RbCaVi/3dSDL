@@ -85,8 +85,8 @@ void Window::mainLoop(){
 
 void Window::addVertexData(const char* name,GLfloat data[],GLint size,GLint floatspervertex){
   GLuint handle;
+  GLint attribute = glGetAttribLocation(program, name);
   if(!handles.contains(name)){
-    GLint attribute = glGetAttribLocation(program, name);
     glGenBuffers(1, &handle);
     int handlei=numhandles++;
     handles_array=(GLuint*)realloc(handles_array,numhandles*sizeof(GLuint));
@@ -104,10 +104,6 @@ void Window::addVertexData(const char* name,GLfloat data[],GLint size,GLint floa
 void Window::addUniformMat4x4(const char* name,matrix4x4 &matrix){
   GLint uniform = glGetUniformLocation(program, name);
   glUniformMatrix4fv(uniform, 1, GL_FALSE, matrix.contents);
-  //int handlei=numhandles++;
-  //handles_array=(GLuint*)realloc(handles_array,numhandles*sizeof(GLuint));
-  //handles[name]=handlei;
-  //handles_array[handlei]=handle;
 }
 
 Window::~Window(){
