@@ -100,8 +100,9 @@ int main(int argc, char *argv[]) {
   window->addUniformMat4x4("projection",projection);
   window->addUniformMat4x4("mvp",projection*view*model);
   
-  window->addVertexData("coord2d",vertices,sizeof(vertices),3);
-  window->addVertexData("in_color",colors,sizeof(colors),4);
+  window->addVertexData("coord",vertices,sizeof(vertices),3);
+  window->addVertexData("normal",vertices,sizeof(normals),3);
+  window->addVertexData("color",colors,sizeof(colors),4);
 
   glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
