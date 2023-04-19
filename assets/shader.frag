@@ -7,5 +7,6 @@ void main() {
   if(frag_color.a<0.1){
     discard;
   }
- gl_FragColor = frag_color;
+ //gl_FragColor = frag_color;
+ gl_FragData[0] = frag_color;
 }
