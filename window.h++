@@ -22,8 +22,9 @@ public:
   int numhandles;
   GLenum draw_mode;
   GLsizei draw_vertices;
+  bool gif;
   
-  Window(int width, int height, const char* name);
+  Window(int width, int height, const char* name, bool gifmode);
   void makeShader(std::filesystem::path vertex_shader_path, std::filesystem::path fragment_shader_path);
   void mainLoop();
   void addVertexData(const char* name,GLfloat data[],GLint size,GLint floatspervertex);

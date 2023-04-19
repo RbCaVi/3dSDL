@@ -21,7 +21,7 @@ void __printArray__(GLfloat data[],int length){
 #define printArray(data,len) DEBUGR(data),DEBUGR(len)
 #endif
 
-Window::Window(int width, int height, const char* name):program(0),handles_array(NULL),numhandles(0){
+Window::Window(int width, int height, const char* name, bool gifmode):program(0),handles_array(NULL),numhandles(0),gif(gifmode){
   window = SDL_CreateWindow(name, 0, 0,
           width, height, SDL_WINDOW_OPENGL);
   gl_context = SDL_GL_CreateContext(window);
@@ -31,6 +31,10 @@ Window::Window(int width, int height, const char* name):program(0),handles_array
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // set the background color
   draw_mode=GL_TRIANGLES;
   draw_vertices=12;
+  
+  if(gif){
+    Window::setupGIF();
+  }
 }
 
 void Window::makeShader(std::filesystem::path vertex_shader_path, std::filesystem::path fragment_shader_path){
@@ -113,6 +117,60 @@ void Window::addUniformMat4x4(const char* name,matrix4x4 &matrix){
   printArray(matrix.contents+8,4);
   printArray(matrix.contents+12,4);
   glUniformMatrix4fv(uniform, 1, GL_FALSE, matrix.contents);
+}
+
+void Window::setupGIF(){
+  // create a framebuffer
+  GLuint framebuffer=0;
+  glGenFramebuffers(1,&framebuffer);
+  glBindFramebuffer(GL_FRAMEBUFFER,framebuffer);
+
+
+  // create a texture to render the framebuffer to
+  GLuint texture=0;
+  glGenTextures(1,&texture);
+  glBindTexture(GL_TEXTURE_2D,texture);
+
+  // actually initialize the texture
+  glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,GL_RGB,GL_UNSIGNED_BYTE,0);
+
+  // set interpolation
+  glTexParameteri(GL_TEXTURE_2D,GL_TESTURE_MAG_FILTER,GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D,GL_TESTURE_MIN_FILTER,GL_NEAREST);
+
+
+  // create a depth buffer
+  GLuint depthbuffer=0;
+  glGenRenderbuffers(1,&depthbuffer);
+  glBindRenderbuffer(GL_RENDERBUFFER,depthbuffer);
+
+  // allocate memory for the depth buffer
+  glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT,width,height);
+
+
+  // attach the depth buffer to the frame buffer
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,depthbuffer);
+
+  // attach the texture to the frame buffer
+  glFramebufferTexture(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT0,texture,0);
+
+
+  // set the framebuffer to be drawn
+  GLenum drawBuffers[1]={GL_COLOR_ATTACHMENT0};
+  glDrawBuffers(1,drawBuffers);
+
+
+  // check if the frame buffer is initialized properly
+  // and if not, exit
+  if(glCheckFramebufferStatus(GL_FRAMEBUFFER)!=GL_FRAMEBUFFER_COMPLETE){
+    printf("Framebuffer not initialized properly");
+    exit(EXIT_FAILURE);
+  }
+
+
+  // set the size of the screen
+  glBindFramebuffer(GL_FRAMEBUFFER,framebuffer);
+  glViewport(width,height);
 }
 
 Window::~Window(){
