@@ -13,14 +13,17 @@ main.o: main.c++ window.h++ shaders.h++ matrix.h++ shared.h++
 shaders.o: shaders.c++ shaders.h++ shared.h++
 	g++ $(flags) $(compileflags) -c shaders.c++ -o shaders.o
 
-window.o: window.c++ window.h++ shared.h++
+window.o: window.c++ window.h++ texture.h++ shared.h++
 	g++ $(flags) $(compileflags) -c window.c++ -o window.o
 
 matrix.o: matrix.c++ matrix.h++ shared.h++
 	g++ $(flags) $(compileflags) -c matrix.c++ -o matrix.o
 
-main: main.o shaders.o window.o matrix.o
-	g++ $(flags) $(linkflags) main.o shaders.o window.o matrix.o -lSDL2 -lGL -lGLEW -o $@
+texture.o: texture.c++ texture.h++ shared.h++
+	g++ $(flags) $(compileflags) -c texture.c++ -o texture.o
+
+main: main.o shaders.o window.o matrix.o texture.o
+	g++ $(flags) $(linkflags) main.o shaders.o window.o matrix.o texture.o -lSDL2 -lSDL2_image -lGL -lGLEW -lopencv_core -lopencv_highgui -o $@
 
 clean:
 	rm main.o

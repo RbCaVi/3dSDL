@@ -4,9 +4,11 @@
 
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
+#include <opencv2/highgui/highgui.hpp>
 
 #include "shaders.h++"
 #include "window.h++"
+#include "texture.h++"
 
 #ifdef DEBUG
 void __printArray__(GLfloat data[],int length){
@@ -21,7 +23,86 @@ void __printArray__(GLfloat data[],int length){
 #define printArray(data,len) DEBUGR(data),DEBUGR(len)
 #endif
 
-Window::Window(int width, int height, const char* name, bool gifmode):program(0),handles_array(NULL),numhandles(0),gif(gifmode){
+void printGlError(){
+  while(true){
+    GLenum err=glGetError();
+    printf("gl error code: %i\n",err);
+    if(err==GL_NO_ERROR){
+      break;
+    }
+    switch(err){
+     case GL_NO_ERROR:
+      printf("GL_NO_ERROR\n");
+      break;
+     case GL_INVALID_ENUM:
+      printf("GL_INVALID_ENUM\n");
+      break;
+     case GL_INVALID_VALUE:
+      printf("GL_INVALID_VALUE\n");
+      break;
+     case GL_INVALID_OPERATION:
+      printf("GL_INVALID_OPERATION\n");
+      break;
+     case GL_INVALID_FRAMEBUFFER_OPERATION:
+      printf("GL_INVALID_FRAMEBUFFER_OPERATION\n");
+      break;
+     case GL_OUT_OF_MEMORY:
+      printf("GL_OUT_OF_MEMORY");
+      break;
+     case GL_STACK_UNDERFLOW:
+      printf("GL_STACK_UNDERFLOW");
+      break;
+     case GL_STACK_OVERFLOW:
+      printf("GL_STACK_OVERFLOW");
+      break;
+     default:
+      printf("GL error");
+      break;
+    }
+  }
+}
+
+bool checkFramebuffer(){
+  // check if the frame buffer is initialized properly
+  // and if not, exit
+  switch(glCheckFramebufferStatus(GL_FRAMEBUFFER)){
+   case GL_FRAMEBUFFER_COMPLETE:
+    printf("No error\n");
+    return false;
+   case GL_FRAMEBUFFER_UNDEFINED:
+    printf("GL_FRAMEBUFFER_UNDEFINED\n");
+    return true;
+   case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+    printf("GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT\n");
+    return true;
+   case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+    printf("GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT\n");
+    return true;
+   case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+    printf("GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER\n");
+    return true;
+   case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+    printf("GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER\n");
+    return true;
+   case GL_FRAMEBUFFER_UNSUPPORTED:
+    printf("GL_FRAMEBUFFER_UNSUPPORTED\n");
+    return true;
+   case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
+    printf("GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE\n");
+    return true;
+   case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:
+    printf("GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS\n");
+    return true;
+   default:
+    printf("Framebuffer not initialized properly\n");
+    return true;
+  }
+}
+
+Window::Window(int width, int height, const char* name, bool tosaveframes):
+    width(width),height(height),program(0),
+    handles_array(NULL),numhandles(0),
+    saveframes(tosaveframes),frameTexture(0){
   window = SDL_CreateWindow(name, 0, 0,
           width, height, SDL_WINDOW_OPENGL);
   gl_context = SDL_GL_CreateContext(window);
@@ -32,8 +113,8 @@ Window::Window(int width, int height, const char* name, bool gifmode):program(0)
   draw_mode=GL_TRIANGLES;
   draw_vertices=12;
   
-  if(gif){
-    Window::setupGIF();
+  if(saveframes){
+    Window::setupSaveFrames();
   }
 }
 
@@ -67,6 +148,7 @@ void Window::mainLoop(){
     glClear(GL_COLOR_BUFFER_BIT // clear the background
         | GL_DEPTH_BUFFER_BIT); // and the depth buffer
     glDrawArrays(draw_mode, 0, draw_vertices);
+    Window::writeFrame();
     SDL_GL_SwapWindow(window); // draw the graphics buffer to the screen
     
     SDL_Event event;
@@ -119,58 +201,65 @@ void Window::addUniformMat4x4(const char* name,matrix4x4 &matrix){
   glUniformMatrix4fv(uniform, 1, GL_FALSE, matrix.contents);
 }
 
-void Window::setupGIF(){
+void Window::setupSaveFrames(){
   // create a framebuffer
   GLuint framebuffer=0;
-  glGenFramebuffers(1,&framebuffer);
-  glBindFramebuffer(GL_FRAMEBUFFER,framebuffer);
+  glGenFramebuffers(1,&framebuffer);DEBUGR(printGlError());
+  glBindFramebuffer(GL_FRAMEBUFFER,framebuffer);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
 
 
   // create a texture to render the framebuffer to
-  GLuint texture=0;
-  glGenTextures(1,&texture);
-  glBindTexture(GL_TEXTURE_2D,texture);
+  GLuint frameTexture=0;
+  glGenTextures(1,&frameTexture);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
+  glBindTexture(GL_TEXTURE_2D,frameTexture);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
 
   // actually initialize the texture
-  glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,GL_RGB,GL_UNSIGNED_BYTE,0);
+  glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
 
   // set interpolation
-  glTexParameteri(GL_TEXTURE_2D,GL_TESTURE_MAG_FILTER,GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D,GL_TESTURE_MIN_FILTER,GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
+  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
 
 
   // create a depth buffer
   GLuint depthbuffer=0;
-  glGenRenderbuffers(1,&depthbuffer);
-  glBindRenderbuffer(GL_RENDERBUFFER,depthbuffer);
+  glGenRenderbuffers(1,&depthbuffer);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
+  glBindRenderbuffer(GL_RENDERBUFFER,depthbuffer);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
 
   // allocate memory for the depth buffer
-  glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT,width,height);
+  glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT32F,width,height);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
 
 
   // attach the depth buffer to the frame buffer
-  glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,depthbuffer);
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,depthbuffer);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
 
   // attach the texture to the frame buffer
-  glFramebufferTexture(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT0,texture,0);
+  glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,frameTexture,0);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
 
 
   // set the framebuffer to be drawn
   GLenum drawBuffers[1]={GL_COLOR_ATTACHMENT0};
-  glDrawBuffers(1,drawBuffers);
+  glDrawBuffers(1,drawBuffers);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
 
-
-  // check if the frame buffer is initialized properly
-  // and if not, exit
-  if(glCheckFramebufferStatus(GL_FRAMEBUFFER)!=GL_FRAMEBUFFER_COMPLETE){
-    printf("Framebuffer not initialized properly");
-    exit(EXIT_FAILURE);
-  }
-
+  checkFramebuffer();
 
   // set the size of the screen
   glBindFramebuffer(GL_FRAMEBUFFER,framebuffer);
-  glViewport(width,height);
+  glViewport(0,0,width,height);
+  
+  // initialize an opencv video writer
+  int codec = CV_FOURCC('M', 'P', '4', 'V');
+  std::string filename = "live.mp4";
+  cv::Size frameSize(width,height);
+  writer.open(filename, codec, 60, frameSize, true);
+}
+
+void Window::writeFrame(){
+  GLchar *pixels=readTexture(frameTexture);
+  cv::Mat *image=new cv::Mat(height,width,CV_8UC4,pixels);
+  writer.write(*image);
+  delete image;
+  free(pixels);
 }
 
 Window::~Window(){
@@ -179,4 +268,9 @@ Window::~Window(){
   SDL_GL_DeleteContext(gl_context);
   SDL_DestroyWindow(window);
   free(handles_array);
+  
+  if(saveframes){
+    printf("Write complete !");
+    writer.release();
+  }
 }

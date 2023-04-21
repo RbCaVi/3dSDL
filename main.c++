@@ -8,6 +8,7 @@
 
 #include "shaders.h++"
 #include "window.h++"
+#include "matrix.h++"
 
 static const GLuint WIDTH = 512;
 static const GLuint HEIGHT = 512;
@@ -76,7 +77,7 @@ int main(int argc, char *argv[]) {
   std::filesystem::path assetsdir=basedir/"assets";
   SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
   Window *window;
-  window=new Window(WIDTH,HEIGHT,__FILE__);
+  window=new Window(WIDTH,HEIGHT,__FILE__,true);
 
  glEnable(GL_LIGHTING);
  glEnable(GL_LIGHT0);
