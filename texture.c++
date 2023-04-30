@@ -23,13 +23,16 @@ GLuint loadTexture(std::filesystem::path path){
 }
 
 GLchar *readTexture(GLuint texture){
+  DEBUGR(errno=0);
   glBindTexture(GL_TEXTURE_2D,texture);
   int width;
   glGetTexLevelParameteriv(GL_TEXTURE_2D,0,GL_TEXTURE_WIDTH,&width);
   int height;
   glGetTexLevelParameteriv(GL_TEXTURE_2D,0,GL_TEXTURE_HEIGHT,&height);
-  int size=width*height*4*sizeof(GLchar);
+  int size=width*height*3*sizeof(GLchar);
   GLchar *pixels=(GLchar*)malloc(size);
-  glGetTexImage(GL_TEXTURE_2D,0,GL_RGBA,GL_BYTE,pixels);
+  DEBUGP("size=%i\n",size);
+  DEBUGP("texerrno=%i\n",errno);
+  glGetTexImage(GL_TEXTURE_2D,0,GL_RGB,GL_BYTE,pixels);
   return pixels;
 }

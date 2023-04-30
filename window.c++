@@ -103,10 +103,11 @@ bool checkFramebuffer(){
   }
 }
 
-Window::Window(int width, int height, const char* name, bool tosaveframes):
+Window::Window(int width, int height, const char* name, void (&framefunc)(Window*,void*), void *data, bool tosaveframes):
     width(width),height(height),program(0),
     handles_array(NULL),numhandles(0),
-    saveframes(tosaveframes),frameTexture(0){
+    saveframes(tosaveframes),frameTexture(0),
+    onframe(framefunc),data(data){
   window = SDL_CreateWindow(name, 0, 0,
           width, height, SDL_WINDOW_OPENGL);
   gl_context = SDL_GL_CreateContext(window);
@@ -149,10 +150,17 @@ void Window::mainLoop(){
   bool closed=false;
   
   while (!closed) {
+    if(onframe!=NULL){
+      onframe(this,data);
+    }
+    DEBUGP("frame\n");
     glClear(GL_COLOR_BUFFER_BIT // clear the background
         | GL_DEPTH_BUFFER_BIT); // and the depth buffer
     glDrawArrays(draw_mode, 0, draw_vertices);
-    Window::writeFrame();
+    if(saveframes){
+      DEBUGP("frame written\n");
+      Window::writeFrame();
+    }
     SDL_GL_SwapWindow(window); // draw the graphics buffer to the screen
     
     SDL_Event event;
@@ -213,12 +221,20 @@ void Window::setupSaveFrames(){
 
 
   // create a texture to render the framebuffer to
-  GLuint frameTexture=0;
+  frameTexture=0;
   glGenTextures(1,&frameTexture);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
   glBindTexture(GL_TEXTURE_2D,frameTexture);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
 
   // actually initialize the texture
   glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
+  
+  DEBUGR(
+  int w;
+  glGetTexLevelParameteriv(GL_TEXTURE_2D,0,GL_TEXTURE_WIDTH,&w);
+  int h;
+  glGetTexLevelParameteriv(GL_TEXTURE_2D,0,GL_TEXTURE_HEIGHT,&h);
+  printf("%i %i %i\n",frameTexture,w,h);
+  );
 
   // set interpolation
   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
@@ -252,19 +268,25 @@ void Window::setupSaveFrames(){
   glViewport(0,0,width,height);
   
   // initialize an opencv video writer
-  int codec = CV_FOURCC('M', 'P', 'E', 'G');
-  const char* filename = "file.mp4";
+  const char* fourcc="MP42";
+  int codec = CV_FOURCC(fourcc[0],fourcc[1],fourcc[2],fourcc[3]);
+  const char* filename = "output/file.avi";
   cv::Size frameSize(width,height);
   writer=new cv::VideoWriter(filename, codec, 60, frameSize, true);
 }
 
 void Window::writeFrame(){
+  DEBUGP("frame\n");
   GLchar *pixels=readTexture(frameTexture);
-  cv::Mat *image=new cv::Mat(height,width,CV_8UC4,pixels);
+  DEBUGP("frame\n");
+  cv::Mat *image=new cv::Mat(height,width,CV_8UC3,pixels);
+  DEBUGP("frame\n");
   writer->write(*image);
+  DEBUGP("frame\n");
   delete image;
+  DEBUGP("frame\n");
   free(pixels);
-  printf("frame");
+  DEBUGP("frame\n");
 }
 
 Window::~Window(){
