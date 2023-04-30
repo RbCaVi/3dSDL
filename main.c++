@@ -9,6 +9,9 @@
 #include "shaders.h++"
 #include "window.h++"
 #include "matrix.h++"
+#include "parseargs.h++"
+
+#include "mainfuncs.c++"
 
 static const GLuint WIDTH = 512;
 static const GLuint HEIGHT = 512;
@@ -77,15 +80,25 @@ struct sdata{
 };
 typedef sdata sdata;
 
+struct argdata{
+}
+typedef argdata argdata;
+
 int main(int argc, char *argv[]) {
+  IGNORE(argc);
   // assuming that argv[0] is the program's path
   std::filesystem::path basedir=std::filesystem::path(argv[0]).parent_path();
   std::filesystem::path assetsdir=basedir/"assets";
+  
+  // argument parser
+  argdata adata;
+  parseargs(argc,argv,isopt,optargs,addopt,addarg,(void*)adata);
+  
   SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
   
   sdata data;
   Window *window;
-  window=new Window(WIDTH,HEIGHT,__FILE__,rotate,(void*)(&data),true);
+  window=new Window(WIDTH,HEIGHT,__FILE__,rotate,(void*)(&data),false);
 
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
@@ -125,8 +138,3 @@ int main(int argc, char *argv[]) {
   return EXIT_SUCCESS;
 }
 
-void rotate(Window *window, void *d){
-  sdata *data=(sdata*)d;
-  data->model=getRotation(1,2,0.01)*data->model;
-  window->addUniformMat4x4("model",data->model);
-}
