@@ -4,7 +4,11 @@
 
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
-#include <opencv2/highgui/highgui.hpp>
+//#include "cvconfig.h"
+//#include <opencv2/core.hpp>
+//#include <opencv2/videoio.hpp>
+//#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/opencv.hpp>
 
 #include "shaders.h++"
 #include "window.h++"
@@ -248,18 +252,19 @@ void Window::setupSaveFrames(){
   glViewport(0,0,width,height);
   
   // initialize an opencv video writer
-  int codec = CV_FOURCC('M', 'P', '4', 'V');
-  std::string filename = "live.mp4";
+  int codec = CV_FOURCC('M', 'P', 'E', 'G');
+  const char* filename = "file.mp4";
   cv::Size frameSize(width,height);
-  writer.open(filename, codec, 60, frameSize, true);
+  writer=new cv::VideoWriter(filename, codec, 60, frameSize, true);
 }
 
 void Window::writeFrame(){
   GLchar *pixels=readTexture(frameTexture);
   cv::Mat *image=new cv::Mat(height,width,CV_8UC4,pixels);
-  writer.write(*image);
+  writer->write(*image);
   delete image;
   free(pixels);
+  printf("frame");
 }
 
 Window::~Window(){
@@ -271,6 +276,6 @@ Window::~Window(){
   
   if(saveframes){
     printf("Write complete !");
-    writer.release();
+    writer->release();
   }
 }

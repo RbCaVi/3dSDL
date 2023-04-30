@@ -3,11 +3,13 @@
 
 //#define GLEW_STATIC 
 
+#define IGNORE(x) (void)(x)
+
 #ifdef DEBUG
 #define DEBUGR(x) x
 #define DEBUGP(...) printf(__VA_ARGS__)
 #else
-#define DEBUGR(x) (void)(x)
-#define DEBUGP(s,...) (void)(s)
+#define DEBUGR(x) void(0)
+#define DEBUGP(s,...) void(0)
 #endif
 #endif

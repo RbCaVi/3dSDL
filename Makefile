@@ -1,7 +1,7 @@
 
 flags := $(flags) -ggdb -g -Og -gdwarf-4
-compileflags := -std=c++20 -Wall -Wpedantic -pedantic-errors -Wextra
-linkflags := -Wl,-rpath=/opt/gcc-12.2.0/lib64
+compileflags := -std=c++20 -Wall -Wpedantic -pedantic-errors -Wextra -I/opt/opencv/include
+linkflags := -Wl,-rpath=/opt/opencv/lib -Wl,-rpath=/opt/gcc-12.2.0/lib64 -L/opt/opencv/lib
 
 .PHONY: all clean
 
@@ -23,7 +23,11 @@ texture.o: texture.c++ texture.h++ shared.h++
 	g++ $(flags) $(compileflags) -c texture.c++ -o texture.o
 
 main: main.o shaders.o window.o matrix.o texture.o
-	g++ $(flags) $(linkflags) main.o shaders.o window.o matrix.o texture.o -lSDL2 -lSDL2_image -lGL -lGLEW -lopencv_core -lopencv_highgui -o $@
+	g++ $(flags) $(linkflags) main.o shaders.o window.o matrix.o texture.o \
+	-lSDL2 -lSDL2_image \
+	-lGL -lGLEW \
+	-lopencv_core -lopencv_highgui \
+	-o $@
 
 clean:
 	rm main.o

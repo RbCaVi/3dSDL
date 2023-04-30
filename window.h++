@@ -27,7 +27,7 @@ public:
   GLsizei draw_vertices;
   bool saveframes;
   GLuint frameTexture;
-  cv::VideoWriter writer;
+  cv::VideoWriter *writer;
   
   Window(int width, int height, const char* name, bool gifmode);
   void makeShader(std::filesystem::path vertex_shader_path, std::filesystem::path fragment_shader_path);
