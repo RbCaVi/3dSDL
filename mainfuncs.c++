@@ -1,3 +1,5 @@
+#include "main.h++"
+
 void rotate(Window *window, void *d){
   sdata *data=(sdata*)d;
   data->model=getRotation(1,2,0.01)*data->model;
@@ -12,11 +14,13 @@ int optargs(const char*,void*){
   return 0;
 }
 
-void addopt(const char* opt,int,const char**,void*){
+void addopt(const char* opt,int,const char**,void* d){
   // capture record input-file 
   printf("%s",opt);
 }
 
-void addarg(const char* arg,void*){
-  printf("Did not expect %s",arg);
+void addarg(const char* arg,void* d){
+  optdata *data=(optdata*)d;
+  printf("Did not expect %s\n",arg);
+  data->error=true;
 }

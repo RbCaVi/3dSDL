@@ -6,6 +6,7 @@
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 
+#include "main.h++"
 #include "shaders.h++"
 #include "window.h++"
 #include "matrix.h++"
@@ -73,17 +74,6 @@ static GLfloat light_position[] = { -1.0, -1.0, -1.0, 0.0 };
 static GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 static GLfloat mat_shininess[] = { 50.0 };
 
-struct sdata{
-  matrix4x4 model;
-  matrix4x4 view;
-  matrix4x4 projection;
-};
-typedef sdata sdata;
-
-struct argdata{
-}
-typedef argdata argdata;
-
 int main(int argc, char *argv[]) {
   IGNORE(argc);
   // assuming that argv[0] is the program's path
@@ -92,7 +82,7 @@ int main(int argc, char *argv[]) {
   
   // argument parser
   argdata adata;
-  parseargs(argc,argv,isopt,optargs,addopt,addarg,(void*)adata);
+  parseargs(argc,(const char**)argv,isopt,optargs,addopt,addarg,(void*)(&adata));
   
   SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
   

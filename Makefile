@@ -26,7 +26,7 @@ parseargs.o: parseargs.c++ parseargs.h++ shared.h++
 	g++ $(flags) $(compileflags) -c parseargs.c++ -o parseargs.o
 
 main: main.o shaders.o window.o matrix.o texture.o parseargs.o
-	g++ $(flags) $(linkflags) main.o shaders.o window.o matrix.o texture.o \
+	g++ $(flags) $(linkflags) main.o shaders.o window.o matrix.o texture.o parseargs.o \
 	-lSDL2 -lSDL2_image \
 	-lGL -lGLEW \
 	-lopencv_core -lopencv_highgui \

@@ -1,6 +1,8 @@
 #ifndef PARSEARGS_H
 #define PARSEARGS_H
 
+#include "shared.h++"
+
 // isopt is called for every argument and returns if it is an option or not
 //   its arguments are the argument being checked and data
 // optargs tells how many arguments an option takes and is called once when an option is processed
