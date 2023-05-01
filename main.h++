@@ -16,7 +16,6 @@ struct argdata{
   bool error;
   bool capture;
   int frames;
-  bool 
 };
 typedef argdata argdata;
 

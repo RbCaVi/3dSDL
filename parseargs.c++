@@ -1,5 +1,6 @@
 #include "shared.h++"
 
+#include <cstdio>
 #include <cstdlib>
 #include <cstddef>
 #include <stack>
@@ -24,13 +25,15 @@ void parseargs(int argc, const char** argv,bool (&isopt)(const char*,void*),int 
     const char* arg=argv[i];
     if(isopt(arg,data)){ // the argument is an option
       int args=optargs(arg,data);
+      printf("%i\n",args);
       if(args==0){
-          addopt(arg,0,NULL,data);
+        addopt(arg,0,NULL,data);
       }else{
         options.push(optdata(arg,args));
       }
     }else{
       if(options.empty()){
+        printf("ard");
         addarg(arg,data);
       }else{
         // add the arg to the top option on the stack
