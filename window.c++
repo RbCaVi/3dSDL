@@ -103,10 +103,10 @@ bool checkFramebuffer(){
   }
 }
 
-Window::Window(int width, int height, const char* name, void (&framefunc)(Window*,void*), void *data, bool tosaveframes):
+Window::Window(int width, int height, const char* name, void (&framefunc)(Window*,void*), void *data, bool tosaveframes, int frames):
     width(width),height(height),program(0),
     handles_array(NULL),numhandles(0),
-    saveframes(tosaveframes),frameTexture(0),
+    saveframes(tosaveframes),frameTexture(0),framestosave(frames),framesdone(0),
     onframe(framefunc),data(data){
   window = SDL_CreateWindow(name, 0, 0,
           width, height, SDL_WINDOW_OPENGL);
@@ -150,6 +150,9 @@ void Window::mainLoop(){
   bool closed=false;
   
   while (!closed) {
+    if(framestosave>0&&framesdone==framestosave){
+      break;
+    }
     if(onframe!=NULL){
       onframe(this,data);
     }
@@ -177,6 +180,8 @@ void Window::mainLoop(){
         break;
       }
     }
+    
+    framesdone++;
   }
   
   for(auto attr:handles){

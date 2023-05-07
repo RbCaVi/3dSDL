@@ -25,7 +25,7 @@ void addopt(const char* opt,int,const char** args,void* d){
     data->capture=true;
     return;
   }else if(strcmp(opt,"--frames")==0){
-    data->frames=atoi(args[0]);
+    data->framecount=atoi(args[0]);
     return;
   }
   printf("Did not expect %s\n",opt);

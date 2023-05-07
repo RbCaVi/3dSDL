@@ -27,11 +27,13 @@ public:
   GLsizei draw_vertices;
   bool saveframes;
   GLuint frameTexture;
+  int framestosave;
+  int framesdone;
   cv::VideoWriter *writer;
   void (&onframe)(Window*,void*);
   void *data;
   
-  Window(int width, int height, const char* name, void (&framefunc)(Window*,void*), void *data, bool gifmode);
+  Window(int width, int height, const char* name, void (&framefunc)(Window*,void*), void *data, bool saveframes, int frames);
   void makeShader(std::filesystem::path vertex_shader_path, std::filesystem::path fragment_shader_path);
   void mainLoop();
   void addVertexData(const char* name,GLfloat data[],GLint size,GLint floatspervertex);

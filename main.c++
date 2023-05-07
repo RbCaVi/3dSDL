@@ -75,7 +75,7 @@ static GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 static GLfloat mat_shininess[] = { 50.0 };
 
 void p(argdata adata){
-  printf("%i %i %i\n",adata.error,adata.capture,adata.frames);
+  printf("%i %i %i\n",adata.error,adata.capture,adata.framecount);
 }
 
 int main(int argc, char *argv[]) {
@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
   
   sdata data;
   Window *window;
-  window=new Window(WIDTH,HEIGHT,__FILE__,rotate,(void*)(&data),false);
+  window=new Window(WIDTH,HEIGHT,__FILE__,rotate,(void*)(&data),adata.capture,adata.framecount);
 
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);

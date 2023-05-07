@@ -15,7 +15,7 @@ typedef sdata sdata;
 struct argdata{
   bool error;
   bool capture;
-  int frames;
+  int framecount;
 };
 typedef argdata argdata;
 
