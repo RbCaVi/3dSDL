@@ -20,12 +20,16 @@ int optargs(const char* arg,void*){
 void addopt(const char* opt,int,const char** args,void* d){
   argdata *data=(argdata*)d;
   // capture frames record input-file 
-  printf("%s",opt);
+  DEBUGP("%s\n",opt);
   if(strcmp(opt,"--capture")==0){
     data->capture=true;
+    return;
   }else if(strcmp(opt,"--frames")==0){
     data->frames=atoi(args[0]);
+    return;
   }
+  printf("Did not expect %s\n",opt);
+  data->error=true;
 }
 
 void addarg(const char* arg,void* d){

@@ -74,6 +74,10 @@ static GLfloat light_position[] = { -1.0, -1.0, -1.0, 0.0 };
 static GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 static GLfloat mat_shininess[] = { 50.0 };
 
+void p(argdata adata){
+  printf("%i %i %i\n",adata.error,adata.capture,adata.frames);
+}
+
 int main(int argc, char *argv[]) {
   IGNORE(argc);
   // assuming that argv[0] is the program's path
@@ -81,8 +85,13 @@ int main(int argc, char *argv[]) {
   std::filesystem::path assetsdir=basedir/"assets";
   
   // argument parser
-  argdata adata;
+  argdata adata(false,false,0);
   parseargs(argc,(const char**)argv,isopt,optargs,addopt,addarg,(void*)(&adata));
+  if(adata.error){
+    exit(1);
+  }
+  
+  p(adata);
   
   SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
   
