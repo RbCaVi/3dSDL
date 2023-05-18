@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <exception>
+#include <signal.h>
 
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
@@ -62,8 +63,6 @@ static GLfloat colors[] = {
   0.0, 0.0, 0.0, 1.0,
 };
 
-void rotate(Window*,void*);
-
 static GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
 static GLfloat light_diffuse[] = { 0.0, 0.0, 0.0, 1.0 };
 static GLfloat light_specular[] = { 0.0, 0.0, 0.0, 1.0 };
@@ -84,6 +83,14 @@ int main(int argc, char *argv[]) {
   std::filesystem::path basedir=std::filesystem::path(argv[0]).parent_path();
   std::filesystem::path assetsdir=basedir/"assets";
   
+  struct sigaction sigIntHandler;
+
+  sigIntHandler.sa_handler = handlesigint;
+  sigemptyset(&sigIntHandler.sa_mask);
+  sigIntHandler.sa_flags = 0;
+
+  sigaction(SIGINT, &sigIntHandler, NULL);
+  
   // argument parser
   argdata adata(false,false,0);
   parseargs(argc,(const char**)argv,isopt,optargs,addopt,addarg,(void*)(&adata));
@@ -96,8 +103,8 @@ int main(int argc, char *argv[]) {
   SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
   
   sdata data;
-  Window *window;
-  window=new Window(WIDTH,HEIGHT,__FILE__,rotate,(void*)(&data),adata.capture,adata.framecount);
+  //Window *window;
+  window=new Window(WIDTH,HEIGHT,__FILE__,onframe,(void*)(&data),adata.capture,adata.framecount);
 
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
@@ -134,6 +141,7 @@ int main(int argc, char *argv[]) {
   delete window;
   
   SDL_Quit();
+  
   return EXIT_SUCCESS;
 }
 

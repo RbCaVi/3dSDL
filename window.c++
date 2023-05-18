@@ -107,7 +107,8 @@ Window::Window(int width, int height, const char* name, void (&framefunc)(Window
     width(width),height(height),program(0),
     handles_array(NULL),numhandles(0),
     saveframes(tosaveframes),frameTexture(0),framestosave(frames),framesdone(0),
-    onframe(framefunc),data(data){
+    onframe(framefunc),data(data),
+    closed(false){
   window = SDL_CreateWindow(name, 0, 0,
           width, height, SDL_WINDOW_OPENGL);
   gl_context = SDL_GL_CreateContext(window);
@@ -147,7 +148,7 @@ void Window::mainLoop(){
     DEBUGP("enable %i\n",errno);
   }
   
-  bool closed=false;
+  closed=false;
   
   while (!closed) {
     if(framestosave>0&&framesdone==framestosave){

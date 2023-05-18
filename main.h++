@@ -4,6 +4,9 @@
 #include "shared.h++"
 
 #include "matrix.h++"
+#include "window.h++"
+
+Window* window;
 
 struct sdata{
   matrix4x4 model;
