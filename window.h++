@@ -14,7 +14,7 @@
 #include "matrix.h++"
 
 class Window{
-public:
+private:
   SDL_GLContext gl_context;
   SDL_Window *window;
   int width;
@@ -32,8 +32,9 @@ public:
   cv::VideoWriter *writer;
   void (&onframe)(Window*,void*);
   void *data;
+
+public:
   bool closed;
-  
   Window(int width, int height, const char* name, void (&framefunc)(Window*,void*), void *data, bool saveframes, int frames);
   void makeShader(std::filesystem::path vertex_shader_path, std::filesystem::path fragment_shader_path);
   void mainLoop();
