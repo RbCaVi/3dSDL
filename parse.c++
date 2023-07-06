@@ -32,7 +32,10 @@ private:
     int *vertindexes;
     int *verttexindexes;
     int *vertnormindexes;
-    f(obj* p,int vi[],int vti[],int vni[]):parent(p),vertindexes(vi),verttexindexes(vti),vertnormindexes(vni){}
+    int size;
+    f(obj* p,int vi[],int vti[],int vni[],int size):parent(p),
+    vertindexes(vi),verttexindexes(vti),vertnormindexes(vni),
+    size(size){}
   };
 
   struct v{
