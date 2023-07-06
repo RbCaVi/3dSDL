@@ -7,6 +7,23 @@
 
 #include "file.h++"
 
+class parse_exception: public std::exception{
+public:
+  explicit parse_exception(const char* message);
+  virtual ~parse_exception() noexcept;
+  virtual const char* what() const noexcept;
+
+  const char* msg;
+};
+
+parse_exception::parse_exception(const char* message): msg(message) {}
+
+parse_exception::~parse_exception() noexcept {}
+
+const char* parse_exception::what() const noexcept {
+   return msg;
+}
+
 class obj{
 private:
   struct f{
@@ -112,13 +129,15 @@ public:
         int i;
         float *f=(float*)malloc(4*sizeof(float));
         f[3]=1.0;
-        char* ss=s;
+        char* str=start+len1;
+        char* ss=str;
         
-        for((i=0),(f[i]=strtof(s,&ss));i<4&&s!=ss;f[++i]=strtof(s,&ss)){
-          s=ss;
+        for((i=0),(f[i]=strtof(str,&ss));i<4&&str!=ss;f[++i]=strtof(str,&ss)){
+          printf("%i %f\n",i,f[i]);
+          str=ss;
         }
         if(i<3){
-          printf("Error in 'v': Not enough coords\n")
+          throw parse_exception("Error in 'v': Not enough coords\n");
         }
       }
       start+=len2+1;
