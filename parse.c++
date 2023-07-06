@@ -4,6 +4,7 @@
 #include <string.h>
 #include <string>
 #include <list>
+#include <cmath>
 
 #include "file.h++"
 
@@ -52,7 +53,12 @@ private:
     const obj* parent;
     float x,y,z;
 
-    vn(obj* p,float x,float y,float z):parent(p),x(x),y(y),z(z){}
+    vn(obj* p,float x,float y,float z):parent(p),x(x),y(y),z(z){
+      float di=1.0/sqrt(x*x+y*y+z*z);
+      x*=di;
+      y*=di;
+      z*=di;
+    }
   };
 
   typedef f f;
