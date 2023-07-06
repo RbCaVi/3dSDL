@@ -129,9 +129,9 @@ public:
       }
       char *s=(char*)malloc(len1);
       strncpy(s,start,len1);
-      //printf("%s\n",s);
+      DEBUGP("%s\n",s);
       if(strcmp(s,"v")==0){
-        printf("s == 'v'\n");
+        DEBUGP("s == 'v'\n");
         int i;
         float *f=(float*)malloc(4*sizeof(float));
         f[3]=1.0;
@@ -139,7 +139,7 @@ public:
         char* ss=str;
         
         for((i=0),(f[i]=strtof(str,&ss));i<4&&str!=ss;f[++i]=strtof(str,&ss)){
-          printf("%i %f\n",i,f[i]);
+          DEBUGP("%i %f\n",i,f[i]);
           str=ss;
         }
         if(i<3){
@@ -149,7 +149,7 @@ public:
         verts->push_back(vert);
         free(f);
       }else if(strcmp(s,"vt")==0){
-        printf("s == 'vt'\n");
+        DEBUGP("s == 'vt'\n");
         int i;
         float *f=(float*)malloc(3*sizeof(float));
         f[1]=0.0;
@@ -158,7 +158,7 @@ public:
         char* ss=str;
         
         for((i=0),(f[i]=strtof(str,&ss));i<4&&str!=ss;f[++i]=strtof(str,&ss)){
-          printf("%i %f\n",i,f[i]);
+          DEBUGP("%i %f\n",i,f[i]);
           str=ss;
         }
         if(i<1){
@@ -168,14 +168,14 @@ public:
         verttexs->push_back(verttex);
         free(f);
       }else if(strcmp(s,"vn")==0){
-        printf("s == 'vn'\n");
+        DEBUGP("s == 'vn'\n");
         int i;
         float *f=(float*)malloc(3*sizeof(float));
         char* str=start+len1;
         char* ss=str;
         
         for((i=0),(f[i]=strtof(str,&ss));i<4&&str!=ss;f[++i]=strtof(str,&ss)){
-          printf("%i %f\n",i,f[i]);
+          DEBUGP("%i %f\n",i,f[i]);
           str=ss;
         }
         if(i<3){
@@ -185,7 +185,7 @@ public:
         vertnorms->push_back(vertnorm);
         free(f);
       }else if(strcmp(s,"f")==0){
-        printf("s == 'f'\n");
+        DEBUGP("s == 'f'\n");
         char* str=start+len1+1;
         char* ss=str;
         bool last=false;
@@ -250,21 +250,24 @@ public:
         for (auto const &i : vnil){
           printf("%i ",i);
         }
-        printf("\n");
+        DEBUGP("\n");
+
       }
       start+=len2+1;
       if(last){
         break;
       }
     }
-    for (auto const &v : *verts) printf("v %f %f %f %f\n",v.x,v.y,v.z,v.w);
-    printf("\n");
-    for (auto const &v : *verttexs) printf("vt %f %f %f\n",v.u,v.v,v.w);
-    printf("\n");
-    for (auto const &v : *vertnorms) printf("vn %f %f %f\n",v.x,v.y,v.z);
-    printf("\n");
-    for (auto const &v : *vertnorms) printf("vn %f %f %f\n",v.x,v.y,v.z);
-    printf("\n");
+    DEBUGR(
+      for (auto const &v : *verts) printf("v %f %f %f %f\n",v.x,v.y,v.z,v.w);
+      printf("\n");
+      for (auto const &v : *verttexs) printf("vt %f %f %f\n",v.u,v.v,v.w);
+      printf("\n");
+      for (auto const &v : *vertnorms) printf("vn %f %f %f\n",v.x,v.y,v.z);
+      printf("\n");
+      for (auto const &v : *vertnorms) printf("vn %f %f %f\n",v.x,v.y,v.z);
+      printf("\n");
+    )
     free(data);
   }
 };
