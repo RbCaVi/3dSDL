@@ -139,6 +139,52 @@ public:
         if(i<3){
           throw parse_exception("Error in 'v': Not enough coords\n");
         }
+      }else if(strcmp(s,"vt")==0){
+        printf("s == 'vt'\n");
+        int i;
+        float *f=(float*)malloc(3*sizeof(float));
+        f[1]=0.0;
+        f[2]=0.0;
+        char* str=start+len1;
+        char* ss=str;
+        
+        for((i=0),(f[i]=strtof(str,&ss));i<4&&str!=ss;f[++i]=strtof(str,&ss)){
+          printf("%i %f\n",i,f[i]);
+          str=ss;
+        }
+        if(i<1){
+          throw parse_exception("Error in 'vt': Not enough coords\n");
+        }
+      }else if(strcmp(s,"vn")==0){
+        printf("s == 'vn'\n");
+        int i;
+        float *f=(float*)malloc(3*sizeof(float));
+        char* str=start+len1;
+        char* ss=str;
+        
+        for((i=0),(f[i]=strtof(str,&ss));i<4&&str!=ss;f[++i]=strtof(str,&ss)){
+          printf("%i %f\n",i,f[i]);
+          str=ss;
+        }
+        if(i<3){
+          throw parse_exception("Error in 'vn': Not enough coords\n");
+        }
+      }else if(strcmp(s,"f")==0){
+        printf("s == 'f'\n");
+        int i;
+        long int *f=(long int*)malloc(4*sizeof(long int));
+        char* str=start+len1;
+        char* ss=str;
+          printf("%i %i\n%i---%i\n%s---%s\n",i,f[i],str,ss,str,ss);
+        
+        for((i=0),(f[i]=strtol(str,&ss,10));i<4&&str!=ss;f[++i]=strtol(str,&ss,10)){
+          printf("%i %i\n%i---%i\n%s---%s\n",i,f[i],str,ss,str,ss);
+          str=ss;
+        }
+          printf("%i %i\n%i---%i\n%s---%s\n",i,f[i],str,ss,str,ss);
+        if(i<0){
+          throw parse_exception("Error in 'v': Not enough coords\n");
+        }
       }
       start+=len2+1;
       if(last){
