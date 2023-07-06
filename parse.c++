@@ -236,19 +236,29 @@ public:
           vnil.push_back(val);
           str=space+1;
         }
-        int* vi=malloc(vil.size()*sizeof(int));
-        for (auto const &i : vil){
-          printf("%i ",i);
+        unsigned int i;
+        int* vi=(int*)malloc(vil.size()*sizeof(int));
+        auto vil_front = vil.begin();
+        for (i=0;i<vil.size();i++){
+          DEBUGP("%i ",*vil_front);
+          vi[i]=*vil_front;
+          std::advance(vil_front,1);
         }
-        printf("\n");
-        int* vti=malloc(vtil.size()*sizeof(int));
-        for (auto const &i : vtil){
-          printf("%i ",i);
+        DEBUGP("\n");
+        int* vti=(int*)malloc(vtil.size()*sizeof(int));
+        auto vtil_front = vtil.begin();
+        for (i=0;i<vtil.size();i++){
+          DEBUGP("%i ",*vtil_front);
+          vti[i]=*vtil_front;
+          std::advance(vtil_front,1);
         }
-        printf("\n");
-        int* vni=malloc(vnil.size()*sizeof(int));
-        for (auto const &i : vnil){
-          printf("%i ",i);
+        DEBUGP("\n");
+        int* vni=(int*)malloc(vnil.size()*sizeof(int));
+        auto vnil_front = vnil.begin();
+        for (i=0;i<vnil.size();i++){
+          DEBUGP("%i ",*vnil_front);
+          vni[i]=*vnil_front;
+          std::advance(vnil_front,1);
         }
         DEBUGP("\n");
 
