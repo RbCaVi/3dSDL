@@ -66,10 +66,10 @@ private:
   typedef vt vt;
   typedef vn vn;
 
-  std::list<f> *faces;
-  std::list<v> *verts;
-  std::list<vt> *verttexs;
-  std::list<vn> *vertnorms;
+  std::vector<f*> *faces;
+  std::vector<v*> *verts;
+  std::vector<vt*> *verttexs;
+  std::vector<vn*> *vertnorms;
 
 public:
   struct renderdata{
@@ -80,10 +80,10 @@ public:
   };
 
   obj(){
-    faces=new std::list<f>();
-    verts=new std::list<v>();
-    verttexs=new std::list<vt>();
-    vertnorms=new std::list<vn>();
+    faces=new std::vector<f*>();
+    verts=new std::vector<v*>();
+    verttexs=new std::vector<vt*>();
+    vertnorms=new std::vector<vn*>();
   }
 
   void load(std::filesystem::path path){
@@ -152,7 +152,7 @@ public:
         if(i<3){
           throw obj_exception("Error in 'v': Not enough coords\n");
         }
-        v vert(this,f[0],f[1],f[2],f[3]);
+        v *vert=new v(this,f[0],f[1],f[2],f[3]);
         verts->push_back(vert);
         free(f);
       }else if(strcmp(s,"vt")==0){
@@ -171,7 +171,7 @@ public:
         if(i<1){
           throw obj_exception("Error in 'vt': Not enough coords\n");
         }
-        vt verttex(this,f[0],f[1],f[2]);
+        vt *verttex=new vt(this,f[0],f[1],f[2]);
         verttexs->push_back(verttex);
         free(f);
       }else if(strcmp(s,"vn")==0){
@@ -188,7 +188,7 @@ public:
         if(i<3){
           throw obj_exception("Error in 'vn': Not enough coords\n");
         }
-        vn vertnorm(this,f[0],f[1],f[2]);
+        vn *vertnorm=new vn(this,f[0],f[1],f[2]);
         vertnorms->push_back(vertnorm);
         free(f);
       }else if(strcmp(s,"f")==0){
@@ -204,7 +204,7 @@ public:
           // find slash
           // get number (if none, -1)
           // move to after null
-        std::list<int> vil,vtil,vnil;
+        std::vector<int> vil,vtil,vnil;
         while(!last){
           int val;
           char *slash;
@@ -222,6 +222,8 @@ public:
           slash=strchr(str,'/');
           if(slash==NULL){
             str=space+1;
+            vtil.push_back(-1);
+            vnil.push_back(-1);
             continue;
           }
           str=slash+1;
@@ -233,6 +235,7 @@ public:
           slash=strchr(str,'/');
           if(slash==NULL){
             str=space+1;
+            vnil.push_back(-1);
             continue;
           }
           str=slash+1;
@@ -268,8 +271,8 @@ public:
           std::advance(vnil_front,1);
         }
         DEBUGP("\n");
-        f face(this,vi,vti,vni);
-        faces->push_back(faces);
+        f *face=new f(this,vi,vti,vni,vil.size());
+        faces->push_back(face);
       }
       start+=len2+1;
       if(last){
@@ -277,13 +280,13 @@ public:
       }
     }
     DEBUGR(
-      for (auto const &v : *verts) printf("v %f %f %f %f\n",v.x,v.y,v.z,v.w);
+      for (auto const &v : *verts) printf("v %f %f %f %f\n",*v.x,*v.y,*v.z,*v.w);
       printf("\n");
-      for (auto const &v : *verttexs) printf("vt %f %f %f\n",v.u,v.v,v.w);
+      for (auto const &v : *verttexs) printf("vt %f %f %f\n",*v.u,*v.v,*v.w);
       printf("\n");
-      for (auto const &v : *vertnorms) printf("vn %f %f %f\n",v.x,v.y,v.z);
+      for (auto const &v : *vertnorms) printf("vn %f %f %f\n",*v.x,*v.y,*v.z);
       printf("\n");
-      for (auto const &v : *vertnorms) printf("vn %f %f %f\n",v.x,v.y,v.z);
+      for (auto const &v : *faces) printf("f %i\n",*v.size);
       printf("\n");
     )
     free(data);
