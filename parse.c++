@@ -186,20 +186,71 @@ public:
         free(f);
       }else if(strcmp(s,"f")==0){
         printf("s == 'f'\n");
-        int i;
-        long int *f=(long int*)malloc(4*sizeof(long int));
-        char* str=start+len1;
+        char* str=start+len1+1;
         char* ss=str;
-          printf("%i %i\n%i---%i\n%s---%s\n",i,f[i],str,ss,str,ss);
-        
-        for((i=0),(f[i]=strtol(str,&ss,10));i<4&&str!=ss;f[++i]=strtol(str,&ss,10)){
-          printf("%i %i\n%i---%i\n%s---%s\n",i,f[i],str,ss,str,ss);
-          str=ss;
+        bool last=false;
+        // for i=1-3
+          // switch next space for null
+          // get number (if none, -1)
+          // find slash
+          // get number (if none, -1)
+          // find slash
+          // get number (if none, -1)
+          // move to after null
+        std::list<int> vil,vtil,vnil;
+        while(!last){
+          int val;
+          char *slash;
+          char *space=strchr(str,' ');
+          if(space==NULL){
+            last=true;
+          }else{
+            *space='\0';
+          }
+          val=strtol(str,&ss,0);
+          if(str==ss){
+            val=-1;
+          }
+          vil.push_back(val);
+          slash=strchr(str,'/');
+          if(slash==NULL){
+            str=space+1;
+            continue;
+          }
+          str=slash+1;
+          val=strtol(str,&ss,0);
+          if(str==ss){
+            val=-1;
+          }
+          vtil.push_back(val);
+          slash=strchr(str,'/');
+          if(slash==NULL){
+            str=space+1;
+            continue;
+          }
+          str=slash+1;
+          val=strtol(str,&ss,0);
+          if(str==ss){
+            val=-1;
+          }
+          vnil.push_back(val);
+          str=space+1;
         }
-          printf("%i %i\n%i---%i\n%s---%s\n",i,f[i],str,ss,str,ss);
-        if(i<0){
-          throw parse_exception("Error in 'v': Not enough coords\n");
+        int* vi=malloc(vil.size()*sizeof(int));
+        for (auto const &i : vil){
+          printf("%i ",i);
         }
+        printf("\n");
+        int* vti=malloc(vtil.size()*sizeof(int));
+        for (auto const &i : vtil){
+          printf("%i ",i);
+        }
+        printf("\n");
+        int* vni=malloc(vnil.size()*sizeof(int));
+        for (auto const &i : vnil){
+          printf("%i ",i);
+        }
+        printf("\n");
       }
       start+=len2+1;
       if(last){
