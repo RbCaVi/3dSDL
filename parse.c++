@@ -116,7 +116,7 @@ public:
       }
 
       int len1=0;
-      while(start[len1]!=' '&&start[len1]!='\0'){
+      while(start[len1]!=' '&&start[len1]!='\n'&&start[len1]!='\0'){
         //printf("1 %c %i\n",start[len1],len1);
         len1++;
       }
@@ -206,6 +206,14 @@ public:
         break;
       }
     }
+    for (auto const &v : *verts) printf("v %f %f %f %f\n",v.x,v.y,v.z,v.w);
+    printf("\n");
+    for (auto const &v : *verttexs) printf("vt %f %f %f\n",v.u,v.v,v.w);
+    printf("\n");
+    for (auto const &v : *vertnorms) printf("vn %f %f %f\n",v.x,v.y,v.z);
+    printf("\n");
+    for (auto const &v : *vertnorms) printf("vn %f %f %f\n",v.x,v.y,v.z);
+    printf("\n");
     free(data);
   }
 };
