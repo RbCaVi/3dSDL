@@ -1,4 +1,6 @@
 *.o
 main
+parse
+a.out
 token
 output/

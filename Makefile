@@ -35,6 +35,14 @@ main: main.o shaders.o window.o matrix.o texture.o parseargs.o file.o
 	-lopencv_core -lopencv_highgui \
 	-o $@
 
+# merge is ld -r a.o b.o -o c.o
+
+parse.o: parse.c++ file.h++ shared.h++
+	g++ $(flags) $(compileflags) -c parse.c++ -o parse.o
+
+parse: parse.o file.o
+	g++ $(flags) $(linkflags) parse.o file.o -o parse
+
 clean:
 	rm main.o
 	rm shaders.o
