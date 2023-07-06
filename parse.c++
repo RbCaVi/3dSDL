@@ -261,7 +261,8 @@ public:
           std::advance(vnil_front,1);
         }
         DEBUGP("\n");
-
+        f face(this,vi,vti,vni);
+        faces->push_back(faces);
       }
       start+=len2+1;
       if(last){
