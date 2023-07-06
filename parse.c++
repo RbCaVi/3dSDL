@@ -145,6 +145,9 @@ public:
         if(i<3){
           throw parse_exception("Error in 'v': Not enough coords\n");
         }
+        v vert(this,f[0],f[1],f[2],f[3]);
+        verts->push_back(vert);
+        free(f);
       }else if(strcmp(s,"vt")==0){
         printf("s == 'vt'\n");
         int i;
@@ -161,6 +164,9 @@ public:
         if(i<1){
           throw parse_exception("Error in 'vt': Not enough coords\n");
         }
+        vt verttex(this,f[0],f[1],f[2]);
+        verttexs->push_back(verttex);
+        free(f);
       }else if(strcmp(s,"vn")==0){
         printf("s == 'vn'\n");
         int i;
@@ -175,6 +181,9 @@ public:
         if(i<3){
           throw parse_exception("Error in 'vn': Not enough coords\n");
         }
+        vn vertnorm(this,f[0],f[1],f[2]);
+        vertnorms->push_back(vertnorm);
+        free(f);
       }else if(strcmp(s,"f")==0){
         printf("s == 'f'\n");
         int i;
