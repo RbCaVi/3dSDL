@@ -8,20 +8,20 @@
 
 #include "file.h++"
 
-class parse_exception: public std::exception{
+class obj_exception: public std::exception{
 public:
-  explicit parse_exception(const char* message);
-  virtual ~parse_exception() noexcept;
+  explicit obj_exception(const char* message);
+  virtual ~obj_exception() noexcept;
   virtual const char* what() const noexcept;
 
   const char* msg;
 };
 
-parse_exception::parse_exception(const char* message): msg(message) {}
+obj_exception::obj_exception(const char* message): msg(message) {}
 
-parse_exception::~parse_exception() noexcept {}
+obj_exception::~obj_exception() noexcept {}
 
-const char* parse_exception::what() const noexcept {
+const char* obj_exception::what() const noexcept {
    return msg;
 }
 
@@ -72,6 +72,13 @@ private:
   std::list<vn> *vertnorms;
 
 public:
+  struct renderdata{
+    int size; // number of points
+    int *vs; // packed (stride 4)
+    int *vts; // packed (stride 3)
+    int *vns; // packed (stride 3)
+  };
+
   obj(){
     faces=new std::list<f>();
     verts=new std::list<v>();
@@ -143,7 +150,7 @@ public:
           str=ss;
         }
         if(i<3){
-          throw parse_exception("Error in 'v': Not enough coords\n");
+          throw obj_exception("Error in 'v': Not enough coords\n");
         }
         v vert(this,f[0],f[1],f[2],f[3]);
         verts->push_back(vert);
@@ -162,7 +169,7 @@ public:
           str=ss;
         }
         if(i<1){
-          throw parse_exception("Error in 'vt': Not enough coords\n");
+          throw obj_exception("Error in 'vt': Not enough coords\n");
         }
         vt verttex(this,f[0],f[1],f[2]);
         verttexs->push_back(verttex);
@@ -179,7 +186,7 @@ public:
           str=ss;
         }
         if(i<3){
-          throw parse_exception("Error in 'vn': Not enough coords\n");
+          throw obj_exception("Error in 'vn': Not enough coords\n");
         }
         vn vertnorm(this,f[0],f[1],f[2]);
         vertnorms->push_back(vertnorm);
@@ -281,6 +288,37 @@ public:
     )
     free(data);
   }
+
+  renderdata *makeRenderData(){
+    int i;
+    DEBUGR(
+      auto faces_front = faces->begin();
+      
+      for (i=0;i<faces->size();i++){
+        DEBUGP("%i ",*faces_front);
+        auto const &face=*faces_front;
+        printf("face1 - %i\n",face);
+        printf("%i\n",face->size);
+        printf("%i\n",face->vertindexes[0]);
+        std::advance(faces_front,1);
+      }
+    )
+
+    vector<float> vs,vts,vns;
+    for(auto const &face:*faces){
+      DEBUGP("face - %i ",face);
+      DEBUGP("%i ",face->size);
+      DEBUGP("%i\n",face->vertindexes[0]);
+      if(face->size!=3){
+        throw obj_exception("There is a non triangular face\n");
+      }
+      vs.append(face.vertindexes,3);
+      for(i=0;i<face.size;i++){
+        vs.push_back([face.vertindexes[i]])
+      }
+    }
+    return NULL;
+  }
 };
 
 float *getFloats(char* s,char** sEnd,int n){
@@ -311,7 +349,8 @@ int main(){
     printf("%f ",fs[i]);
   }
   printf("\n");
-  std::filesystem::path file=std::filesystem::path("./assets")/"cat_v2.obj";
+  std::filesystem::path file=std::filesystem::path(".")/"assets"/"cat_v2.obj";
   obj *o=new obj();
   o->load(file);
+  obj::renderdata *r=o->makeRenderData();
 }
