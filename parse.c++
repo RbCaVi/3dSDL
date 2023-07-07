@@ -298,10 +298,31 @@ public:
           vnil.push_back(val);
           str=space+1;
         }
-        int* vi=vil.data();
-        int* vti=vtil.data();
-        int* vni=vnil.data();
-        //free(vni);
+        unsigned int i;
+        int* vi=(int*)malloc(vil.size()*sizeof(int));
+        auto vil_front = vil.begin();
+        for (i=0;i<vil.size();i++){
+          DEBUGP("%i ",*vil_front);
+          vi[i]=*vil_front;
+          std::advance(vil_front,1);
+        }
+        DEBUGP("\n");
+        int* vti=(int*)malloc(vtil.size()*sizeof(int));
+        auto vtil_front = vtil.begin();
+        for (i=0;i<vtil.size();i++){
+          DEBUGP("%i ",*vtil_front);
+          vti[i]=*vtil_front;
+          std::advance(vtil_front,1);
+        }
+        DEBUGP("\n");
+        int* vni=(int*)malloc(vnil.size()*sizeof(int));
+        auto vnil_front = vnil.begin();
+        for (i=0;i<vnil.size();i++){
+          DEBUGP("%i ",*vnil_front);
+          vni[i]=*vnil_front;
+          std::advance(vnil_front,1);
+        }
+        DEBUGP("\n");
         f *face=new f(this,vi,vti,vni,vil.size());
         faces->push_back(face);
       }
