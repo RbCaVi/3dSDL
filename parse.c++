@@ -74,6 +74,55 @@ private:
   std::vector<vt*> *verttexs;
   std::vector<vn*> *vertnorms;
 
+  template<typename T,int blocksize = 4>
+  class dynamiclist{
+  private:
+    int length;
+    int alloclength;
+
+  public:
+    T *items;
+    dynamiclist():
+      length(0),alloclength(blocksize),
+      items((T*)malloc(alloclength*sizeof(T))){}
+
+    operator T *(){
+      return items;
+    }
+
+    void append(T item){
+      if(length==alloclength){
+        alloclength+=blocksize;
+        items=(T*)realloc(items,alloclength*sizeof(T));
+      }
+      items[length]=item;
+      length++;
+    }
+
+    // add count items from newitems to the list
+    void append(T *newitems,int count){
+      if(length+count>alloclength){
+        while(length+count>alloclength){
+          alloclength+=blocksize;
+        }
+        items=(T*)realloc(items,alloclength*sizeof(T));
+      }
+      int i;
+      for(i=0;i<count;i++){
+        items[length+i]=newitems[i];
+      }
+      length+=count;
+    }
+
+    int getLength(){
+      return length;
+    }
+
+    ~dynamiclist(){
+      free(items);
+    }
+  };
+
 public:
   struct renderdata{
     int size; // number of points
@@ -249,11 +298,10 @@ public:
           vnil.push_back(val);
           str=space+1;
         }
-        unsigned int i;
         int* vi=vil.data();
         int* vti=vtil.data();
         int* vni=vnil.data();
-        free(vni);
+        //free(vni);
         f *face=new f(this,vi,vti,vni,vil.size());
         faces->push_back(face);
       }
@@ -290,7 +338,7 @@ public:
       }
     )
 
-    std::vector<float> vs,vts,vns;
+    dynamiclist<float> vs,vts,vns;
     for(auto const &face:*faces){
       DEBUGP("face - %i ",face);
       DEBUGP("%i ",face->size);
@@ -298,9 +346,8 @@ public:
       if(face->size!=3){
         throw obj_exception("There is a non triangular face\n");
       }
-      vs.append(face->vertindexes,3);
       for(i=0;i<face->size;i++){
-        vs.push_back(verts[face->vertindexes[i]-1])
+        //vs.append(verts[face->vertindexes[i]-1].data,4)
       }
     }
     return NULL;
