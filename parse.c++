@@ -139,7 +139,7 @@ public:
   }
 
   void load(std::filesystem::path path){
-    printf("%s\n",path.string().c_str());
+    DEBUGP("loading %s\n",path.string().c_str());
     char *data=pathtobuf(path);
     char *start=data;
 
@@ -156,7 +156,7 @@ public:
       // vt
       int len2=0; // until newline
       while(start[len2]!='\n'&&start[len2]!='\0'){
-        //printf("2 %c %i\n",start[len2],len2);
+        DEBUGP("2 %c %i\n",start[len2],len2);
         len2++;
       }
       bool last=false;
@@ -164,13 +164,14 @@ public:
         last=true;
       }
       start[len2]='\0';
+      DEBUGP("start: %s\n",start);
 
       // replace # with null
       // simple trick
       // don't need to revert because the data is being deleted at the end anyway
       int i3=0;
       while(start[i3]!='\n'&&start[i3]!='\0'){
-        //printf("3 %c %i\n",start[i3],i3);
+        DEBUGP("3 %c %i\n",start[i3],i3);
         if(start[i3]=='#'){
           start[i3]='\0';
           break;
@@ -179,8 +180,8 @@ public:
       }
 
       int len1=0;
-      while(start[len1]!=' '&&start[len1]!='\n'&&start[len1]!='\0'){
-        //printf("1 %c %i\n",start[len1],len1);
+      while(start[len1]!=' '&&start[len1]!='\0'){
+        DEBUGP("1 %c %i\n",start[len1],len1);
         len1++;
       }
       if(start[len1]=='\0'){
@@ -354,7 +355,7 @@ public:
       auto faces_front = faces->begin();
       
       for (i=0;i<faces->size();i++){
-        DEBUGP("%i ",*faces_front);
+        printf("%i ",*faces_front);
         auto const &face=*faces_front;
         printf("face1 - %i\n",face);
         printf("%i\n",face->size);

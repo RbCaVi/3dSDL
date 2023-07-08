@@ -7,7 +7,7 @@
 
 #ifdef DEBUG
 #define DEBUGR(x) x
-#define DEBUGP(...) printf(__VA_ARGS__)
+#define DEBUGP(s,...) printf(s,__VA_ARGS__)
 #else
 #define DEBUGR(x) void(0);
 #define DEBUGP(s,...) void(0)
