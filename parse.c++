@@ -191,7 +191,8 @@ public:
         }
         continue;
       }
-      char *s=(char*)malloc(len1);
+      char *s=(char*)malloc(len1+1);
+      s[len1]='\0';
       strncpy(s,start,len1);
       DEBUGP("%s\n",s);
       if(strcmp(s,"v")==0){
@@ -331,19 +332,20 @@ public:
         f *face=new f(this,vi,vti,vni,vil.size());
         faces->push_back(face);
       }
+      free(s);
       start+=len2+1;
       if(last){
         break;
       }
     }
     DEBUGR(
-      for (auto const &v : *verts) printf("v %f %f %f %f\n",*v.x,*v.y,*v.z,*v.w);
+      for (auto const &v : *verts) printf("v %f %f %f %f\n",v->x,v->y,v->z,v->w);
       printf("\n");
-      for (auto const &v : *verttexs) printf("vt %f %f %f\n",*v.u,*v.v,*v.w);
+      for (auto const &v : *verttexs) printf("vt %f %f %f\n",v->u,v->v,v->w);
       printf("\n");
-      for (auto const &v : *vertnorms) printf("vn %f %f %f\n",*v.x,*v.y,*v.z);
+      for (auto const &v : *vertnorms) printf("vn %f %f %f\n",v->x,v->y,v->z);
       printf("\n");
-      for (auto const &v : *faces) printf("f %i\n",*v.size);
+      for (auto const &v : *faces) printf("f %i\n",v->size);
       printf("\n");
     )
     free(data);
