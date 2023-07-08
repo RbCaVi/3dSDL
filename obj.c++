@@ -166,7 +166,6 @@ void obj::load(std::filesystem::path path){
       DEBUGP("s == 'v'\n");
       int i;
       float *f=(float*)malloc(4*sizeof(float));
-      f[3]=1.0;
       char* str=start+len1;
       char* ss=str;
       
@@ -177,6 +176,10 @@ void obj::load(std::filesystem::path path){
       if(i<3){
         throw obj_exception("Error in 'v': Not enough coords\n");
       }
+      if(i<4){
+        f[3]=1.0;
+      }
+      printf("v (%f,%f,%f,%f)\n",f[0],f[1],f[2],f[3]);
       v *vert=new v(this,f[0],f[1],f[2],f[3]);
       verts->push_back(vert);
       free(f);
@@ -241,6 +244,7 @@ void obj::load(std::filesystem::path path){
         }
         val=strtol(str,&ss,0);
         if(str==ss){
+          throw obj_exception("No vertex index");
           val=0;
         }
         vil.push_back(val);
@@ -314,7 +318,7 @@ void obj::load(std::filesystem::path path){
     printf("\n");
     for (auto const &v : *faces) printf("f %i\n",v->size);
     printf("\n");
-  )
+  );
   free(data);
 }
 
@@ -331,7 +335,7 @@ obj::renderdata *obj::makeRenderData(){
       printf("%i\n",face->vertindexes[0]);
       std::advance(faces_front,1);
     }
-  )
+  );
 
   int size=0;
   dynamiclist<float> vs,vts,vns;
