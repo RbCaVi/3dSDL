@@ -12,56 +12,12 @@
 #include "window.h++"
 #include "matrix.h++"
 #include "parseargs.h++"
+#include "obj.h++"
 
 #include "mainfuncs.c++"
 
 static const GLuint WIDTH = 512;
 static const GLuint HEIGHT = 512;
-static GLfloat vertices[] = {
-   0.3,  0.3,  0.0,
-   0.3, -0.3,  0.0,
-  -0.3,  0.3,  0.0,
-   0.3, -0.3,  0.0,
-  -0.3,  0.3,  0.0,
-  -0.3, -0.3,  0.0,
-
-   0.7,  0.8,  0.1,
-   0.8, -0.8,  0.0,
-  -0.8,  0.8,  0.0,
-   0.8, -0.8,  0.0,
-  -0.8,  0.8,  0.0,
-  -0.7, -0.8, -0.1,
-};
-static GLfloat normals[] = {
-   0.0,  0.0, 1.0,
-   0.0, -0.0, 1.0,
-  -0.0,  0.0, 1.0,
-   0.0, -0.0, 1.0,
-  -0.0,  0.0, 1.0,
-  -0.0, -0.0, 1.0,
-
-   0.0,  0.0, 1.0,
-   0.0, -0.0, 1.0,
-  -0.0,  0.0, 1.0,
-   0.0, -0.0, 1.0,
-  -0.0,  0.0, 1.0,
-  -0.0, -0.0, 1.0,
-};
-static GLfloat colors[] = {
-  1.0, 1.0, 1.0, 1.0,
-  1.0, 1.0, 0.0, 1.0,
-  0.0, 1.0, 1.0, 1.0,
-  1.0, 1.0, 0.0, 1.0,
-  0.0, 1.0, 1.0, 1.0,
-  0.0, 1.0, 0.0, 1.0,
-
-  1.0, 0.0, 1.0, 1.0,
-  1.0, 0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0, 1.0,
-  1.0, 0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0, 1.0,
-  0.0, 0.0, 0.0, 1.0,
-};
 
 static GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
 static GLfloat light_diffuse[] = { 0.0, 0.0, 0.0, 1.0 };
@@ -117,24 +73,38 @@ int main(int argc, char *argv[]) {
   glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
   glLightfv(GL_LIGHT0, GL_POSITION, light_position);
   
-  window->makeShader(assetsdir/"shader.vert", assetsdir/"shader.frag");
+  window->makeShader(assetsdir/"objshader.vert", assetsdir/"objshader.frag");
   data.model=getIdentity();
-  data.view=getTranslation(0,0,-5);
-  data.projection=getPerspective(45.0f, (float)HEIGHT/WIDTH, 0.1f, 100.0f);
-  
+  data.view=getTranslation(0,0,-200);
+  data.projection=getPerspective(45.0f, (float)HEIGHT/WIDTH, 0.1f, 800.0f);
+
+  obj o;
+  o.load(assetsdir/"cat.obj");
+  obj::renderdata* rdata=o.makeRenderData();
+
   window->addUniformMat4x4("model",data.model);
   window->addUniformMat4x4("view",data.view);
   window->addUniformMat4x4("projection",data.projection);
   window->addUniformMat4x4("mvp",data.projection*data.view*data.model);
   
-  window->addVertexData("coord",vertices,sizeof(vertices),3);
-  window->addVertexData("normal",vertices,sizeof(normals),3);
-  window->addVertexData("color",colors,sizeof(colors),4);
+  DEBUGR(
+    int i;
+    for(i=0;i<rdata->size*4;i+=4){
+      printf("vertex coord (%f,%f,%f,%f)\n",rdata->vs[i],rdata->vs[i+1],rdata->vs[i+2],rdata->vs[i+3]);
+    }
+  );
+  window->draw_vertices=rdata->size*4;
+  window->addVertexData("coord",rdata->vs,rdata->size*4*sizeof(float),3,4*sizeof(float));
+  window->addVertexData("normal",rdata->vns,rdata->size*3*sizeof(float),3);
+  DEBUGP("vertex count %i\n",rdata->size);
+  //window->addVertexData("coord",vertices,sizeof(vertices),3);
+  //window->addVertexData("normal",vertices,sizeof(normals),3);
+  //window->addVertexData("color",colors,sizeof(colors),4);
 
-  glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-  glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-  glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+  //glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+  //glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+  //glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+  //glLightfv(GL_LIGHT0, GL_POSITION, light_position);
   
   window->mainLoop();
   
