@@ -191,7 +191,7 @@ void Window::mainLoop(){
   }
 }
 
-void Window::addVertexData(const char* name,GLfloat data[],GLint size,GLint floatspervertex){
+void Window::addVertexData(const char* name,GLfloat data[],GLint size,GLint floatspervertex,GLint stride){
   GLuint handle;
   GLint attribute = glGetAttribLocation(program, name);
   if(!handles.contains(name)){
@@ -205,7 +205,7 @@ void Window::addVertexData(const char* name,GLfloat data[],GLint size,GLint floa
   }
   glBindBuffer(GL_ARRAY_BUFFER, handle);
   glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-  glVertexAttribPointer(attribute, floatspervertex, GL_FLOAT, GL_FALSE, 0, 0);
+  glVertexAttribPointer(attribute, floatspervertex, GL_FLOAT, GL_FALSE, stride, 0);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

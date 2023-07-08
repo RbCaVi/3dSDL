@@ -24,7 +24,9 @@ private:
   GLuint* handles_array;
   int numhandles;
   GLenum draw_mode;
+public:
   GLsizei draw_vertices;
+private:
   bool saveframes;
   GLuint frameTexture;
   int framestosave;
@@ -38,7 +40,7 @@ public:
   Window(int width, int height, const char* name, void (&framefunc)(Window*,void*), void *data, bool saveframes, int frames);
   void makeShader(std::filesystem::path vertex_shader_path, std::filesystem::path fragment_shader_path);
   void mainLoop();
-  void addVertexData(const char* name,GLfloat data[],GLint size,GLint floatspervertex);
+  void addVertexData(const char* name,GLfloat data[],GLint size,GLint floatspervertex,GLint stride=0);
   void addUniformMat4x4(const char* name,matrix4x4 &matrix);
   void setupSaveFrames();
   void writeFrame();
