@@ -1,5 +1,6 @@
 *.o
 main
+objmain
 parse
 a.out
 token

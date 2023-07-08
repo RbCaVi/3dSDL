@@ -9,7 +9,7 @@
 #define DEBUGR(x) x
 #define DEBUGP(s,...) printf(s,__VA_ARGS__)
 #else
-#define DEBUGR(x) void(0);
+#define DEBUGR(x) void(0)
 #define DEBUGP(s,...) void(0)
 #endif
 #endif
