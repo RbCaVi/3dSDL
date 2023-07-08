@@ -143,6 +143,10 @@ public:
     char *data=pathtobuf(path);
     char *start=data;
 
+    verts->push_back(new v(0,0,0,0));
+    verttexs->push_back(new vt(0,0,0));
+    vertnorms->push_back(new vn(0,0,0,0));
+
     // for each line
     while (true){
       // check if it starts with:
@@ -268,32 +272,32 @@ public:
           }
           val=strtol(str,&ss,0);
           if(str==ss){
-            val=-1;
+            val=0;
           }
           vil.push_back(val);
           slash=strchr(str,'/');
           if(slash==NULL){
             str=space+1;
-            vtil.push_back(-1);
-            vnil.push_back(-1);
+            vtil.push_back(0);
+            vnil.push_back(0);
             continue;
           }
           str=slash+1;
           val=strtol(str,&ss,0);
           if(str==ss){
-            val=-1;
+            val=0;
           }
           vtil.push_back(val);
           slash=strchr(str,'/');
           if(slash==NULL){
             str=space+1;
-            vnil.push_back(-1);
+            vnil.push_back(0);
             continue;
           }
           str=slash+1;
           val=strtol(str,&ss,0);
           if(str==ss){
-            val=-1;
+            val=0;
           }
           vnil.push_back(val);
           str=space+1;
@@ -368,7 +372,11 @@ public:
         throw obj_exception("There is a non triangular face\n");
       }
       for(i=0;i<face->size;i++){
-        //vs.append(verts[face->vertindexes[i]-1].data,4)
+        DEBUGP("%i %i %i\n",face->vertindexes[i],face->verttexindexes[i],face->vertnormindexes[i]);
+        DEBUGP("%i %i %i\n",verts->size(),verttexs->size(),vertnorms->size());
+        vs.append((*verts)[face->vertindexes[i]]->data(),4);
+        vts.append((*verttexs)[face->verttexindexes[i]]->data(),3);
+        vns.append((*vertnorms)[face->vertnormindexes[i]]->data(),3);
       }
     }
     return NULL;
