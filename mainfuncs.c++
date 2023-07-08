@@ -41,6 +41,7 @@ void onframe(Window *window, void *d){
   sdata *data=(sdata*)d;
   data->model=getRotation(1,2,0.01)*data->model;
   window->addUniformMat4x4("model",data->model);
+  window->addUniformMat4x4("mvp",data->projection*data->view*data->model);
   
   closedata *cd=cdata.load();
   while(cd!=NULL){
