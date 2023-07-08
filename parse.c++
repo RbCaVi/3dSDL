@@ -43,6 +43,15 @@ private:
     float x,y,z,w;
 
     v(obj* p,float x,float y,float z,float w=1):parent(p),x(x),y(y),z(z),w(w){}
+
+    float *data(){
+      float* d=(float*)malloc(4*sizeof(float));
+      d[0]=x;
+      d[1]=y;
+      d[2]=z;
+      d[3]=w;
+      return d;
+    }
   };
 
   struct vt{
@@ -50,6 +59,14 @@ private:
     float u,v,w;
 
     vt(obj* p,float u,float v=0,float w=0):parent(p),u(u),v(v),w(w){}
+
+    float *data(){
+      float* d=(float*)malloc(3*sizeof(float));
+      d[0]=u;
+      d[1]=v;
+      d[2]=w;
+      return d;
+    }
   };
 
   struct vn{
@@ -61,6 +78,14 @@ private:
       x*=di;
       y*=di;
       z*=di;
+    }
+
+    float *data(){
+      float* d=(float*)malloc(3*sizeof(float));
+      d[0]=x;
+      d[1]=y;
+      d[2]=z;
+      return d;
     }
   };
 
@@ -119,16 +144,17 @@ private:
     }
 
     ~dynamiclist(){
-      free(items);
+      // you can free your own arrays
+      //free(items);
     }
   };
 
 public:
   struct renderdata{
     int size; // number of points
-    int *vs; // packed (stride 4)
-    int *vts; // packed (stride 3)
-    int *vns; // packed (stride 3)
+    float *vs; // packed (stride 4)
+    float *vts; // packed (stride 3)
+    float *vns; // packed (stride 3)
   };
 
   obj(){
@@ -366,6 +392,7 @@ public:
       }
     )
 
+    int size=0;
     dynamiclist<float> vs,vts,vns;
     for(auto const &face:*faces){
       DEBUGP("face - %i ",face);
@@ -381,8 +408,10 @@ public:
         vts.append((*verttexs)[face->verttexindexes[i]]->data(),3);
         vns.append((*vertnorms)[face->vertnormindexes[i]]->data(),3);
       }
+      size+=face->size;
     }
-    return NULL;
+    renderdata *r=new renderdata{.size=size,.vs=vs.items,.vts=vts.items,.vns=vns.items};
+    return r;
   }
 };
 
