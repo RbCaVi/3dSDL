@@ -25,7 +25,7 @@ texture.o: texture.c++ texture.h++ shared.h++
 window.o: window.c++ window.h++ texture.h++ shaders.h++ shared.h++
 	g++ $(flags) $(compileflags) -c window.c++ -o window.o
 
-main.o: main.c++ mainfuncs.c++ window.h++ shaders.h++ matrix.h++ parseargs.h++ shared.h++
+main.o: main.c++ mainfuncs.c++ main.h++ window.h++ shaders.h++ matrix.h++ parseargs.h++ shared.h++
 	g++ $(flags) $(compileflags) -c main.c++ -o main.o
 
 main: main.o shaders.o window.o matrix.o texture.o parseargs.o file.o
@@ -46,7 +46,7 @@ parse: parse.o file.o
 obj.o: obj.c++ obj.h++ file.h++ shared.h++
 	g++ $(flags) $(compileflags) -c obj.c++ -o obj.o
 
-objmain.o: objmain.c++ mainfuncs.c++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ shared.h++
+objmain.o: objmain.c++ objmainfuncs.c++ objmain.h++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ shared.h++
 	g++ $(flags) $(compileflags) -c objmain.c++ -o objmain.o
 
 objmain: objmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o
