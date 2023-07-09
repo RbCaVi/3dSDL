@@ -19,16 +19,6 @@
 static const GLuint WIDTH = 512;
 static const GLuint HEIGHT = 512;
 
-static GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
-static GLfloat light_diffuse[] = { 0.0, 0.0, 0.0, 1.0 };
-static GLfloat light_specular[] = { 0.0, 0.0, 0.0, 1.0 };
-//static GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-//static GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-static GLfloat light_position[] = { -1.0, -1.0, -1.0, 0.0 };
-
-static GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-static GLfloat mat_shininess[] = { 50.0 };
-
 void p(argdata adata){
   printf("%i %i %i\n",adata.error,adata.capture,adata.framecount);
 }
@@ -60,20 +50,12 @@ int main(int argc, char *argv[]) {
   
   sdata data;
   //Window *window;
-
-  glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
   window=new Window(WIDTH,HEIGHT,__FILE__,adata.capture,adata.framecount);
   window->data=(void*)(&data);
   window->onframe=onframe;
   glEnable(GL_DEPTH_TEST);
 
   glClearColor (0.0, 0.0, 0.0, 0.0);
-  glShadeModel (GL_SMOOTH);
-
-  glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-  glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-  glLightfv(GL_LIGHT0, GL_POSITION, light_position);
   
   window->makeShader(assetsdir/"objshader.vert", assetsdir/"objshader.frag");
   data.model=getIdentity();
@@ -99,14 +81,6 @@ int main(int argc, char *argv[]) {
   window->addVertexData("coord",rdata->vs,rdata->size*4*sizeof(float),3,4*sizeof(float));
   window->addVertexData("normal",rdata->vns,rdata->size*3*sizeof(float),3);
   DEBUGP("vertex count %i\n",rdata->size);
-  //window->addVertexData("coord",vertices,sizeof(vertices),3);
-  //window->addVertexData("normal",vertices,sizeof(normals),3);
-  //window->addVertexData("color",colors,sizeof(colors),4);
-
-  //glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-  //glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-  //glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-  //glLightfv(GL_LIGHT0, GL_POSITION, light_position);
   
   window->mainLoop();
   
