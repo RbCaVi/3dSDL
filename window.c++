@@ -1,3 +1,5 @@
+#include "shared.h++"
+
 #include <unordered_map>
 #include <filesystem>
 #include <cerrno>
@@ -172,11 +174,13 @@ void Window::mainLoop(){
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
        case SDL_KEYDOWN:
+        DEBUGP("down %c %i\n",event.key.keysym.sym,event.key.keysym.sym);
         if(onkeydown!=NULL){
           (*onkeydown)(this,event.key.keysym,data);
         }
         break;
        case SDL_KEYUP:
+        DEBUGP("up %c %i\n",event.key.keysym.sym,event.key.keysym.sym);
         if(onkeyup!=NULL){
           (*onkeyup)(this,event.key.keysym,data);
         }

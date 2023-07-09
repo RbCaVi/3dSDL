@@ -2,6 +2,8 @@
 
 #include <atomic>
 
+#include <SDL2/SDL.h>
+
 #include "objmain.h++"
 #include "window.h++"
 
@@ -39,7 +41,11 @@ void handlesigint(int signal){
 
 void onframe(Window *window, void *d){
   sdata *data=(sdata*)d;
-  data->model=getRotation(1,2,0.01)*data->model;
+  data->rot=getRotation(1,2,0.1*data->ud)*data->rot;
+  data->rot=getRotation(0,2,0.1*data->rl)*data->rot;
+  data->trans=getTranslation(1*data->mrl,0,0)*data->trans;
+  data->trans=getTranslation(0,1*data->mud,0)*data->trans;
+  data->model=data->trans*data->rot;
   window->addUniformMat4x4("model",data->model);
   window->addUniformMat4x4("mvp",data->projection*data->view*data->model);
   
@@ -47,6 +53,82 @@ void onframe(Window *window, void *d){
   while(cd!=NULL){
     cd->close_action(cd->data);
     cd=cd->previous;
+  }
+}
+
+void onkeydown(Window *window, SDL_Keysym ks, void *d){
+  sdata *data=(sdata*)d;
+  switch(ks.sym){
+   case SDLK_UP:
+    data->ud=1;
+    break;
+   case SDLK_DOWN:
+    data->ud=-1;
+    break;
+   case SDLK_LEFT:
+    data->rl=-1;
+    break;
+   case SDLK_RIGHT:
+    data->rl=1;
+    break;
+   case SDLK_w:
+    data->mud=1;
+    break;
+   case SDLK_s:
+    data->mud=-1;
+    break;
+   case SDLK_a:
+    data->mrl=-1;
+    break;
+   case SDLK_d:
+    data->mrl=1;
+    break;
+  }
+}
+
+void onkeyup(Window *window, SDL_Keysym ks, void *d){
+  sdata *data=(sdata*)d;
+  switch(ks.sym){
+   case SDLK_UP:
+    if(data->ud>0){
+      data->ud=0;
+    }
+    break;
+   case SDLK_DOWN:
+    if(data->ud<0){
+      data->ud=0;
+    }
+    break;
+   case SDLK_LEFT:
+    if(data->rl<0){
+      data->rl=0;
+    }
+    break;
+   case SDLK_RIGHT:
+    if(data->rl>0){
+      data->rl=0;
+    }
+    break;
+   case SDLK_w:
+    if(data->mud>0){
+      data->mud=0;
+    }
+    break;
+   case SDLK_s:
+    if(data->mud<0){
+      data->mud=0;
+    }
+    break;
+   case SDLK_a:
+    if(data->mrl<0){
+      data->mrl=0;
+    }
+    break;
+   case SDLK_d:
+    if(data->mrl>0){
+      data->mrl=0;
+    }
+    break;
   }
 }
 

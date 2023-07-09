@@ -53,12 +53,15 @@ int main(int argc, char *argv[]) {
   window=new Window(WIDTH,HEIGHT,__FILE__,adata.capture,adata.framecount);
   window->data=(void*)(&data);
   window->onframe=onframe;
+  window->onkeydown=onkeydown;
+  window->onkeyup=onkeyup;
   glEnable(GL_DEPTH_TEST);
 
   glClearColor (0.0, 0.0, 0.0, 0.0);
   
   window->makeShader(assetsdir/"objshader.vert", assetsdir/"objshader.frag");
-  data.model=getIdentity();
+  data.rot=getIdentity();
+  data.trans=getIdentity();
   data.view=getTranslation(0,0,-200);
   data.projection=getPerspective(45.0f, (float)HEIGHT/WIDTH, 0.1f, 800.0f);
 
