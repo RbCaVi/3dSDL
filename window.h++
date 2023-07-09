@@ -32,7 +32,8 @@ private:
   int framestosave;
   int framesdone;
   cv::VideoWriter *writer;
-  void (&onframe)(Window*,void*);
+public:
+  void (*onframe)(Window*,void*)=NULL;
   void *data;
 
 public:
