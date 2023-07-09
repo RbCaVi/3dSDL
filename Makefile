@@ -57,8 +57,16 @@ objmain: objmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.
 	-o $@
 
 clean:
-	rm main.o
-	rm shaders.o
-	rm window.o
-	rm matrix.o
-	rm main
+	rm -f file.o
+	rm -f shaders.o
+	rm -f texture.o
+	rm -f matrix.o
+	rm -f window.o
+	rm -f parseargs.o
+	rm -f obj.o
+	rm -f main.o
+	rm -f parse.o
+	rm -f objmain.o
+	rm -f main
+	rm -f parse
+	rm -f objmain
