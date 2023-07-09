@@ -60,10 +60,12 @@ int main(int argc, char *argv[]) {
   
   sdata data;
   //Window *window;
-  window=new Window(WIDTH,HEIGHT,__FILE__,onframe,(void*)(&data),adata.capture,adata.framecount);
 
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
+  window=new Window(WIDTH,HEIGHT,__FILE__,adata.capture,adata.framecount);
+  window->data=(void*)(&data);
+  window->onframe=onframe;
   glEnable(GL_DEPTH_TEST);
 
   glClearColor (0.0, 0.0, 0.0, 0.0);
