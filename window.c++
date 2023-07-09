@@ -171,6 +171,17 @@ void Window::mainLoop(){
     // Events management
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
+       case SDL_KEYDOWN:
+        if(onkeydown!=NULL){
+          (*onkeydown)(this,event.key.keysym,data);
+        }
+        break;
+       case SDL_KEYUP:
+        if(onkeyup!=NULL){
+          (*onkeyup)(this,event.key.keysym,data);
+        }
+        break;
+
  
        case SDL_QUIT:
         // handling of close button

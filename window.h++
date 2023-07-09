@@ -34,6 +34,8 @@ private:
   cv::VideoWriter *writer;
 public:
   void (*onframe)(Window*,void*)=NULL;
+  void (*onkeyup)(Window*,SDL_Keysym,void*)=NULL;
+  void (*onkeydown)(Window*,SDL_Keysym,void*)=NULL;
   void *data;
 
 public:
