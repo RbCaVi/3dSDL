@@ -103,11 +103,10 @@ bool checkFramebuffer(){
   }
 }
 
-Window::Window(int width, int height, const char* name, void (*framefunc)(Window*,void*), void *data, bool tosaveframes, int frames):
+Window::Window(int width, int height, const char* name, bool tosaveframes, int frames):
     width(width),height(height),program(0),
     handles_array(NULL),numhandles(0),
     saveframes(tosaveframes),frameTexture(0),framestosave(frames),framesdone(0),
-    onframe(framefunc),data(data),
     closed(false){
   window = SDL_CreateWindow(name, 0, 0,
           width, height, SDL_WINDOW_OPENGL);
