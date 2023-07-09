@@ -7,14 +7,14 @@
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 
-#include "main.h++"
+#include "objmain.h++"
 #include "shaders.h++"
 #include "window.h++"
 #include "matrix.h++"
 #include "parseargs.h++"
 #include "obj.h++"
 
-#include "mainfuncs.c++"
+#include "objmainfuncs.c++"
 
 static const GLuint WIDTH = 512;
 static const GLuint HEIGHT = 512;
