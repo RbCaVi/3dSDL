@@ -73,6 +73,17 @@ public:
     float *vs; // packed (stride 4)
     float *vts; // packed (stride 3)
     float *vns; // packed (stride 3)
+
+  private:
+    renderdata(int size, float *vs, float *vts, float *vns):size(size),vs(vs),vts(vts),vns(vns){}
+
+    ~renderdata(){
+      free(vs);
+      free(vts);
+      free(vns);
+    }
+
+    friend obj;
   };
 
   obj();

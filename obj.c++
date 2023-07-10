@@ -359,6 +359,6 @@ obj::renderdata *obj::makeRenderData(){
     }
     size+=face->size;
   }
-  renderdata *r=new renderdata{.size=size,.vs=vs.items,.vts=vts.items,.vns=vns.items};
+  renderdata *r=new renderdata(size,vs.items,vts.items,vns.items);
   return r;
 }
