@@ -17,12 +17,12 @@ public:
   const char* msg;
 };
 
-GLuint compile_vert_shader(const char *vertex_shader_source);
-GLuint compile_frag_shader(const char *fragment_shader_source);
+GLuint compile_vert_shader_from_source(const char *vertex_shader_source);
+GLuint compile_frag_shader_from_source(const char *fragment_shader_source);
 GLuint compile_vert_shader(std::filesystem::path vertex_shader_path);
 GLuint compile_frag_shader(std::filesystem::path fragment_shader_path);
 GLuint compile_shader(GLuint vertex_shader,GLuint fragment_shader);
-GLuint compile_shader(const char *vertex_shader_source, const char *fragment_shader_source);
+GLuint compile_shader_from_source(const char *vertex_shader_source, const char *fragment_shader_source);
 GLuint compile_shader(std::filesystem::path vertex_shader_path, std::filesystem::path fragment_shader_path);
 void deleteProgram(GLuint program);
 #endif

@@ -9,7 +9,7 @@ const char* shader_compile_exception::what() const noexcept {
    return msg;
 }
 
-GLuint compile_vert_shader(const char *vertex_shader_source){
+GLuint compile_vert_shader_from_source(const char *vertex_shader_source){
   //printf("%s",vertex_shader_source);
   GLchar *log = NULL;
   GLint log_length, success;
@@ -33,7 +33,7 @@ GLuint compile_vert_shader(const char *vertex_shader_source){
   return vertex_shader;
 }
 
-GLuint compile_frag_shader(const char *fragment_shader_source){
+GLuint compile_frag_shader_from_source(const char *fragment_shader_source){
   GLchar *log = NULL;
   GLint log_length, success;
   GLuint fragment_shader;
@@ -58,14 +58,14 @@ GLuint compile_frag_shader(const char *fragment_shader_source){
 
 GLuint compile_vert_shader(std::filesystem::path vertex_shader_path){
   char *source=pathtobuf(vertex_shader_path);
-  GLuint shader=compile_vert_shader(source);
+  GLuint shader=compile_vert_shader_from_source(source);
   free(source);
   return shader;
 }
 
 GLuint compile_frag_shader(std::filesystem::path fragment_shader_path){
   char *source=pathtobuf(fragment_shader_path);
-  GLuint shader=compile_frag_shader(source);
+  GLuint shader=compile_frag_shader_from_source(source);
   free(source);
   return shader;
 }
@@ -98,9 +98,9 @@ GLuint compile_shader(GLuint vertex_shader,GLuint fragment_shader){
   return program;
 }
 
-GLuint compile_shader(const char *vertex_shader_source, const char *fragment_shader_source){
-  GLuint vertex_shader=compile_vert_shader(vertex_shader_source);
-  GLuint fragment_shader=compile_frag_shader(fragment_shader_source);
+GLuint compile_shader_from_source(const char *vertex_shader_source, const char *fragment_shader_source){
+  GLuint vertex_shader=compile_vert_shader_from_source(vertex_shader_source);
+  GLuint fragment_shader=compile_frag_shader_from_source(fragment_shader_source);
   return compile_shader(vertex_shader,fragment_shader);
 }
 

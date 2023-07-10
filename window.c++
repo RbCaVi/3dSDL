@@ -141,6 +141,22 @@ void Window::makeShader(std::filesystem::path vertex_shader_path, std::filesyste
   glUseProgram(program); // use the compiled program
 }
 
+void Window::makeShaderFromSource(char *vertex_shader_source, char *fragment_shader_source){
+  if(program!=0){
+    glDeleteProgram(program); // delete the program
+    program=0;
+  }
+  // Shader setup. 
+  try{
+    program = compile_shader_from_source(vertex_shader_source, fragment_shader_source);
+  }catch(shader_compile_exception& e){
+    printf("exception in shader compilation: %s\n", e.what());
+    printf("log: \n%s\n\n", e.log);
+    exit(EXIT_FAILURE);
+  }
+  glUseProgram(program); // use the compiled program
+}
+
 void Window::mainLoop(){
   for(auto attr:handles){
     DEBUGP("%s %i\n",attr.first,attr.second);

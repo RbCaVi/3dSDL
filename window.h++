@@ -42,6 +42,7 @@ public:
   bool closed;
   Window(int width, int height, const char* name, bool saveframes, int frames);
   void makeShader(std::filesystem::path vertex_shader_path, std::filesystem::path fragment_shader_path);
+  void makeShaderFromSource(char *vertex_shader_source, char *fragment_shader_source);
   void mainLoop();
   void addVertexData(const char* name,GLfloat data[],GLint size,GLint floatspervertex,GLint stride=0);
   void addUniformMat4x4(const char* name,matrix4x4 &matrix);
