@@ -65,6 +65,8 @@ private:
   std::vector<vt*> *verttexs;
   std::vector<vn*> *vertnorms;
 
+  bool loaded;
+
 public:
   struct renderdata{
     int size; // number of points

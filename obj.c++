@@ -98,7 +98,7 @@ public:
   }
 };
 
-obj::obj(){
+obj::obj():loaded(false){
   faces=new std::vector<f*>();
   verts=new std::vector<v*>();
   verttexs=new std::vector<vt*>();
@@ -108,6 +108,9 @@ obj::obj(){
 void obj::load(std::filesystem::path path){
   DEBUGP("loading %s\n",path.string().c_str());
   char *data=pathtobuf(path);
+  if(loaded){
+    throw new obj_exception("Cannot load twice");
+  }
   char *start=data;
 
   verts->push_back(new v(0,0,0,0));
@@ -320,6 +323,7 @@ void obj::load(std::filesystem::path path){
     printf("\n");
   );
   free(data);
+  loaded=true;
 }
 
 obj::renderdata *obj::makeRenderData(){
