@@ -46,11 +46,14 @@ parse: parse.o file.o
 obj.o: obj.c++ obj.h++ file.h++ shared.h++
 	g++ $(flags) $(compileflags) -c obj.c++ -o obj.o
 
-objmain.o: objmain.c++ objmainfuncs.c++ objmain.h++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ shared.h++
+assets.o: assets.c++ assets.h++ file.h++ shared.h++
+	g++ $(flags) $(compileflags) -c assets.c++ -o assets.o
+
+objmain.o: objmain.c++ objmainfuncs.c++ objmain.h++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ assets.h++ shared.h++
 	g++ $(flags) $(compileflags) -c objmain.c++ -o objmain.o
 
-objmain: objmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o
-	g++ $(flags) $(linkflags) objmain.o shaders.o window.o matrix.o texture.o parseargs.o file.o obj.o \
+objmain: objmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o assets.o
+	g++ $(flags) $(linkflags) objmain.o shaders.o window.o matrix.o texture.o parseargs.o file.o obj.o assets.o \
 	-lSDL2 -lSDL2_image \
 	-lGL -lGLEW \
 	-lopencv_core -lopencv_highgui \

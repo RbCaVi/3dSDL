@@ -13,6 +13,7 @@
 #include "matrix.h++"
 #include "parseargs.h++"
 #include "obj.h++"
+#include "assets.h++"
 
 #include "objmainfuncs.c++"
 
@@ -28,6 +29,7 @@ int main(int argc, char *argv[]) {
   // assuming that argv[0] is the program's path
   std::filesystem::path basedir=std::filesystem::path(argv[0]).parent_path();
   std::filesystem::path assetsdir=basedir/"assets";
+  assets::setroot(assetsdir);
   
   struct sigaction sigIntHandler;
 
@@ -59,14 +61,15 @@ int main(int argc, char *argv[]) {
 
   glClearColor (0.0, 0.0, 0.0, 0.0);
   
-  window->makeShader(assetsdir/"objshader.vert", assetsdir/"objshader.frag");
+  //window->makeShader(assetsdir/"objshader.vert", assetsdir/"objshader.frag");
+  window->makeShaderFromSource(assets::getasset("objshader.vert"), assets::getasset("objshader.frag"));
   data.rot=getIdentity();
   data.trans=getIdentity();
   data.view=getTranslation(0,0,-200);
   data.projection=getPerspective(45.0f, (float)HEIGHT/WIDTH, 0.1f, 800.0f);
 
   obj o;
-  o.load(assetsdir/"cat.obj");
+  o.loadstr(assets::getasset("cat.obj"));
   obj::renderdata* rdata=o.makeRenderData();
 
   window->addUniformMat4x4("model",data.model);
