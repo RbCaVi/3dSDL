@@ -26,7 +26,7 @@ void __printArray__(GLfloat data[],int length){
 }
 #define printArray(data,len) DEBUGR(__printArray__(data,len))
 #else
-#define printArray(data,len) DEBUGR(data),DEBUGR(len)
+#define printArray(data,len) IGNORE(data),IGNORE(len)
 #endif
 
 void printGlError(){
