@@ -1,0 +1,34 @@
+Format:
+  Indents:
+    Two space indent
+    case is indented by only one space
+    the code inside is indented two spaces from the switch statement
+    stuff inside DEBUGR is indented if more than one line
+  Spaces:
+    if( not if (
+    for(i=0;i<5;i++){
+    ){ not ) {
+    function arguments are f(x, y) or f(x,y) not f( x, y )
+  
+  pointer casts are (char*)x
+  pointer type is int *px;
+  no empty lines at beginning or end of blocks
+  Comments:
+    commented code has no space after the //
+    normal comments have a space after the //
+    normal multiline comments are like
+    /*
+     * Name: RbCaVi
+     * Date: today
+     */
+    multiline commented code has no stars at the start of lines
+
+  Includes:
+    include "shared.h++"
+    then builtin headers
+    library headers
+    project headers
+    code files (c or c++)
+
+Code:
+  all class attrs are private unless needed
