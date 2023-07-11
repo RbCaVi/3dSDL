@@ -56,7 +56,8 @@ void onframe(Window *window, void *d){
   }
 }
 
-void onkeydown(Window *window, SDL_Keysym ks, void *d){
+void onkeydown(Window *w, SDL_Keysym ks, void *d){
+  IGNORE(w);
   sdata *data=(sdata*)d;
   switch(ks.sym){
    case SDLK_UP:
@@ -86,7 +87,8 @@ void onkeydown(Window *window, SDL_Keysym ks, void *d){
   }
 }
 
-void onkeyup(Window *window, SDL_Keysym ks, void *d){
+void onkeyup(Window *w, SDL_Keysym ks, void *d){
+  IGNORE(w);
   sdata *data=(sdata*)d;
   switch(ks.sym){
    case SDLK_UP:
