@@ -107,10 +107,24 @@ obj::obj():loaded(false){
 
 void obj::load(std::filesystem::path path){
   DEBUGP("loading %s\n",path.string().c_str());
-  char *data=pathtobuf(path);
+  char *s=pathtobuf(path);
+  _loadstr(s);
+  free(s);
+}
+
+void obj::loadstr(char *source){
+  int len=strlen(source);
+  char *s=(char*)malloc(len+1);
+  strcpy(s,source);
+  _loadstr(s);
+  free(s);
+}
+
+void obj::_loadstr(char *source){
   if(loaded){
     throw new obj_exception("Cannot load twice");
   }
+  char *data=source;
   char *start=data;
 
   verts->push_back(new v(0,0,0,0));
@@ -322,7 +336,6 @@ void obj::load(std::filesystem::path path){
     for (auto const &v : *faces) printf("f %i\n",v->size);
     printf("\n");
   );
-  free(data);
   loaded=true;
 }
 

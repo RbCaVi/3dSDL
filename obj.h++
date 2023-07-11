@@ -65,6 +65,8 @@ private:
   std::vector<vt*> *verttexs;
   std::vector<vn*> *vertnorms;
 
+  void _loadstr(char *source);
+
   bool loaded;
 
 public:
@@ -89,6 +91,8 @@ public:
   obj();
 
   void load(std::filesystem::path path);
+
+  void loadstr(char *path);
 
   renderdata *makeRenderData();
 };
