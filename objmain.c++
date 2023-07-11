@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
   
-  p(adata);
+  DEBUGR(p(adata));
   
   SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
   

@@ -179,7 +179,7 @@ void obj::load(std::filesystem::path path){
       if(i<4){
         f[3]=1.0;
       }
-      printf("v (%f,%f,%f,%f)\n",f[0],f[1],f[2],f[3]);
+      DEBUGP("v (%f,%f,%f,%f)\n",f[0],f[1],f[2],f[3]);
       v *vert=new v(this,f[0],f[1],f[2],f[3]);
       verts->push_back(vert);
       free(f);
