@@ -49,6 +49,18 @@ obj.o: obj.c++ obj.h++ file.h++ shared.h++
 assets.o: assets.c++ assets.h++ file.h++ shared.h++
 	g++ $(flags) $(compileflags) -c assets.c++ -o assets.o
 
+packedassets.S: packassets.sh assets/cat.obj assets/objshader.frag assets/objshader.vert
+	bash packassets.sh packedassets.S assets/cat.obj assets/objshader.frag assets/objshader.vert
+
+packedassets.o: packedassets.S
+	g++ $(flags) $(compileflags) -c packedassets.S -o packedassets.o
+
+packassets: packedassets.o
+	g++ $(flags) $(compileflags) packedassets.c++ packedassets.o -o assets.o
+
+unpackassets:
+	rm assets.o
+
 objmain.o: objmain.c++ objmainfuncs.c++ objmain.h++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ assets.h++ shared.h++
 	g++ $(flags) $(compileflags) -c objmain.c++ -o objmain.o
 
