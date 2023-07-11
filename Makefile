@@ -50,7 +50,7 @@ assets.o: assets.c++ assets.h++ file.h++ shared.h++
 	g++ $(flags) $(compileflags) -c assets.c++ -o assets.o
 
 packedassets.S: packassets.sh assets/cat.obj assets/objshader.frag assets/objshader.vert
-	bash packassets.sh packedassets.S assets/cat.obj assets/objshader.frag assets/objshader.vert
+	bash packassets.sh packedassets.S cat.obj objshader.frag objshader.vert
 
 packedassets.o: packedassets.S
 	g++ $(flags) $(compileflags) -c packedassets.S -o packedassets.o

@@ -10,7 +10,7 @@ echo '    .global assetcount' >> "$file"
 echo '    .section .rodata' >> "$file"
 for asset; do
   echo 'asset'"$i"':' >> "$file"
-  echo '    .incbin "'"$asset"'"' >> "$file"
+  echo '    .incbin "'"assets/$asset"'"' >> "$file"
   echo 'assetend'"$i"':' >> "$file"
   echo 'assetlength'"$i"':' >> "$file"
   echo '    .int assetend'"$i"' - asset'"$i"'' >> "$file"
