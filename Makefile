@@ -56,7 +56,8 @@ packedassets.o: packedassets.S
 	g++ $(flags) $(compileflags) -c packedassets.S -o packedassets.o
 
 packassets: packedassets.o
-	g++ $(flags) $(compileflags) packedassets.c++ packedassets.o -o assets.o
+	g++ $(flags) $(compileflags) -c packedassets.c++ -o getpackedassets.o
+	ld -r getpackedassets.o packedassets.o -o assets.o
 
 unpackassets:
 	rm assets.o

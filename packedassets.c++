@@ -1,5 +1,6 @@
 #include "shared.h++"
 
+#include <filesystem>
 #include <string.h>
 #include <stdlib.h>
 
@@ -10,10 +11,12 @@ extern int *assetlengths;
 extern char *assetnames;
 extern int assetcount;
 
-void assets::setroot(std::filesystem::path newroot){}
+void assets::setroot(std::filesystem::path newroot){
+  IGNORE(newroot);
+}
 
 char *assets::getasset(std::filesystem::path stdpath){
-  char *path=stdpath.c_str();
+  const char *path=stdpath.c_str();
   int i;
   for(i=0;i<assetcount;i++){
     char *name=(&assetnames)[i];

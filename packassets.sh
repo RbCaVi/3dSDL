@@ -32,3 +32,4 @@ for (( j=0; j<i; j++ )); do
 done
 echo 'assetcount:' >> "$file"
 echo '    .int '"$i" >> "$file"
+echo '    .section .note.GNU-stack' >> "$file"

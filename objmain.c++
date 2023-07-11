@@ -62,7 +62,9 @@ int main(int argc, char *argv[]) {
   glClearColor (0.0, 0.0, 0.0, 0.0);
   
   //window->makeShader(assetsdir/"objshader.vert", assetsdir/"objshader.frag");
-  window->makeShaderFromSource(assets::getasset("objshader.vert"), assets::getasset("objshader.frag"));
+  char *vertsource=assets::getasset("objshader.vert");
+  char *fragsource=assets::getasset("objshader.frag");
+  window->makeShaderFromSource(vertsource,fragsource);
   data.rot=getIdentity();
   data.trans=getIdentity();
   data.view=getTranslation(0,0,-200);
