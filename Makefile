@@ -86,3 +86,7 @@ clean:
 	rm -f main
 	rm -f parse
 	rm -f objmain
+	rm -f assets.o
+	rm -f getpackedassets.o
+	rm -f packedassets.o
+	rm -f packedassets.S
