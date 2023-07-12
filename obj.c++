@@ -8,7 +8,7 @@ const char* obj_exception::what() const noexcept {
    return msg;
 }
 
-obj::f::f(obj* p,int vi[],int vti[],int vni[],int size):parent(p),
+obj::f::f(obj* p,int vi[],int vti[],int vni[],unsigned int size):parent(p),
   vertindexes(vi),verttexindexes(vti),vertnormindexes(vni),
   size(size){}
 
@@ -345,9 +345,9 @@ obj::renderdata *obj::makeRenderData(){
     auto faces_front = faces->begin();
     
     for (i=0;i<faces->size();i++){
-      printf("%i ",*faces_front);
+      printf("%lu ",(unsigned long)(*faces_front));
       auto const &face=*faces_front;
-      printf("face1 - %i\n",face);
+      printf("face1 - %lu\n",(unsigned long)face);
       printf("%i\n",face->size);
       printf("%i\n",face->vertindexes[0]);
       std::advance(faces_front,1);

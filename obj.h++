@@ -24,8 +24,8 @@ private:
     int *vertindexes;
     int *verttexindexes;
     int *vertnormindexes;
-    int size;
-    f(obj* p,int vi[],int vti[],int vni[],int size);
+    unsigned int size;
+    f(obj* p,int vi[],int vti[],int vni[],unsigned int size);
   };
 
   struct v{
