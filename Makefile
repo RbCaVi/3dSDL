@@ -27,12 +27,6 @@ window.o: window.c++ window.h++ texture.h++ shaders.h++ shared.h++
 
 # merge is ld -r a.o b.o -o c.o
 
-parse.o: parse.c++ file.h++ shared.h++
-	g++ $(flags) $(compileflags) -c parse.c++ -o parse.o
-
-parse: parse.o file.o
-	g++ $(flags) $(linkflags) parse.o file.o -o parse
-
 obj.o: obj.c++ obj.h++ file.h++ shared.h++
 	g++ $(flags) $(compileflags) -c obj.c++ -o obj.o
 
@@ -70,9 +64,7 @@ clean:
 	rm -f window.o
 	rm -f parseargs.o
 	rm -f obj.o
-	rm -f parse.o
 	rm -f objmain.o
-	rm -f parse
 	rm -f objmain
 	rm -f assets.o
 	rm -f getpackedassets.o
