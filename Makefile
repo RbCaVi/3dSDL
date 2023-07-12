@@ -5,7 +5,7 @@ linkflags := -Wl,-rpath=/opt/opencv/lib -Wl,-rpath=/opt/gcc-12.2.0/lib64 -L/opt/
 
 .PHONY: all clean
 
-all: main
+all: objmain
 
 file.o: file.c++ file.h++ shared.h++
 	g++ $(flags) $(compileflags) -c file.c++ -o file.o
@@ -24,16 +24,6 @@ texture.o: texture.c++ texture.h++ shared.h++
 
 window.o: window.c++ window.h++ texture.h++ shaders.h++ shared.h++
 	g++ $(flags) $(compileflags) -c window.c++ -o window.o
-
-main.o: main.c++ mainfuncs.c++ main.h++ window.h++ shaders.h++ matrix.h++ parseargs.h++ shared.h++
-	g++ $(flags) $(compileflags) -c main.c++ -o main.o
-
-main: main.o shaders.o window.o matrix.o texture.o parseargs.o file.o
-	g++ $(flags) $(linkflags) main.o shaders.o window.o matrix.o texture.o parseargs.o file.o \
-	-lSDL2 -lSDL2_image \
-	-lGL -lGLEW \
-	-lopencv_core -lopencv_highgui \
-	-o $@
 
 # merge is ld -r a.o b.o -o c.o
 
@@ -80,10 +70,8 @@ clean:
 	rm -f window.o
 	rm -f parseargs.o
 	rm -f obj.o
-	rm -f main.o
 	rm -f parse.o
 	rm -f objmain.o
-	rm -f main
 	rm -f parse
 	rm -f objmain
 	rm -f assets.o
