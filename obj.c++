@@ -1,3 +1,5 @@
+#include "shared.h++"
+
 #include "obj.h++"
 
 obj_exception::obj_exception(const char* message): msg(message) {}
@@ -106,7 +108,7 @@ obj::obj():loaded(false){
 }
 
 void obj::load(std::filesystem::path path){
-  DEBUGP("loading %s\n",path.string().c_str());
+  DEBUGP(OBJ_DEBUG,"loading %s\n",path.string().c_str());
   char *s=pathtobuf(path);
   _loadstr(s);
   free(s);
@@ -140,7 +142,7 @@ void obj::_loadstr(char *source){
     // vt
     int len2=0; // until newline
     while(start[len2]!='\n'&&start[len2]!='\0'){
-      DEBUGP("2 %c %i\n",start[len2],len2);
+      DEBUGP(OBJ_DEBUG,"2 %c %i\n",start[len2],len2);
       len2++;
     }
     bool last=false;
@@ -148,14 +150,14 @@ void obj::_loadstr(char *source){
       last=true;
     }
     start[len2]='\0';
-    DEBUGP("start: %s\n",start);
+    DEBUGP(OBJ_DEBUG,"start: %s\n",start);
 
     // replace # with null
     // simple trick
     // don't need to revert because the data is being deleted at the end anyway
     int i3=0;
     while(start[i3]!='\n'&&start[i3]!='\0'){
-      DEBUGP("3 %c %i\n",start[i3],i3);
+      DEBUGP(OBJ_DEBUG,"3 %c %i\n",start[i3],i3);
       if(start[i3]=='#'){
         start[i3]='\0';
         break;
@@ -165,7 +167,7 @@ void obj::_loadstr(char *source){
 
     int len1=0;
     while(start[len1]!=' '&&start[len1]!='\0'){
-      DEBUGP("1 %c %i\n",start[len1],len1);
+      DEBUGP(OBJ_DEBUG,"1 %c %i\n",start[len1],len1);
       len1++;
     }
     if(start[len1]=='\0'){
@@ -178,16 +180,16 @@ void obj::_loadstr(char *source){
     char *s=(char*)malloc(len1+1);
     s[len1]='\0';
     strncpy(s,start,len1);
-    DEBUGP("%s\n",s);
+    DEBUGP(OBJ_DEBUG,"%s\n",s);
     if(strcmp(s,"v")==0){
-      DEBUGP("s == 'v'\n");
+      DEBUGP(OBJ_DEBUG,"s == 'v'\n");
       int i;
       float *f=(float*)malloc(4*sizeof(float));
       char* str=start+len1;
       char* ss=str;
       
       for((i=0),(f[i]=strtof(str,&ss));i<4&&str!=ss;f[++i]=strtof(str,&ss)){
-        DEBUGP("%i %f\n",i,f[i]);
+        DEBUGP(OBJ_DEBUG,"%i %f\n",i,f[i]);
         str=ss;
       }
       if(i<3){
@@ -196,12 +198,12 @@ void obj::_loadstr(char *source){
       if(i<4){
         f[3]=1.0;
       }
-      DEBUGP("v (%f,%f,%f,%f)\n",f[0],f[1],f[2],f[3]);
+      DEBUGP(OBJ_DEBUG,"v (%f,%f,%f,%f)\n",f[0],f[1],f[2],f[3]);
       v *vert=new v(this,f[0],f[1],f[2],f[3]);
       verts->push_back(vert);
       free(f);
     }else if(strcmp(s,"vt")==0){
-      DEBUGP("s == 'vt'\n");
+      DEBUGP(OBJ_DEBUG,"s == 'vt'\n");
       int i;
       float *f=(float*)malloc(3*sizeof(float));
       f[1]=0.0;
@@ -210,7 +212,7 @@ void obj::_loadstr(char *source){
       char* ss=str;
       
       for((i=0),(f[i]=strtof(str,&ss));i<4&&str!=ss;f[++i]=strtof(str,&ss)){
-        DEBUGP("%i %f\n",i,f[i]);
+        DEBUGP(OBJ_DEBUG,"%i %f\n",i,f[i]);
         str=ss;
       }
       if(i<1){
@@ -220,14 +222,14 @@ void obj::_loadstr(char *source){
       verttexs->push_back(verttex);
       free(f);
     }else if(strcmp(s,"vn")==0){
-      DEBUGP("s == 'vn'\n");
+      DEBUGP(OBJ_DEBUG,"s == 'vn'\n");
       int i;
       float *f=(float*)malloc(3*sizeof(float));
       char* str=start+len1;
       char* ss=str;
       
       for((i=0),(f[i]=strtof(str,&ss));i<4&&str!=ss;f[++i]=strtof(str,&ss)){
-        DEBUGP("%i %f\n",i,f[i]);
+        DEBUGP(OBJ_DEBUG,"%i %f\n",i,f[i]);
         str=ss;
       }
       if(i<3){
@@ -237,7 +239,7 @@ void obj::_loadstr(char *source){
       vertnorms->push_back(vertnorm);
       free(f);
     }else if(strcmp(s,"f")==0){
-      DEBUGP("s == 'f'\n");
+      DEBUGP(OBJ_DEBUG,"s == 'f'\n");
       char* str=start+len1+1;
       char* ss=str;
       bool last=false;
@@ -296,27 +298,27 @@ void obj::_loadstr(char *source){
       int* vi=(int*)malloc(vil.size()*sizeof(int));
       auto vil_front = vil.begin();
       for (i=0;i<vil.size();i++){
-        DEBUGP("%i ",*vil_front);
+        DEBUGP(OBJ_DEBUG,"%i ",*vil_front);
         vi[i]=*vil_front;
         std::advance(vil_front,1);
       }
-      DEBUGP("\n");
+      DEBUGP(OBJ_DEBUG,"\n");
       int* vti=(int*)malloc(vtil.size()*sizeof(int));
       auto vtil_front = vtil.begin();
       for (i=0;i<vtil.size();i++){
-        DEBUGP("%i ",*vtil_front);
+        DEBUGP(OBJ_DEBUG,"%i ",*vtil_front);
         vti[i]=*vtil_front;
         std::advance(vtil_front,1);
       }
-      DEBUGP("\n");
+      DEBUGP(OBJ_DEBUG,"\n");
       int* vni=(int*)malloc(vnil.size()*sizeof(int));
       auto vnil_front = vnil.begin();
       for (i=0;i<vnil.size();i++){
-        DEBUGP("%i ",*vnil_front);
+        DEBUGP(OBJ_DEBUG,"%i ",*vnil_front);
         vni[i]=*vnil_front;
         std::advance(vnil_front,1);
       }
-      DEBUGP("\n");
+      DEBUGP(OBJ_DEBUG,"\n");
       f *face=new f(this,vi,vti,vni,vil.size());
       faces->push_back(face);
     }
@@ -326,7 +328,7 @@ void obj::_loadstr(char *source){
       break;
     }
   }
-  DEBUGR(
+  DEBUGR(OBJ_DEBUG,
     for (auto const &v : *verts) printf("v %f %f %f %f\n",v->x,v->y,v->z,v->w);
     printf("\n");
     for (auto const &v : *verttexs) printf("vt %f %f %f\n",v->u,v->v,v->w);
@@ -340,8 +342,8 @@ void obj::_loadstr(char *source){
 }
 
 obj::renderdata *obj::makeRenderData(){
-  int i;
-  DEBUGR(
+  unsigned int i;
+  DEBUGR(OBJ_DEBUG,
     auto faces_front = faces->begin();
     
     for (i=0;i<faces->size();i++){
@@ -357,15 +359,15 @@ obj::renderdata *obj::makeRenderData(){
   int size=0;
   dynamiclist<float> vs,vts,vns;
   for(auto const &face:*faces){
-    DEBUGP("face - %i ",face);
-    DEBUGP("%i ",face->size);
-    DEBUGP("%i\n",face->vertindexes[0]);
+    DEBUGP(OBJ_DEBUG,"face - %lu ",(unsigned long)face);
+    DEBUGP(OBJ_DEBUG,"%i ",face->size);
+    DEBUGP(OBJ_DEBUG,"%i\n",face->vertindexes[0]);
     if(face->size!=3){
       throw obj_exception("There is a non triangular face\n");
     }
     for(i=0;i<face->size;i++){
-      DEBUGP("%i %i %i\n",face->vertindexes[i],face->verttexindexes[i],face->vertnormindexes[i]);
-      DEBUGP("%i %i %i\n",verts->size(),verttexs->size(),vertnorms->size());
+      DEBUGP(OBJ_DEBUG,"%i %i %i\n",face->vertindexes[i],face->verttexindexes[i],face->vertnormindexes[i]);
+      DEBUGP(OBJ_DEBUG,"%lu %lu %lu\n",verts->size(),verttexs->size(),vertnorms->size());
       vs.append((*verts)[face->vertindexes[i]]->data(),4);
       vts.append((*verttexs)[face->verttexindexes[i]]->data(),3);
       vns.append((*vertnorms)[face->vertnormindexes[i]]->data(),3);

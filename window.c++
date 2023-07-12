@@ -1,16 +1,8 @@
 #include "shared.h++"
 
-#include <unordered_map>
-#include <filesystem>
+#ifdef DEBUG
 #include <cerrno>
-
-#include <SDL2/SDL.h>
-#include <GL/glew.h>
-//#include "cvconfig.h"
-//#include <opencv2/core.hpp>
-//#include <opencv2/videoio.hpp>
-//#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/opencv.hpp>
+#endif
 
 #include "shaders.h++"
 #include "window.h++"

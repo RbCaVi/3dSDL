@@ -1,7 +1,8 @@
-#include "matrix.h++"
+#include "shared.h++"
 
 #include <cmath>
-#include <cstdio>
+
+#include "matrix.h++"
 
 matrix_exception::matrix_exception(const char* message): msg(message) {}
 

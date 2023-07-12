@@ -1,4 +1,6 @@
-#include <filesystem>
+#include "shared.h++"
+
+#include "file.h++"
 
 // A function that will read a file at a path into an allocated char pointer buffer 
 char* pathtobuf(std::filesystem::path path) {
