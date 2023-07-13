@@ -6,6 +6,12 @@
 
 #include "file.h++"
 
+#ifdef OBJ_DEBUG
+#define _OBJ_DEBUG 1
+#else
+#define _OBJ_DEBUG 0
+#endif
+
 class obj_exception: public std::exception{
 public:
   explicit obj_exception(const char* message);

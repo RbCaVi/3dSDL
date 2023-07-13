@@ -21,15 +21,15 @@ char *assets::getasset(std::filesystem::path stdpath){
   for(i=0;i<assetcount;i++){
     int size=*((&assetlengths)[i]);
     char *name=(&assetnames)[i];
-    DEBUGP("index: %i\nsize: %i\nname: %s\n\n",i,size,path);
-    DEBUGP("Checking asset %s\n",name);
+    DEBUGP(ASSETS_DEBUG,"index: %i\nsize: %i\nname: %s\n\n",i,size,path);
+    DEBUGP(ASSETS_DEBUG,"Checking asset %s\n",name);
     if(strcmp(path,name)==0){
       char *blob=(&assetsdata)[i];
       char *s=(char*)malloc(size+1);
       strncpy(s,blob,size);
       s[size]='\0';
-      DEBUGP("index: %i\nsize: %i\nname: %s\n\n",i,size,path);
-      DEBUGP("Loaded asset %s\n",name);
+      DEBUGP(ASSETS_DEBUG,"index: %i\nsize: %i\nname: %s\n\n",i,size,path);
+      DEBUGP(ASSETS_DEBUG,"Loaded asset %s\n",name);
       //DEBUGP("%s\n",s);
       return s;
     }

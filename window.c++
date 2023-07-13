@@ -16,7 +16,7 @@ void __printArray__(GLfloat data[],int length){
   }
   printf("\n");
 }
-#define printArray(data,len) DEBUGR(__printArray__(data,len))
+#define printArray(data,len) DEBUGR(WINDOW_ATTR_DEBUG,__printArray__(data,len))
 #else
 #define printArray(data,len) IGNORE(data),IGNORE(len)
 #endif
@@ -151,10 +151,10 @@ void Window::makeShaderFromSource(char *vertex_shader_source, char *fragment_sha
 
 void Window::mainLoop(){
   for(auto attr:handles){
-    DEBUGP("%s %i\n",attr.first,attr.second);
-    DEBUGR(errno=0);
+    DEBUGP(WINDOW_GL_DEBUG,"%s %i\n",attr.first,attr.second);
+    DEBUGR(WINDOW_GL_DEBUG,errno=0);
     glEnableVertexAttribArray(glGetAttribLocation(program,attr.first));
-    DEBUGP("enable %i\n",errno);
+    DEBUGP(WINDOW_GL_DEBUG,"enable %i\n",errno);
   }
   
   closed=false;
@@ -166,12 +166,12 @@ void Window::mainLoop(){
     if(onframe!=NULL){
       (*onframe)(this,data);
     }
-    DEBUGP("frame\n");
+    DEBUGP(WINDOW_DEBUG,"frame\n");
     glClear(GL_COLOR_BUFFER_BIT // clear the background
         | GL_DEPTH_BUFFER_BIT); // and the depth buffer
     glDrawArrays(draw_mode, 0, draw_vertices);
     if(saveframes){
-      DEBUGP("frame written\n");
+      DEBUGP(WINDOW_DEBUG,"frame written\n");
       Window::writeFrame();
     }
     SDL_GL_SwapWindow(window); // draw the graphics buffer to the screen
@@ -182,13 +182,13 @@ void Window::mainLoop(){
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
        case SDL_KEYDOWN:
-        DEBUGP("down %c %i\n",event.key.keysym.sym,event.key.keysym.sym);
+        DEBUGP(WINDOW_KEY_DEBUG,"key down %c %i\n",event.key.keysym.sym,event.key.keysym.sym);
         if(onkeydown!=NULL){
           (*onkeydown)(this,event.key.keysym,data);
         }
         break;
        case SDL_KEYUP:
-        DEBUGP("up %c %i\n",event.key.keysym.sym,event.key.keysym.sym);
+        DEBUGP(WINDOW_KEY_DEBUG,"key up %c %i\n",event.key.keysym.sym,event.key.keysym.sym);
         if(onkeyup!=NULL){
           (*onkeyup)(this,event.key.keysym,data);
         }
@@ -208,7 +208,7 @@ void Window::mainLoop(){
   }
   
   for(auto attr:handles){
-    DEBUGP("%s %i\n",attr.first,attr.second);
+    DEBUGP(WINDOW_DEBUG,"%s %i\n",attr.first,attr.second);
     glDisableVertexAttribArray(glGetAttribLocation(program,attr.first));
   }
 }
@@ -233,7 +233,7 @@ void Window::addVertexData(const char* name,GLfloat data[],GLint size,GLint floa
 
 void Window::addUniformMat4x4(const char* name,matrix4x4 &matrix){
   GLint uniform = glGetUniformLocation(program, name);
-  DEBUGP("%s",name);
+  DEBUGP(WINDOW_ATTR_DEBUG,"%s",name);
   printArray(matrix.contents,4);
   printArray(matrix.contents+4,4);
   printArray(matrix.contents+8,4);
@@ -244,50 +244,75 @@ void Window::addUniformMat4x4(const char* name,matrix4x4 &matrix){
 void Window::setupSaveFrames(){
   // create a framebuffer
   GLuint framebuffer=0;
-  glGenFramebuffers(1,&framebuffer);DEBUGR(printGlError());
-  glBindFramebuffer(GL_FRAMEBUFFER,framebuffer);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
+  glGenFramebuffers(1,&framebuffer);
+  DEBUGR(WINDOW_GL_DEBUG,printGlError());
+  glBindFramebuffer(GL_FRAMEBUFFER,framebuffer);
+  DEBUGR(WINDOW_GL_DEBUG,printGlError());
+  DEBUGR(WINDOW_GL_DEBUG,checkFramebuffer());
 
 
   // create a texture to render the framebuffer to
   frameTexture=0;
-  glGenTextures(1,&frameTexture);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
-  glBindTexture(GL_TEXTURE_2D,frameTexture);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
+  glGenTextures(1,&frameTexture);
+  DEBUGR(WINDOW_GL_DEBUG,printGlError());
+  DEBUGR(WINDOW_GL_DEBUG,checkFramebuffer());
+  glBindTexture(GL_TEXTURE_2D,frameTexture);
+  DEBUGR(WINDOW_GL_DEBUG,printGlError());
+  DEBUGR(WINDOW_GL_DEBUG,checkFramebuffer());
 
   // actually initialize the texture
-  glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
+  glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
+  DEBUGR(WINDOW_GL_DEBUG,printGlError());
+  DEBUGR(WINDOW_GL_DEBUG,checkFramebuffer());
   
-  DEBUGR(
-  int w;
-  glGetTexLevelParameteriv(GL_TEXTURE_2D,0,GL_TEXTURE_WIDTH,&w);
-  int h;
-  glGetTexLevelParameteriv(GL_TEXTURE_2D,0,GL_TEXTURE_HEIGHT,&h);
-  printf("%i %i %i\n",frameTexture,w,h);
+  DEBUGR(WINDOW_GL_DEBUG,
+    int w;
+    glGetTexLevelParameteriv(GL_TEXTURE_2D,0,GL_TEXTURE_WIDTH,&w);
+    int h;
+    glGetTexLevelParameteriv(GL_TEXTURE_2D,0,GL_TEXTURE_HEIGHT,&h);
+    printf("%i %i %i\n",frameTexture,w,h);
   );
 
   // set interpolation
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
+  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+  DEBUGR(WINDOW_GL_DEBUG,printGlError());
+  DEBUGR(WINDOW_GL_DEBUG,checkFramebuffer());
+  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+  DEBUGR(WINDOW_GL_DEBUG,printGlError());
+  DEBUGR(WINDOW_GL_DEBUG,checkFramebuffer());
 
 
   // create a depth buffer
   GLuint depthbuffer=0;
-  glGenRenderbuffers(1,&depthbuffer);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
-  glBindRenderbuffer(GL_RENDERBUFFER,depthbuffer);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
+  glGenRenderbuffers(1,&depthbuffer);
+  DEBUGR(WINDOW_GL_DEBUG,printGlError());
+  DEBUGR(WINDOW_GL_DEBUG,checkFramebuffer());
+  glBindRenderbuffer(GL_RENDERBUFFER,depthbuffer);
+  DEBUGR(WINDOW_GL_DEBUG,printGlError());
+  DEBUGR(WINDOW_GL_DEBUG,checkFramebuffer());
 
   // allocate memory for the depth buffer
-  glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT32F,width,height);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
+  glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT32F,width,height);
+  DEBUGR(WINDOW_GL_DEBUG,printGlError());
+  DEBUGR(WINDOW_GL_DEBUG,checkFramebuffer());
 
 
   // attach the depth buffer to the frame buffer
-  glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,depthbuffer);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,depthbuffer);
+  DEBUGR(WINDOW_GL_DEBUG,printGlError());
+  DEBUGR(WINDOW_GL_DEBUG,checkFramebuffer());
 
   // attach the texture to the frame buffer
-  glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,frameTexture,0);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
+  glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,frameTexture,0);
+  DEBUGR(WINDOW_GL_DEBUG,printGlError());
+  DEBUGR(WINDOW_GL_DEBUG,checkFramebuffer());
 
 
   // set the framebuffer to be drawn
   GLenum drawBuffers[1]={GL_COLOR_ATTACHMENT0};
-  glDrawBuffers(1,drawBuffers);DEBUGR(printGlError());DEBUGR(checkFramebuffer());
+  glDrawBuffers(1,drawBuffers);
+  DEBUGR(WINDOW_GL_DEBUG,printGlError());
+  DEBUGR(WINDOW_GL_DEBUG,checkFramebuffer());
 
   checkFramebuffer();
 
@@ -304,17 +329,17 @@ void Window::setupSaveFrames(){
 }
 
 void Window::writeFrame(){
-  DEBUGP("frame\n");
+  DEBUGP(WINDOW_WRITEFRAME_DEBUG,"write frame\n");
   GLchar *pixels=readTexture(frameTexture);
-  DEBUGP("frame\n");
+  DEBUGP(WINDOW_WRITEFRAME_DEBUG,"got pixels array\n");
   cv::Mat *image=new cv::Mat(height,width,CV_8UC3,pixels);
-  DEBUGP("frame\n");
+  DEBUGP(WINDOW_WRITEFRAME_DEBUG,"converted to cv::Mat\n");
   writer->write(*image);
-  DEBUGP("frame\n");
+  DEBUGP(WINDOW_WRITEFRAME_DEBUG,"write frame\n");
   delete image;
-  DEBUGP("frame\n");
+  DEBUGP(WINDOW_WRITEFRAME_DEBUG,"delete image\n");
   free(pixels);
-  DEBUGP("frame\n");
+  DEBUGP(WINDOW_WRITEFRAME_DEBUG,"free pixels\n");
 }
 
 Window::~Window(){

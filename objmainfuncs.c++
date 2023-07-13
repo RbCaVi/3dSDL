@@ -148,7 +148,7 @@ int optargs(const char* arg,void*){
 void addopt(const char* opt,int,const char** args,void* d){
   argdata *data=(argdata*)d;
   // capture frames record input-file 
-  DEBUGP("%s\n",opt);
+  DEBUGP(MAIN_OPT_DEBUG,"%s\n",opt);
   if(strcmp(opt,"--capture")==0){
     data->capture=true;
     return;

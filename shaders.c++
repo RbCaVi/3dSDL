@@ -10,7 +10,7 @@ const char* shader_compile_exception::what() const noexcept {
 }
 
 GLuint compile_vert_shader_from_source(const char *vertex_shader_source){
-  //printf("%s",vertex_shader_source);
+  DEBUGP(SHADER_DEBUG,"vertex shader source:\n%s",vertex_shader_source);
   GLchar *log = NULL;
   GLint log_length, success;
   GLuint vertex_shader;
@@ -23,10 +23,10 @@ GLuint compile_vert_shader_from_source(const char *vertex_shader_source){
   log = (GLchar*)malloc(log_length);
   glGetShaderInfoLog(vertex_shader, log_length, NULL, log);
   if (log_length > 0) {
-    printf("vertex shader log:\n\n%s\n", log);
+    DEBUGP(SHADER_DEBUG,"vertex shader log:\n\n%s\n", log);
   }
   if (!success) {
-    printf("vertex shader compile error\n");
+    DEBUGP(SHADER_DEBUG,"vertex shader compile error\n");
     throw shader_compile_exception("vertex shader compile exception",log);
   }
   free(log);
@@ -34,6 +34,7 @@ GLuint compile_vert_shader_from_source(const char *vertex_shader_source){
 }
 
 GLuint compile_frag_shader_from_source(const char *fragment_shader_source){
+  DEBUGP(SHADER_DEBUG,"fragment shader source:\n%s",fragment_shader_source);
   GLchar *log = NULL;
   GLint log_length, success;
   GLuint fragment_shader;
@@ -46,10 +47,10 @@ GLuint compile_frag_shader_from_source(const char *fragment_shader_source){
   log = (GLchar*)malloc(log_length);
   glGetShaderInfoLog(fragment_shader, log_length, NULL, log);
   if (log_length > 0) {
-    printf("fragment shader log:\n\n%s\n", log);
+    DEBUGP(SHADER_DEBUG,"fragment shader log:\n\n%s\n", log);
   }
   if (!success) {
-    printf("fragment shader compile error\n");
+    DEBUGP(SHADER_DEBUG,"fragment shader compile error\n");
     throw shader_compile_exception("fragment shader compile exception",log);
   }
   free(log);
@@ -84,10 +85,10 @@ GLuint compile_shader(GLuint vertex_shader,GLuint fragment_shader){
   log = (GLchar*)malloc(log_length);
   glGetProgramInfoLog(program, log_length, NULL, log);
   if (log_length > 0) {
-    printf("shader link log:\n\n%s\n", log);
+    DEBUGP(SHADER_DEBUG,"shader link log:\n\n%s\n", log);
   }
   if (!success) {
-    printf("shader link error");
+    DEBUGP(SHADER_DEBUG,"shader link error");
     throw shader_compile_exception("program linking exception",log);
   }
   // Cleanup. 

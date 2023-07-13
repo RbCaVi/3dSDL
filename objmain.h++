@@ -6,6 +6,18 @@
 #include "matrix.h++"
 #include "window.h++"
 
+#ifdef MAIN_DEBUG
+#define _MAIN_DEBUG 1
+#else
+#define _MAIN_DEBUG 0
+#endif
+
+#ifdef MAIN_OPT_DEBUG
+#define _MAIN_OPT_DEBUG 1
+#else
+#define _MAIN_OPT_DEBUG 0
+#endif
+
 Window* window;
 
 struct sdata{

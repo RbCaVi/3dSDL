@@ -7,6 +7,12 @@
 
 #include <GL/glew.h>
 
+#ifdef SHADER_DEBUG
+#define _SHADER_DEBUG 1
+#else
+#define _SHADER_DEBUG 0
+#endif
+
 class shader_compile_exception: public std::exception{
 public:
   explicit shader_compile_exception(const char* message,const char* log);

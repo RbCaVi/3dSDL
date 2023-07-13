@@ -25,7 +25,7 @@ void parseargs(int argc, const char** argv,bool (&isopt)(const char*,void*),int 
     const char* arg=argv[i];
     if(isopt(arg,data)){ // the argument is an option
       int args=optargs(arg,data);
-      DEBUGP("%i\n",args);
+      DEBUGP(OPT_DEBUG,"%i\n",args);
       if(args==0){
         addopt(arg,0,NULL,data);
       }else{
@@ -33,7 +33,7 @@ void parseargs(int argc, const char** argv,bool (&isopt)(const char*,void*),int 
       }
     }else{
       if(options.empty()){
-        DEBUGP("ard");
+        DEBUGP(OPT_DEBUG,"arg");
         addarg(arg,data);
       }else{
         // add the arg to the top option on the stack

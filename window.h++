@@ -12,6 +12,36 @@
 
 #include "matrix.h++"
 
+#ifdef WINDOW_DEBUG
+#define _WINDOW_DEBUG 1
+#else
+#define _WINDOW_DEBUG 0
+#endif
+
+#ifdef WINDOW_ATTR_DEBUG
+#define _WINDOW_ATTR_DEBUG 1
+#else
+#define _WINDOW_ATTR_DEBUG 0
+#endif
+
+#ifdef WINDOW_GL_DEBUG
+#define _WINDOW_GL_DEBUG 1
+#else
+#define _WINDOW_GL_DEBUG 0
+#endif
+
+#ifdef WINDOW_KEY_DEBUG
+#define _WINDOW_KEY_DEBUG 1
+#else
+#define _WINDOW_KEY_DEBUG 0
+#endif
+
+#ifdef WINDOW_WRITEFRAME_DEBUG
+#define _WINDOW_WRITEFRAME_DEBUG 1
+#else
+#define _WINDOW_WRITEFRAME_DEBUG 0
+#endif
+
 class Window{
 private:
   SDL_GLContext gl_context;

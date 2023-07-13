@@ -3,6 +3,12 @@
 
 #include "shared.h++"
 
+#ifdef OPT_DEBUG
+#define _OPT_DEBUG 1
+#else
+#define _OPT_DEBUG 0
+#endif
+
 // isopt is called for every argument and returns if it is an option or not
 //   its arguments are the argument being checked and data
 // optargs tells how many arguments an option takes and is called once when an option is processed

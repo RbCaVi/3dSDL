@@ -6,10 +6,11 @@
 #define IGNORE(x) (void)(x)
 
 #ifdef DEBUG
-#define DEBUGR(x) x
-#define DEBUGP(s,...) printf(s,__VA_ARGS__)
+#define DEBUGR(cond,x) if(_##cond==1){x;}
+#define _DEBUGR(cond,x) if(cond==1){x;}
 #else
-#define DEBUGR(x) void(0)
-#define DEBUGP(s,...) void(0)
+#define DEBUGR(cond,x) void(0)
+#define _DEBUGR(cond,x) void(0)
 #endif
+#define DEBUGP(cond,...) _DEBUGR(_##cond,printf(__VA_ARGS__))
 #endif

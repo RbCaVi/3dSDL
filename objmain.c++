@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
   
-  DEBUGR(p(adata));
+  DEBUGR(MAIN_DEBUG,p(adata));
   
   SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
   
@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
   window->addUniformMat4x4("projection",data.projection);
   window->addUniformMat4x4("mvp",data.projection*data.view*data.model);
   
-  DEBUGR(
+  DEBUGR(MAIN_DEBUG,
     int i;
     for(i=0;i<rdata->size*4;i+=4){
       printf("vertex coord (%f,%f,%f,%f)\n",rdata->vs[i],rdata->vs[i+1],rdata->vs[i+2],rdata->vs[i+3]);
@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
   window->draw_vertices=rdata->size*4;
   window->addVertexData("coord",rdata->vs,rdata->size*4*sizeof(float),3,4*sizeof(float));
   window->addVertexData("normal",rdata->vns,rdata->size*3*sizeof(float),3);
-  DEBUGP("vertex count %i\n",rdata->size);
+  DEBUGP(MAIN_DEBUG,"vertex count %i\n",rdata->size);
   
   window->mainLoop();
   
