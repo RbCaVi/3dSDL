@@ -1,9 +1,6 @@
 #include "shared.h++"
 
-#include <filesystem>
-
 #include <SDL2/SDL_image.h>
-#include <GL/glew.h>
 
 #include "texture.h++"
 

@@ -1,8 +1,6 @@
 #ifndef SHARED_H
 #define SHARED_H
 
-//#define GLEW_STATIC 
-
 #define IGNORE(x) (void)(x)
 
 #ifdef DEBUG
