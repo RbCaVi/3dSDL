@@ -243,10 +243,10 @@ void Window::addUniformMat4x4(const char* name,matrix4x4 &matrix){
 
 void Window::setupSaveFrames(){
   // create a framebuffer
-  GLuint framebuffer=0;
-  glGenFramebuffers(1,&framebuffer);
+  frameBuffer=0;
+  glGenFramebuffers(1,&frameBuffer);
   DEBUGR(WINDOW_GL_DEBUG,printGlError());
-  glBindFramebuffer(GL_FRAMEBUFFER,framebuffer);
+  glBindFramebuffer(GL_FRAMEBUFFER,frameBuffer);
   DEBUGR(WINDOW_GL_DEBUG,printGlError());
   DEBUGR(WINDOW_GL_DEBUG,checkFramebuffer());
 
@@ -317,7 +317,7 @@ void Window::setupSaveFrames(){
   checkFramebuffer();
 
   // set the size of the screen
-  glBindFramebuffer(GL_FRAMEBUFFER,framebuffer);
+  glBindFramebuffer(GL_FRAMEBUFFER,frameBuffer);
   glViewport(0,0,width,height);
   
   // initialize an opencv video writer
@@ -340,6 +340,9 @@ void Window::writeFrame(){
   DEBUGP(WINDOW_WRITEFRAME_DEBUG,"delete image\n");
   free(pixels);
   DEBUGP(WINDOW_WRITEFRAME_DEBUG,"free pixels\n");
+  glBindFramebuffer(GL_READ_FRAMEBUFFER, frameBuffer);
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+  glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 }
 
 Window::~Window(){

@@ -58,6 +58,7 @@ public:
 private:
   bool saveframes;
   GLuint frameTexture;
+  GLuint frameBuffer;
   int framestosave;
   int framesdone;
   cv::VideoWriter *writer;
