@@ -1,7 +1,6 @@
 *.o
-main
 objmain
-parse
+randmain
 a.out
 token
 packedassets.S

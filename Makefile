@@ -10,6 +10,9 @@ all: objmain
 file.o: file.c++ file.h++ shared.h++
 	g++ $(flags) $(compileflags) -c file.c++ -o file.o
 
+random.o: random.c++ random.h++ shared.h++
+	g++ $(flags) $(compileflags) -c random.c++ -o random.o
+
 parseargs.o: parseargs.c++ parseargs.h++ shared.h++
 	g++ $(flags) $(compileflags) -c parseargs.c++ -o parseargs.o
 
@@ -45,6 +48,13 @@ packassets: packedassets.o
 
 unpackassets:
 	rm assets.o
+
+randmain.o: randmain.c++ random.h++ shared.h++
+	g++ $(flags) $(compileflags) -c randmain.c++ -o randmain.o
+
+randmain: randmain.o random.o
+	g++ $(flags) $(linkflags) randmain.o random.o \
+	-o $@
 
 objmain.o: objmain.c++ objmainfuncs.c++ objmain.h++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ assets.h++ shared.h++
 	g++ $(flags) $(compileflags) -c objmain.c++ -o objmain.o
