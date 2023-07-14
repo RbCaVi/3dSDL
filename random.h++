@@ -5,36 +5,35 @@
 
 #include <random>
 
-virtual class rand{
-private:
+class Rand{
+protected:
   std::random_device rd;  // a seed source for the random number engine
   std::mt19937 gen; // mersenne_twister_engine seeded with rd()
-  std::uniform_int_distribution<> distrib;
 
 public:
-  bool operator()() = 0;
-}
+  Rand();
+  virtual bool operator()() = 0;
+};
 
-class randbool{
+class randbool:public Rand{
 private:
-  std::random_device rd;  // a seed source for the random number engine
-  std::mt19937 gen; // mersenne_twister_engine seeded with rd()
   std::uniform_int_distribution<> distrib;
 
 public:
   randbool();
-  bool operator()();
+  bool operator()() override;
 };
 
-class randchance{
+class randchance:public Rand{
 private:
   std::random_device rd;  // a seed source for the random number engine
   std::mt19937 gen; // mersenne_twister_engine seeded with rd()
-  std::bernoulli_distribution<> distrib;
+  std::bernoulli_distribution distrib;
 
 public:
   randchance();
   randchance(float chance);
   bool operator()();
 };
+
 #endif

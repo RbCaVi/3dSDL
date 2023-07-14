@@ -80,13 +80,13 @@ public:
 };
 
 int main(){
-	randbool rb;
+	Rand *r=new randchance(0.2);
 	chunk<bool> c(5,5,5);
 	size_t i,j,k;
 	for(i=0;i<5;i++){
 		for(j=0;j<5;j++){
 			for(k=0;k<5;k++){
-				c[i][j][k]=rb();
+				c[i][j][k]=(*r)();
 			}
 		}
 	}

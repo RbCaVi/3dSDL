@@ -2,20 +2,18 @@
 
 #include "random.h++"
 
-randbool::randbool():rd(),gen(rd()),distrib(0, 1){}
+Rand::Rand():rd(),gen(rd()){}
+
+randbool::randbool():distrib(0, 1){}
 
 bool randbool::operator()(){
   return distrib(gen);
 }
 
-randbool::randbool():rd(),gen(rd()),distrib(0, 1){}
+randchance::randchance():Rand(),distrib(0.5){}
 
-bool randbool::operator()(){
-  return distrib(gen);
-}
+randchance::randchance(float chance):Rand(),distrib(chance){}
 
-randbool::randbool():rd(),gen(rd()),distrib(0, 1){}
-
-bool randbool::operator()(){
+bool randchance::operator()(){
   return distrib(gen);
 }
