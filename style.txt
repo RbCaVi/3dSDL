@@ -9,10 +9,13 @@ Format:
     for(i=0;i<5;i++){
     ){ not ) {
     function arguments are f(x, y) or f(x,y) not f( x, y )
+    equals signs may have either 0 or 1 space on both sides
+    the two sides must be the same
   
   pointer casts are (char*)x
   pointer type is int *px;
   no empty lines at beginning or end of blocks
+  
   Comments:
     commented code has no space after the //
     normal comments have a space after the //
@@ -30,5 +33,18 @@ Format:
     project headers
     code files (c or c++)
 
+  Classes:
+    classes always have an access modifier (public or private) at the start
+    the access modifier has no empty lines before it if it's the first line in the class
+    otherwise it has one empty line before it
+
+
 Code:
-  all class attrs are private unless needed
+  each set of code files (c++ and h++, and possibly a few more) has its own set of *_DEBUG symbols
+  they are (name of main file, all caps)_DEBUG or (name of main file, all caps)_(subsection)_DEBUG
+  all headers must have include guards
+  #ifndef (file name)_H
+  #define (file name)_H
+  (includes)
+  (code)
+  #endif
