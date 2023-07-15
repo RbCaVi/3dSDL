@@ -3,7 +3,7 @@ flags := $(flags) -Wall -ggdb -g -Og -gdwarf-4
 compileflags := -std=c++20 -Wall -Wpedantic -pedantic-errors -Wextra -isystem/opt/opencv/include
 linkflags := -Wl,-rpath=/opt/opencv/lib -Wl,-rpath=/opt/gcc-12.2.0/lib64 -L/opt/opencv/lib
 
-.PHONY: all clean
+.PHONY: all clean packassets unpackassets
 
 all: objmain
 

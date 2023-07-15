@@ -11,8 +11,10 @@ extern int *assetlengths;
 extern char *assetnames;
 extern int assetcount;
 
+std::filesystem::path root;
+
 void assets::setroot(std::filesystem::path newroot){
-  IGNORE(newroot);
+  root=newroot;
 }
 
 char *assets::getasset(std::filesystem::path stdpath){
@@ -34,5 +36,6 @@ char *assets::getasset(std::filesystem::path stdpath){
       return s;
     }
   }
-  return NULL;
+  std::filesystem::path rootpath=root/stdpath;
+  return pathtobuf(rootpath);
 }
