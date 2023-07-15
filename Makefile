@@ -5,7 +5,7 @@ linkflags := -Wl,-rpath=/opt/opencv/lib -Wl,-rpath=/opt/gcc-12.2.0/lib64 -L/opt/
 
 .PHONY: all clean packassets unpackassets
 
-all: objmain
+all: objmain randmain
 
 file.o: file.c++ file.h++ shared.h++
 	g++ $(flags) $(compileflags) -c file.c++ -o file.o
