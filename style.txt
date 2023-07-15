@@ -15,7 +15,7 @@ Format:
   pointer casts are (char*)x
   pointer type is int *px;
   no empty lines at beginning or end of blocks
-  
+
   Comments:
     commented code has no space after the //
     normal comments have a space after the //
@@ -48,3 +48,5 @@ Code:
   (includes)
   (code)
   #endif
+  all public classes are defined in an h++ file
+  
