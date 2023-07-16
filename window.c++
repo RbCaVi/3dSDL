@@ -9,17 +9,13 @@
 #include "texture.h++"
 
 #ifdef DEBUG
-void __printArray__(GLfloat data[],int length){
+void printArray(GLfloat data[],int length){
   int i;
   for(i=0;i<length;i++){
     printf("%f ",data[i]);
   }
   printf("\n");
 }
-#define printArray(data,len) DEBUGR(WINDOW_ATTR_DEBUG,__printArray__(data,len))
-#else
-#define printArray(data,len) IGNORE(data),IGNORE(len)
-#endif
 
 void printGlError(){
   while(true){
@@ -96,6 +92,7 @@ bool checkFramebuffer(){
     return true;
   }
 }
+#endif
 
 #define CALL(f,...) if(f!=NULL){(*f)(__VA_ARGS__);}
 
@@ -232,10 +229,12 @@ void Window::addVertexData(const char* name,GLfloat data[],GLint size,GLint floa
 void Window::addUniformMat4x4(const char* name,matrix4x4 &matrix){
   GLint uniform = glGetUniformLocation(program, name);
   DEBUGP(WINDOW_ATTR_DEBUG,"%s",name);
-  printArray(matrix.contents,4);
-  printArray(matrix.contents+4,4);
-  printArray(matrix.contents+8,4);
-  printArray(matrix.contents+12,4);
+  DEBUGR(WINDOW_ATTR_DEBUG,
+    printArray(matrix.contents,4);
+    printArray(matrix.contents+4,4);
+    printArray(matrix.contents+8,4);
+    printArray(matrix.contents+12,4);
+  );
   glUniformMatrix4fv(uniform, 1, GL_FALSE, matrix.contents);
 }
 
@@ -311,8 +310,6 @@ void Window::setupSaveFrames(){
   glDrawBuffers(1,drawBuffers);
   DEBUGR(WINDOW_GL_DEBUG,printGlError());
   DEBUGR(WINDOW_GL_DEBUG,checkFramebuffer());
-
-  checkFramebuffer();
 
   // set the size of the screen
   glBindFramebuffer(GL_FRAMEBUFFER,frameBuffer);
