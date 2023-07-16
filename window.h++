@@ -52,7 +52,6 @@ private:
   std::unordered_map<const char*,int> handles;
   GLuint* handles_array;
   int numhandles;
-  GLenum draw_mode;
 public:
   GLsizei draw_vertices;
 private:

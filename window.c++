@@ -99,10 +99,15 @@ bool checkFramebuffer(){
 
 #define CALL(f,...) if(f!=NULL){(*f)(__VA_ARGS__);}
 
+void defaultdraw(Window *w,void*){
+  glDrawArrays(GL_TRIANGLES, 0, w->draw_vertices);
+}
+
 Window::Window(int width, int height, const char* name, bool tosaveframes, int frames):
     width(width),height(height),program(0),
     handles_array(NULL),numhandles(0),
     saveframes(tosaveframes),frameTexture(0),framestosave(frames),framesdone(0),
+    draw(&defaultdraw),
     closed(false){
   window = SDL_CreateWindow(name, 0, 0,
           width, height, SDL_WINDOW_OPENGL);
@@ -111,7 +116,6 @@ Window::Window(int width, int height, const char* name, bool tosaveframes, int f
   // Global draw state 
   glViewport(0, 0, width, height); // use 0,0,width,height as the rectangle to draw in (x,y,w,h)
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // set the background color
-  draw_mode=GL_TRIANGLES;
   draw_vertices=12;
   
   if(saveframes){
