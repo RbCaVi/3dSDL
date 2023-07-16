@@ -5,3 +5,4 @@ a.out
 token
 packedassets.S
 output/
+gmon.out
