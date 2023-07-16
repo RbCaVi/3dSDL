@@ -97,6 +97,8 @@ bool checkFramebuffer(){
   }
 }
 
+#define CALL(f,...) if(f!=NULL){(*f)(__VA_ARGS__);}
+
 Window::Window(int width, int height, const char* name, bool tosaveframes, int frames):
     width(width),height(height),program(0),
     handles_array(NULL),numhandles(0),
@@ -163,13 +165,11 @@ void Window::mainLoop(){
     if(framestosave>0&&framesdone==framestosave){
       break;
     }
-    if(onframe!=NULL){
-      (*onframe)(this,data);
-    }
+    CALL(onframe,this,data);
     DEBUGP(WINDOW_DEBUG,"frame\n");
     glClear(GL_COLOR_BUFFER_BIT // clear the background
         | GL_DEPTH_BUFFER_BIT); // and the depth buffer
-    glDrawArrays(draw_mode, 0, draw_vertices);
+    CALL(draw,this,data);
     if(saveframes){
       DEBUGP(WINDOW_DEBUG,"frame written\n");
       Window::writeFrame();
@@ -183,18 +183,12 @@ void Window::mainLoop(){
       switch (event.type) {
        case SDL_KEYDOWN:
         DEBUGP(WINDOW_KEY_DEBUG,"key down %c %i\n",event.key.keysym.sym,event.key.keysym.sym);
-        if(onkeydown!=NULL){
-          (*onkeydown)(this,event.key.keysym,data);
-        }
+        CALL(onkeydown,this,event.key.keysym,data);
         break;
        case SDL_KEYUP:
         DEBUGP(WINDOW_KEY_DEBUG,"key up %c %i\n",event.key.keysym.sym,event.key.keysym.sym);
-        if(onkeyup!=NULL){
-          (*onkeyup)(this,event.key.keysym,data);
-        }
+        CALL(onkeyup,this,event.key.keysym,data);
         break;
-
- 
        case SDL_QUIT:
         // handling of close button
         closed = true;

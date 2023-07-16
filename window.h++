@@ -64,12 +64,12 @@ private:
   cv::VideoWriter *writer;
 public:
   void (*onframe)(Window*,void*)=NULL;
+  void (*draw)(Window*,void*)=NULL;
   void (*onkeyup)(Window*,SDL_Keysym,void*)=NULL;
   void (*onkeydown)(Window*,SDL_Keysym,void*)=NULL;
   void *data;
-
-public:
   bool closed;
+
   Window(int width, int height, const char* name, bool saveframes, int frames);
   void makeShader(std::filesystem::path vertex_shader_path, std::filesystem::path fragment_shader_path);
   void makeShaderFromSource(char *vertex_shader_source, char *fragment_shader_source);
