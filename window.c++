@@ -348,7 +348,7 @@ Window::~Window(){
   free(handles_array);
   
   if(saveframes){
-    printf("Write complete !");
+    printf("Write complete !\n");
     writer->release();
   }
 }
