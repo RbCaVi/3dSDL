@@ -77,6 +77,16 @@ objmain: objmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.
 	-lopencv_core -lopencv_highgui \
 	-o $@
 
+chunkmain.o: chunkmain.c++ chunkmainfuncs.c++ chunkmain.h++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ assets.h++ shared.h++
+	g++ $(flags) $(compileflags) $(CFLAGS) -c chunkmain.c++ -o chunkmain.o
+
+chunkmain: chunkmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o assets.o
+	g++ $(flags) $(linkflags) $(CFLAGS) chunkmain.o shaders.o window.o matrix.o texture.o parseargs.o file.o obj.o assets.o \
+	-lSDL2 -lSDL2_image \
+	-lGL -lGLEW \
+	-lopencv_core -lopencv_highgui \
+	-o $@
+
 clean:
 	rm -f file.o
 	rm -f shaders.o

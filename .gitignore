@@ -1,6 +1,7 @@
 *.o
 objmain
 randmain
+chunkmain
 a.out
 token
 packedassets.S
