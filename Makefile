@@ -36,6 +36,9 @@ texture.o: texture.c++ texture.h++ shared.h++
 window.o: window.c++ window.h++ texture.h++ shaders.h++ shared.h++
 	g++ $(flags) $(compileflags) $(CFLAGS) -c window.c++ -o window.o
 
+chunk.o: chunk.c++ chunk.h++ shared.h++
+	g++ $(flags) $(compileflags) $(CFLAGS) -c chunk.c++ -o chunk.o
+
 # merge is ld -r a.o b.o -o c.o
 
 obj.o: obj.c++ obj.h++ file.h++ shared.h++
