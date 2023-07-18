@@ -64,8 +64,9 @@ int main(int argc, char *argv[]) {
   char *vertsource=assets::getasset("objshader.vert");
   char *fragsource=assets::getasset("objshader.frag");
   window->makeShaderFromSource(vertsource,fragsource);
-  data.rot=getIdentity();
-  data.trans=getIdentity();
+  //data.rot=getIdentity();
+  //data.trans=getIdentity();
+  data.model=getIdentity();
   data.view=getTranslation(0,0,-200);
   data.projection=getPerspective(45.0f, (float)HEIGHT/WIDTH, 0.1f, 800.0f);
 
