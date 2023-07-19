@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "assets.h++"
+#include "file.h++"
 
 extern char *assetsdata;
 extern int *assetlengths;
