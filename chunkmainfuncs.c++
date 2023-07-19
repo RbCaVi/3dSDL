@@ -46,6 +46,8 @@ void onframe(Window *window, void *d){
   data->view=getRotation(1,2,-0.02*data->ud)*data->view;
   data->view=getRotation(0,2,-0.02*data->rl)*data->view;
   data->view=getTranslation(0,0,1*data->forward)*data->view;
+  data->view=getTranslation(0,-1*data->mud,0)*data->view;
+  data->view=getTranslation(-1*data->mrl,0,0)*data->view;
   //data->rot=getRotation(1,2,0.1*data->ud)*data->rot;
   //data->rot=getRotation(0,2,0.1*data->rl)*data->rot;
   //data->trans=getTranslation(1*data->rl,0,0)*data->trans;
@@ -85,16 +87,16 @@ void onkeydown(Window *w, SDL_Keysym ks, void *d){
     data->rl=1;
     break;
    case SDLK_w:
-    data->ud=1;
+    data->mud=1;
     break;
    case SDLK_s:
-    data->ud=-1;
+    data->mud=-1;
     break;
    case SDLK_a:
-    data->rl=-1;
+    data->mrl=-1;
     break;
    case SDLK_d:
-    data->rl=1;
+    data->mrl=1;
     break;
   }
 }
@@ -134,23 +136,23 @@ void onkeyup(Window *w, SDL_Keysym ks, void *d){
     }
     break;
    case SDLK_w:
-    if(data->ud>0){
-      data->ud=0;
+    if(data->mud>0){
+      data->mud=0;
     }
     break;
    case SDLK_s:
-    if(data->ud<0){
-      data->ud=0;
+    if(data->mud<0){
+      data->mud=0;
     }
     break;
    case SDLK_a:
-    if(data->rl<0){
-      data->rl=0;
+    if(data->mrl<0){
+      data->mrl=0;
     }
     break;
    case SDLK_d:
-    if(data->rl>0){
-      data->rl=0;
+    if(data->mrl>0){
+      data->mrl=0;
     }
     break;
   }

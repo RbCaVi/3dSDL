@@ -28,6 +28,8 @@ struct sdata{
   matrix4x4 projection;
   signed char rl=0;
   signed char ud=0;
+  signed char mrl=0;
+  signed char mud=0;
   //float horizAngle;
   //float vertAngle;
   float forward=0;
