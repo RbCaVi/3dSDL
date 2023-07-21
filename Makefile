@@ -13,7 +13,7 @@ endif
 
 .PHONY: all clean packassets unpackassets
 
-all: objmain randmain
+all: objmain randmain chunkmain
 
 file.o: file.c++ file.h++ shared.h++
 	g++ $(flags) $(compileflags) $(CFLAGS) -c file.c++ -o file.o
@@ -97,6 +97,11 @@ clean:
 	rm -f obj.o
 	rm -f objmain.o
 	rm -f objmain
+	rm -f random.o
+	rm -f randmain.o
+	rm -f chunk.o
+	rm -f chunkmain.o
+	rm -f chunkmain
 	rm -f assets.o
 	rm -f getpackedassets.o
 	rm -f packedassets.o
