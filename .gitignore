@@ -13,3 +13,7 @@ config.status
 Makefile.in
 config.h.in
 configure~
+.deps/
+config.h
+stamp-h1
+Makefile
