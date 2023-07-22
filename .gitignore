@@ -7,3 +7,9 @@ token
 packedassets.S
 output/
 gmon.out
+autom4te.cache/
+config.log
+config.status
+Makefile.in
+config.h.in
+configure~
