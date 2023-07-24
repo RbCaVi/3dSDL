@@ -8,7 +8,7 @@ packedassets.S
 output/
 gmon.out
 autom4te.cache/
-config.log
+build/config.log
 config.status
 Makefile.in
 config.h.in
@@ -17,3 +17,4 @@ configure~
 config.h
 stamp-h1
 Makefile
+config.h.in~
