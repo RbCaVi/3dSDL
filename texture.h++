@@ -13,7 +13,7 @@
 #define _TEX_DEBUG 0
 #endif
 
-GLuint loadTexture(std::filesystem::path path);
+//GLuint loadTexture(std::filesystem::path path);
 GLchar *readTexture(GLuint texture);
 
 #endif

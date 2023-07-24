@@ -1,9 +1,10 @@
 #include "shared.h++"
 
-#include <SDL2/SDL_image.h>
+//#include <SDL2/SDL_image.h>
 
 #include "texture.h++"
 
+/*
 GLuint loadTexture(std::filesystem::path path){
   SDL_Surface *image=IMG_Load(path.string().c_str());
   image = SDL_ConvertSurfaceFormat(image, SDL_PIXELFORMAT_RGBA8888, 0);
@@ -18,6 +19,7 @@ GLuint loadTexture(std::filesystem::path path){
   SDL_FreeSurface(image);
   return object;
 }
+*/
 
 GLchar *readTexture(GLuint texture){
   DEBUGR(TEX_DEBUG,errno=0);
