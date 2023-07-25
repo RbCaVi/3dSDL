@@ -3,15 +3,12 @@ objmain
 randmain
 chunkmain
 a.out
-token
 packedassets.S
 output/
 gmon.out
 autom4te.cache/
 build/config.log
 config.status
-Makefile.in
-config.h.in
 configure~
 .deps/
 config.h
