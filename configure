@@ -3680,9 +3680,174 @@ then :
 
 fi
 
-#	-lSDL2 -lSDL2_image \
-#	-lGL -lGLEW \
-#	-lopencv_core -lopencv_highgui \
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for glEnable in -lGL" >&5
+printf %s "checking for glEnable in -lGL... " >&6; }
+if test ${ac_cv_lib_GL_glEnable+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lGL  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+namespace conftest {
+  extern "C" int glEnable ();
+}
+int
+main (void)
+{
+return conftest::glEnable ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"
+then :
+  ac_cv_lib_GL_glEnable=yes
+else $as_nop
+  ac_cv_lib_GL_glEnable=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_GL_glEnable" >&5
+printf "%s\n" "$ac_cv_lib_GL_glEnable" >&6; }
+if test "x$ac_cv_lib_GL_glEnable" = xyes
+then :
+  printf "%s\n" "#define HAVE_LIBGL 1" >>confdefs.h
+
+  LIBS="-lGL $LIBS"
+
+fi
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for __glewCreateShader in -lGLEW" >&5
+printf %s "checking for __glewCreateShader in -lGLEW... " >&6; }
+if test ${ac_cv_lib_GLEW___glewCreateShader+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lGLEW  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+namespace conftest {
+  extern "C" int __glewCreateShader ();
+}
+int
+main (void)
+{
+return conftest::__glewCreateShader ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"
+then :
+  ac_cv_lib_GLEW___glewCreateShader=yes
+else $as_nop
+  ac_cv_lib_GLEW___glewCreateShader=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_GLEW___glewCreateShader" >&5
+printf "%s\n" "$ac_cv_lib_GLEW___glewCreateShader" >&6; }
+if test "x$ac_cv_lib_GLEW___glewCreateShader" = xyes
+then :
+  printf "%s\n" "#define HAVE_LIBGLEW 1" >>confdefs.h
+
+  LIBS="-lGLEW $LIBS"
+
+fi
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for cvAlloc in -lopencv_core" >&5
+printf %s "checking for cvAlloc in -lopencv_core... " >&6; }
+if test ${ac_cv_lib_opencv_core_cvAlloc+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lopencv_core  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+namespace conftest {
+  extern "C" int cvAlloc ();
+}
+int
+main (void)
+{
+return conftest::cvAlloc ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"
+then :
+  ac_cv_lib_opencv_core_cvAlloc=yes
+else $as_nop
+  ac_cv_lib_opencv_core_cvAlloc=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_opencv_core_cvAlloc" >&5
+printf "%s\n" "$ac_cv_lib_opencv_core_cvAlloc" >&6; }
+if test "x$ac_cv_lib_opencv_core_cvAlloc" = xyes
+then :
+  printf "%s\n" "#define HAVE_LIBOPENCV_CORE 1" >>confdefs.h
+
+  LIBS="-lopencv_core $LIBS"
+
+fi
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for cvCreateImage in -lopencv_highgui" >&5
+printf %s "checking for cvCreateImage in -lopencv_highgui... " >&6; }
+if test ${ac_cv_lib_opencv_highgui_cvCreateImage+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lopencv_highgui  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+namespace conftest {
+  extern "C" int cvCreateImage ();
+}
+int
+main (void)
+{
+return conftest::cvCreateImage ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"
+then :
+  ac_cv_lib_opencv_highgui_cvCreateImage=yes
+else $as_nop
+  ac_cv_lib_opencv_highgui_cvCreateImage=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_opencv_highgui_cvCreateImage" >&5
+printf "%s\n" "$ac_cv_lib_opencv_highgui_cvCreateImage" >&6; }
+if test "x$ac_cv_lib_opencv_highgui_cvCreateImage" = xyes
+then :
+  printf "%s\n" "#define HAVE_LIBOPENCV_HIGHGUI 1" >>confdefs.h
+
+  LIBS="-lopencv_highgui $LIBS"
+
+fi
+
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'

@@ -18,3 +18,4 @@ config.h
 stamp-h1
 Makefile
 config.h.in~
+config.log
