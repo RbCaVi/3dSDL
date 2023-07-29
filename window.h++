@@ -75,6 +75,7 @@ public:
   void mainLoop();
   void addVertexData(const char* name,GLfloat data[],GLint size,GLint floatspervertex,GLint stride=0);
   void addUniformMat4x4(const char* name,matrix4x4 &matrix);
+  void addUniformVec3(const char* name,float *vec);
   void setupSaveFrames();
   void writeFrame();
   ~Window();

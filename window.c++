@@ -238,6 +238,15 @@ void Window::addUniformMat4x4(const char* name,matrix4x4 &matrix){
   glUniformMatrix4fv(uniform, 1, GL_FALSE, matrix.contents);
 }
 
+void Window::addUniformVec3(const char* name,float *vec){
+  GLint uniform = glGetUniformLocation(program, name);
+  DEBUGP(WINDOW_ATTR_DEBUG,"%s",name);
+  DEBUGR(WINDOW_ATTR_DEBUG,
+    printArray(vec,3);
+  );
+  glUniform3fv(uniform, 1, vec);
+}
+
 void Window::setupSaveFrames(){
   // create a framebuffer
   frameBuffer=0;
