@@ -48,7 +48,7 @@ assets.o: assets.c++ assets.h++ file.h++ shared.h++
 packedassets.o: packedassets.S
 	g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
 
-randmain.o: randmain.c++ random.h++ shared.h++
+randmain.o: randmain.c++ random.h++ chunk.h++ shared.h++
 	g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
 
 objmain.o: objmain.c++ objmainfuncs.c++ objmain.h++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ assets.h++ shared.h++
