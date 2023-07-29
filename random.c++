@@ -10,9 +10,9 @@ bool randbool::operator()(){
   return distrib(gen);
 }
 
-randchance::randchance():Rand(),distrib(0.5){}
+randchance::randchance(float chance):distrib(chance){}
 
-randchance::randchance(float chance):Rand(),distrib(chance){}
+randchance::randchance():randchance(0.5){}
 
 bool randchance::operator()(){
   return distrib(gen);
