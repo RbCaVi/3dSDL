@@ -80,7 +80,7 @@ objmain: objmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.
 	-lopencv_core -lopencv_highgui \
 	-o $@
 
-chunkmain: chunkmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o assets.o
+chunkmain: chunkmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o assets.o chunk.o random.o
 	g++ $(flags) $(linkflags) $(CFLAGS) $^ \
 	-lSDL2 \
 	-lGL -lGLEW \
