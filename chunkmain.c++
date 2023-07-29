@@ -57,11 +57,12 @@ int main(int argc, char *argv[]) {
   window->onframe=onframe;
   window->onkeydown=onkeydown;
   window->onkeyup=onkeyup;
+  window->draw=draw;
   glEnable(GL_DEPTH_TEST);
 
   glClearColor (0.0, 0.0, 0.0, 0.0);
   
-  char *vertsource=assets::getasset("objshader.vert");
+  char *vertsource=assets::getasset("chunkshader.vert");
   char *fragsource=assets::getasset("objshader.frag");
   window->makeShaderFromSource(vertsource,fragsource);
   //data.rot=getIdentity();

@@ -64,6 +64,26 @@ void onframe(Window *window, void *d){
   }
 }
 
+void draw(Window *window, void *d){
+  sdata *data=(sdata*)d;
+  chunk<bool> *c=data->grid;
+  int i,j,k;
+  for(i=0;i<5;i++){
+    for(j=0;j<5;j++){
+      for(k=0;k<5;k++){
+        if((*c)[i][j][k]){
+          float *vec=(float*)malloc(3*sizeof(float));
+          vec[0]=i;
+          vec[1]=j;
+          vec[2]=k;
+          window->addUniformVec3("position",vec);
+          glDrawArrays(GL_TRIANGLES, 0, window->draw_vertices);
+        }
+      }
+    }
+  }
+}
+
 void onkeydown(Window *w, SDL_Keysym ks, void *d){
   IGNORE(w);
   sdata *data=(sdata*)d;
