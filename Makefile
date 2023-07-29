@@ -63,8 +63,8 @@ unpackassets:
 randmain.o: randmain.c++ random.h++ shared.h++
 	g++ $(flags) $(compileflags) $(CFLAGS) -c randmain.c++ -o randmain.o
 
-randmain: randmain.o random.o
-	g++ $(flags) $(linkflags) $(CFLAGS) randmain.o random.o \
+randmain: randmain.o random.o chunk.o
+	g++ $(flags) $(linkflags) $(CFLAGS) randmain.o random.o chunk.o \
 	-o $@
 
 objmain.o: objmain.c++ objmainfuncs.c++ objmain.h++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ assets.h++ shared.h++

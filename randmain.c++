@@ -3,7 +3,8 @@
 #include <stddef.h>
 
 #include "random.h++"
-
+#include "chunk.h++"
+/*
 class chunk_exception: public std::exception{
 public:
   explicit chunk_exception(const char* message,const int i);
@@ -78,7 +79,7 @@ public:
 		return *p;
 	}
 };
-
+*/
 int main(){
 	Rand *r=new randchance(0.2);
 	chunk<bool> c(5,5,5);
