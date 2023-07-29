@@ -73,6 +73,9 @@ void draw(Window *window, void *d){
       for(k=0;k<5;k++){
         if((*c)[i][j][k]){
           float *vec=(float*)malloc(3*sizeof(float));
+          //vec[0]=i*30;
+          //vec[1]=j*100;
+          //vec[2]=k*60;
           vec[0]=i;
           vec[1]=j;
           vec[2]=k;

@@ -14,7 +14,7 @@ varying vec4 frag_color;
 
 void main() {
 //      gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
-  gl_Position = projection * view * model * (vec4(coord+(position*vec3(30,100,60)),1.0));
+  gl_Position = projection * view * model * (vec4(coord+position,1.0));
   //frag_color = vec4(1.0,1.0,1.0,1.0);
   //frag_color=vec4((mvp*vec4(abs(normal),1.0)).xyz,1.0);
   frag_color=vec4((normal+1.0)/2.0,1.0);

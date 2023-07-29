@@ -72,7 +72,8 @@ int main(int argc, char *argv[]) {
   data.projection=getPerspective(45.0f, (float)HEIGHT/WIDTH, 0.1f, 800.0f);
 
   obj o;
-  o.loadstr(assets::getasset("cat.obj"));
+  //o.loadstr(assets::getasset("cat.obj"));
+  o.loadstr(assets::getasset("cube.obj"));
   obj::renderdata* rdata=o.makeRenderData();
 
   Rand *r=new randchance(0.2);
