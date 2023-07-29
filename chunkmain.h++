@@ -21,8 +21,6 @@
 Window* window;
 
 struct sdata{
-  //matrix4x4 trans;
-  //matrix4x4 rot;
   matrix4x4 model;
   matrix4x4 view;
   matrix4x4 projection;
@@ -40,6 +38,8 @@ struct argdata{
   bool error;
   bool capture;
   int framecount;
+
+  argdata(bool e,bool c,int f):error(e),capture(c),framecount(f){}
 };
 typedef argdata argdata;
 

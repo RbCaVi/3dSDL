@@ -37,6 +37,8 @@ struct argdata{
   bool error;
   bool capture;
   int framecount;
+
+  argdata(bool e,bool c,int f):error(e),capture(c),framecount(f){}
 };
 typedef argdata argdata;
 
