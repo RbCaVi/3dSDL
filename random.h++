@@ -8,7 +8,7 @@
 class Rand{
 protected:
   std::random_device rd;  // a seed source for the random number engine
-  std::mt19937 gen; // mersenne_twister_engine seeded with rd()
+  std::mt19937 *gen; // mersenne_twister_engine seeded with rd()
 
 public:
   Rand();
@@ -26,8 +26,6 @@ public:
 
 class randchance:public Rand{
 private:
-  std::random_device rd;  // a seed source for the random number engine
-  std::mt19937 gen; // mersenne_twister_engine seeded with rd()
   std::bernoulli_distribution distrib;
 
 public:
