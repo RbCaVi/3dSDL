@@ -247,6 +247,7 @@ void Window::setUniformVec3(const char* name,float *vec){
   glUniform3fv(uniform, 1, vec);
 }
 
+#if HAS_OPENCV
 void Window::setupSaveFrames(){
   // create a framebuffer
   frameBuffer=0;
@@ -348,6 +349,7 @@ void Window::writeFrame(){
   glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
   glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 }
+#endif
 
 Window::~Window(){
   glDeleteBuffers(numhandles, handles_array); // delete all the buffers

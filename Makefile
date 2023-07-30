@@ -1,7 +1,7 @@
 
-flags := -Wall
-compileflags := -std=c++20 -Wall -Wpedantic -pedantic-errors -Wextra -isystem/opt/opencv/include
-linkflags := -Wl,-rpath=/opt/opencv/lib -Wl,-rpath=/opt/gcc-12.2.0/lib64 -L/opt/opencv/lib
+flags := -Wall -Wpedantic -pedantic-errors -Wextra
+compileflags := -std=c++20
+linkflags := -Wl,-rpath=/opt/gcc-12.2.0/lib64
 
 ifdef DEBUG
 	flags := $(flags) -ggdb -g -Og -gdwarf-4 -DDEBUG
@@ -9,6 +9,13 @@ endif
 
 ifdef PROFILE
 	flags := $(flags) -pg
+endif
+
+ifdef OPENCV
+	OPENCV_PATH := /opt/opencv
+	compileflags := $(compileflags) -DHAS_OPENCV -i$(OPENCV_PATH)/include
+	linkflags := $(linkflags) -Wl,-rpath=$(OPENCV_PATH)/lib -L$(OPENCV_PATH)/lib
+	opencv-libs := -lopencv_core -lopencv_highgui
 endif
 
 .PHONY: all clean packassets unpackassets
@@ -77,14 +84,14 @@ objmain: objmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.
 	g++ $(flags) $(linkflags) $(CFLAGS) $^ \
 	-lSDL2 \
 	-lGL -lGLEW \
-	-lopencv_core -lopencv_highgui \
+	$(opencv-libs) \
 	-o $@
 
 chunkmain: chunkmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o assets.o chunk.o random.o
 	g++ $(flags) $(linkflags) $(CFLAGS) $^ \
 	-lSDL2 \
 	-lGL -lGLEW \
-	-lopencv_core -lopencv_highgui \
+	$(opencv-libs) \
 	-o $@
 
 clean:
@@ -112,3 +119,6 @@ debug-%:
 
 profile-%:
 	make $* PROFILE=1
+
+with-opencv-%:
+	make $* OPENCV=1

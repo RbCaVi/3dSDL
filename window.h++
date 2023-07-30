@@ -76,8 +76,10 @@ public:
   void addVertexData(const char* name,GLfloat data[],GLint size,GLint floatspervertex,GLint stride=0);
   void setUniformMat4x4(const char* name,matrix4x4 &matrix);
   void setUniformVec3(const char* name,float *vec);
+#if HAS_OPENCV
   void setupSaveFrames();
   void writeFrame();
+#endif
   ~Window();
 };
 
