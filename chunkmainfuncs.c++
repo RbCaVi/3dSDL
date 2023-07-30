@@ -53,9 +53,9 @@ void onframe(Window *window, void *d){
   //data->trans=getTranslation(1*data->rl,0,0)*data->trans;
   //data->trans=getTranslation(0,1*data->ud,0)*data->trans;
   //data->model=data->trans*data->rot;
-  //window->addUniformMat4x4("model",data->model);
-  window->addUniformMat4x4("view",data->view);
-  window->addUniformMat4x4("mvp",data->projection*data->view*data->model);
+  //window->setUniformMat4x4("model",data->model);
+  window->setUniformMat4x4("view",data->view);
+  window->setUniformMat4x4("mvp",data->projection*data->view*data->model);
   
   closedata *cd=cdata.load();
   while(cd!=NULL){
@@ -79,7 +79,7 @@ void draw(Window *window, void *d){
           vec[0]=i;
           vec[1]=j;
           vec[2]=k;
-          window->addUniformVec3("position",vec);
+          window->setUniformVec3("position",vec);
           glDrawArrays(GL_TRIANGLES, 0, window->draw_vertices);
         }
       }

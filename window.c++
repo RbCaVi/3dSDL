@@ -226,7 +226,7 @@ void Window::addVertexData(const char* name,GLfloat data[],GLint size,GLint floa
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Window::addUniformMat4x4(const char* name,matrix4x4 &matrix){
+void Window::setUniformMat4x4(const char* name,matrix4x4 &matrix){
   GLint uniform = glGetUniformLocation(program, name);
   DEBUGP(WINDOW_ATTR_DEBUG,"%s",name);
   DEBUGR(WINDOW_ATTR_DEBUG,
@@ -238,7 +238,7 @@ void Window::addUniformMat4x4(const char* name,matrix4x4 &matrix){
   glUniformMatrix4fv(uniform, 1, GL_FALSE, matrix.contents);
 }
 
-void Window::addUniformVec3(const char* name,float *vec){
+void Window::setUniformVec3(const char* name,float *vec){
   GLint uniform = glGetUniformLocation(program, name);
   DEBUGP(WINDOW_ATTR_DEBUG,"%s",name);
   DEBUGR(WINDOW_ATTR_DEBUG,

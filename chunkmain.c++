@@ -89,10 +89,10 @@ int main(int argc, char *argv[]) {
 
   data.grid=c;
 
-  window->addUniformMat4x4("model",data.model);
-  window->addUniformMat4x4("view",data.view);
-  window->addUniformMat4x4("projection",data.projection);
-  window->addUniformMat4x4("mvp",data.projection*data.view*data.model);
+  window->setUniformMat4x4("model",data.model);
+  window->setUniformMat4x4("view",data.view);
+  window->setUniformMat4x4("projection",data.projection);
+  window->setUniformMat4x4("mvp",data.projection*data.view*data.model);
   
   DEBUGR(MAIN_DEBUG,
     int i;

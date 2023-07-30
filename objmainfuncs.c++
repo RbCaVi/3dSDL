@@ -46,8 +46,8 @@ void onframe(Window *window, void *d){
   data->trans=getTranslation(1*data->mrl,0,0)*data->trans;
   data->trans=getTranslation(0,1*data->mud,0)*data->trans;
   data->model=data->trans*data->rot;
-  window->addUniformMat4x4("model",data->model);
-  window->addUniformMat4x4("mvp",data->projection*data->view*data->model);
+  window->setUniformMat4x4("model",data->model);
+  window->setUniformMat4x4("mvp",data->projection*data->view*data->model);
   
   closedata *cd=cdata.load();
   while(cd!=NULL){
