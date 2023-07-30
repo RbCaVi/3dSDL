@@ -30,6 +30,7 @@ private:
     int *vertnormindexes;
     unsigned int size;
     f(obj* p,int vi[],int vti[],int vni[],unsigned int size);
+    ~f();
   };
 
   struct v{
@@ -99,4 +100,6 @@ public:
   void loadstr(char *path);
 
   renderdata *makeRenderData();
+
+  ~obj();
 };

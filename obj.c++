@@ -14,6 +14,12 @@ obj::f::f(obj* p,int vi[],int vti[],int vni[],unsigned int size):parent(p),
   vertindexes(vi),verttexindexes(vti),vertnormindexes(vni),
   size(size){}
 
+obj::f::f(obj* p,int vi[],int vti[],int vni[],unsigned int size){
+  free(vertindexes);
+  free(verttexindexes);
+  free(vertnormindexes);
+}
+
 obj::v::v(obj* p,float x,float y,float z,float w=1):parent(p),x(x),y(y),z(z),w(w){}
 
 float *obj::v::data(){
@@ -376,4 +382,24 @@ obj::renderdata *obj::makeRenderData(){
   }
   renderdata *r=new renderdata(size,vs.items,vts.items,vns.items);
   return r;
+}
+
+obj::~obj(){
+  int i;
+  for(i=faces->size()-1;i>0;i--){
+    delete (f*)((*faces)[i]);
+  }
+  for(i=verts->size()-1;i>0;i--){
+    delete (v*)((*verts)[i]);
+  }
+  for(i=verttexs->size()-1;i>0;i--){
+    delete (vt*)((*verttexs)[i]);
+  }
+  for(i=vertnorms->size()-1;i>0;i--){
+    delete (vn*)((*vertnorms)[i]);
+  }
+  delete faces;
+  delete verts;
+  delete verttexs;
+  delete vertnorms;
 }
