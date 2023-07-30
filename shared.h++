@@ -10,5 +10,5 @@
 #define DEBUGR(cond,x) void(0)
 #define _DEBUGR(cond,x) void(0)
 #endif
-#define DEBUGP(cond,...) _DEBUGR(_##cond,printf(__VA_ARGS__))
+#define DEBUGP(cond,...) _DEBUGR(_##cond,printf( #cond ": " __VA_ARGS__))
 #endif

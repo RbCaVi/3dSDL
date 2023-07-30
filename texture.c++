@@ -30,6 +30,10 @@ GLchar *readTexture(GLuint texture){
   glGetTexLevelParameteriv(GL_TEXTURE_2D,0,GL_TEXTURE_HEIGHT,&height);
   int size=width*height*3*sizeof(GLchar);
   GLchar *pixels=(GLchar*)malloc(size);
+  DEBUGP(TEX_DEBUG,"tex=%i\n",texture);
+  DEBUGP(TEX_DEBUG,"width=%i\n",width);
+  DEBUGP(TEX_DEBUG,"height=%i\n",height);
+  DEBUGP(TEX_DEBUG,"area=%i\n",width*height);
   DEBUGP(TEX_DEBUG,"size=%i\n",size);
   DEBUGP(TEX_DEBUG,"texerrno=%i\n",errno);
   glGetTexImage(GL_TEXTURE_2D,0,GL_RGB,GL_BYTE,pixels);
