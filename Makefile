@@ -13,7 +13,7 @@ endif
 
 ifdef OPENCV
 	OPENCV_PATH := /opt/opencv
-	compileflags := $(compileflags) -DHAS_OPENCV -i$(OPENCV_PATH)/include
+	compileflags := $(compileflags) -DHAS_OPENCV -isystem$(OPENCV_PATH)/include
 	linkflags := $(linkflags) -Wl,-rpath=$(OPENCV_PATH)/lib -L$(OPENCV_PATH)/lib
 	opencv-libs := -lopencv_core -lopencv_highgui
 endif
@@ -120,5 +120,5 @@ debug-%:
 profile-%:
 	make $* PROFILE=1
 
-with-opencv-%:
+opencv-%:
 	make $* OPENCV=1

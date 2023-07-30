@@ -52,7 +52,10 @@ int main(int argc, char *argv[]) {
   SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
   
   sdata data;
-  window=new Window(WIDTH,HEIGHT,__FILE__,adata.capture,adata.framecount);
+  window=new Window(WIDTH,HEIGHT,__FILE__);
+  if(adata.capture){
+    window->enableSaveFrames(adata.framecount);
+  }
   window->data=(void*)(&data);
   window->onframe=onframe;
   window->onkeydown=onkeydown;

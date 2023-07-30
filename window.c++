@@ -100,10 +100,17 @@ void defaultdraw(Window *w,void*){
   glDrawArrays(GL_TRIANGLES, 0, w->draw_vertices);
 }
 
-Window::Window(int width, int height, const char* name, bool tosaveframes, int frames):
+window_exception::window_exception(const char* message): msg(message) {}
+
+window_exception::~window_exception() noexcept {}
+
+const char* window_exception::what() const noexcept {
+   return msg;
+}
+
+Window::Window(int width, int height, const char* name):
     width(width),height(height),program(0),
     handles_array(NULL),numhandles(0),
-    saveframes(tosaveframes),frameTexture(0),framestosave(frames),framesdone(0),
     draw(&defaultdraw),
     closed(false){
   window = SDL_CreateWindow(name, 0, 0,
@@ -114,11 +121,22 @@ Window::Window(int width, int height, const char* name, bool tosaveframes, int f
   glViewport(0, 0, width, height); // use 0,0,width,height as the rectangle to draw in (x,y,w,h)
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // set the background color
   draw_vertices=12;
-  
-  if(saveframes){
-    Window::setupSaveFrames();
-  }
 }
+
+#if HAS_OPENCV
+void Window::enableSaveFrames(int frames){
+  saveframes=true;
+  frameTexture=0;
+  framestosave=frames;
+  framesdone=0;
+  
+  Window::setupSaveFrames();
+}
+#else
+void Window::enableSaveFrames(int){
+  throw new window_exception("Can't save frames without opencv!");
+}
+#endif
 
 void Window::makeShader(std::filesystem::path vertex_shader_path, std::filesystem::path fragment_shader_path){
   if(program!=0){
@@ -163,18 +181,22 @@ void Window::mainLoop(){
   closed=false;
   
   while (!closed) {
+#if HAS_OPENCV
     if(framestosave>0&&framesdone==framestosave){
       break;
     }
+#endif
     CALL(onframe,this,data);
     DEBUGP(WINDOW_DEBUG,"frame\n");
     glClear(GL_COLOR_BUFFER_BIT // clear the background
         | GL_DEPTH_BUFFER_BIT); // and the depth buffer
     CALL(draw,this,data);
+#if HAS_OPENCV
     if(saveframes){
       DEBUGP(WINDOW_DEBUG,"frame written\n");
       Window::writeFrame();
     }
+#endif
     SDL_GL_SwapWindow(window); // draw the graphics buffer to the screen
     
     SDL_Event event;
@@ -199,7 +221,9 @@ void Window::mainLoop(){
       }
     }
     
+#if HAS_OPENCV
     framesdone++;
+#endif
   }
   
   for(auto attr:handles){
@@ -357,9 +381,11 @@ Window::~Window(){
   SDL_GL_DeleteContext(gl_context);
   SDL_DestroyWindow(window);
   free(handles_array);
-  
+
+#if HAS_OPENCV
   if(saveframes){
     printf("Write complete !\n");
     writer->release();
   }
+#endif
 }
