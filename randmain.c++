@@ -3,6 +3,7 @@
 #include <stddef.h>
 
 #include "random.h++"
+#include "randmain.h++"
 #include "chunk.h++"
 
 int main(){
