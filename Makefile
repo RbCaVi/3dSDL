@@ -69,23 +69,10 @@ chunkmain: chunkmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o f
 	-o $@
 
 clean:
-	rm -f file.o
-	rm -f shaders.o
-	rm -f texture.o
-	rm -f matrix.o
-	rm -f window.o
-	rm -f parseargs.o
-	rm -f obj.o
-	rm -f objmain.o
+	rm -f *.o
 	rm -f objmain
-	rm -f random.o
-	rm -f randmain.o
-	rm -f chunk.o
-	rm -f chunkmain.o
 	rm -f chunkmain
-	rm -f assets.o
-	rm -f getpackedassets.o
-	rm -f packedassets.o
+	rm -f randmain
 	rm -f packedassets.S
 
 debug-%:
