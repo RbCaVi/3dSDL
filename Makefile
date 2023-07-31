@@ -22,48 +22,22 @@ endif
 
 all: objmain randmain chunkmain
 
-file.o: file.c++ file.h++ shared.h++
-	g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
+%.o: %.c++ %.h++ shared.h++
+	 g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
 
-random.o: random.c++ random.h++ shared.h++
-	g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
+window.o: texture.h++ shaders.h++
 
-parseargs.o: parseargs.c++ parseargs.h++ shared.h++
-	g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
+obj.o: file.h++
 
-shaders.o: shaders.c++ shaders.h++ shared.h++
-	g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
+assets.o: file.h++
 
-matrix.o: matrix.c++ matrix.h++ shared.h++
-	g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
+randmain.o: randmain.c++ random.h++ chunk.h++
 
-texture.o: texture.c++ texture.h++ shared.h++
-	g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
+objmain.o: objmainfuncs.c++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ assets.h++
 
-window.o: window.c++ window.h++ texture.h++ shaders.h++ shared.h++
-	g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
-
-chunk.o: chunk.c++ chunk.h++ shared.h++
-	g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
-
-obj.o: obj.c++ obj.h++ file.h++ shared.h++
-	g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
-
-assets.o: assets.c++ assets.h++ file.h++ shared.h++
-	g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
+chunkmain.o: chunkmainfuncs.c++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ assets.h++
 
 packedassets.o: packedassets.S
-	g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
-
-randmain.o: randmain.c++ random.h++ chunk.h++ shared.h++
-	g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
-
-objmain.o: objmain.c++ objmainfuncs.c++ objmain.h++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ assets.h++ shared.h++
-	g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
-
-chunkmain.o: chunkmain.c++ chunkmainfuncs.c++ chunkmain.h++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ assets.h++ shared.h++
-	g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
-
 
 # merge is ld -r a.o b.o -o c.o
 
