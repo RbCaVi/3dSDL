@@ -356,7 +356,7 @@ void Window::setupSaveFrames(){
   const char* fourcc="MP42";
   int codec = CV_FOURCC(fourcc[0],fourcc[1],fourcc[2],fourcc[3]);
   const char* filename = "output/file.avi";
-  cv::Size frameSize(width,height);
+  cv::Size frameSize(height,width);
   writer=new cv::VideoWriter(filename, codec, 60, frameSize, true);
 }
 
@@ -373,8 +373,12 @@ void Window::writeFrame(){
   free(pixels);
   DEBUGP(WINDOW_WRITEFRAME_DEBUG,"free pixels\n");
   glBindFramebuffer(GL_READ_FRAMEBUFFER, frameBuffer);
+  //glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
   glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
   glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+  //glBindFramebuffer(GL_READ_FRAMEBUFFER, frameBuffer);
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
+  //glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 #endif
 

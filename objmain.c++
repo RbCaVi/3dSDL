@@ -17,7 +17,7 @@
 
 #include "objmainfuncs.c++"
 
-static const GLuint WIDTH = 512;
+static const GLuint WIDTH = 511;
 static const GLuint HEIGHT = 512;
 
 void p(argdata adata){
