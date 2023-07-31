@@ -364,12 +364,11 @@ void Window::writeFrame(){
   DEBUGP(WINDOW_WRITEFRAME_DEBUG,"write frame\n");
   GLchar *pixels=readTexture(frameTexture);
   DEBUGP(WINDOW_WRITEFRAME_DEBUG,"got pixels array\n");
-  cv::Mat *image=new cv::Mat(height,width,CV_8UC3,pixels,getRowSize(frameTexture));
+  cv::Mat tmp(height,width,CV_8UC3,pixels,getRowSize(frameTexture)),image;
+  cv::flip(tmp,image,0);
   DEBUGP(WINDOW_WRITEFRAME_DEBUG,"converted to cv::Mat\n");
-  writer->write(*image);
+  writer->write(image);
   DEBUGP(WINDOW_WRITEFRAME_DEBUG,"write frame\n");
-  delete image;
-  DEBUGP(WINDOW_WRITEFRAME_DEBUG,"delete image\n");
   free(pixels);
   DEBUGP(WINDOW_WRITEFRAME_DEBUG,"free pixels\n");
   glBindFramebuffer(GL_READ_FRAMEBUFFER, frameBuffer);
