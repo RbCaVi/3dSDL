@@ -1,4 +1,6 @@
 
+#.SILENT:
+
 flags := -Wall -Wpedantic -pedantic-errors -Wextra
 compileflags := -std=c++20
 linkflags := -Wl,-rpath=/opt/gcc-12.2.0/lib64
@@ -18,8 +20,8 @@ ifdef OPENCV
 	opencv-libs := -lopencv_core -lopencv_highgui
 endif
 
-compilecmd = g++ $(flags) $(compileflags) $(CFLAGS)
-linkcmd = g++ $(flags) $(linkflags) $(CFLAGS)
+compilecmd = g++ $(flags) $(compileflags) $(CXXFLAGS)
+linkcmd = g++ $(flags) $(linkflags) $(LDFLAGS)
 
 .PHONY: all clean packassets unpackassets checkflags
 
@@ -29,10 +31,10 @@ all: objmain randmain chunkmain
 	if test \\\! -f .flags; touch .flags; fi
 
 checkflags: .flags
-	if echo "$(flags)" "$(compileflags)" "$(linkflags)" "$(compilecmd)" "$(linkcmd)" "$(opencv-libs)"|cmp .flags; then \
+	if echo "$(compilecmd)" "$(linkcmd)" "$(opencv-libs)"|cmp .flags; then \
 		:; \
 	else \
-		echo "$(flags)" "$(compileflags)" "$(linkflags)" "$(compilecmd)" "$(linkcmd)" "$(opencv-libs)">.flags; \
+		echo "$(compilecmd)" "$(linkcmd)" "$(opencv-libs)">.flags; \
 		make $(MAKECMDGOALS); \
 	fi
 
@@ -55,7 +57,7 @@ packedassets.o: packedassets.S
 
 # merge is ld -r a.o b.o -o c.o
 
-getpackedassets.o: packedassets.c++
+getpackedassets.o: packedassets.c++|checkflags
 	$(compilecmd) -c packedassets.c++ -o getpackedassets.o
 
 packedassets.S: packassets.sh assets/cat.obj assets/objshader.frag assets/objshader.vert
@@ -67,17 +69,17 @@ packassets: packedassets.o getpackedassets.o
 unpackassets:
 	rm assets.o
 
-randmain: randmain.o random.o chunk.o
+randmain: randmain.o random.o chunk.o|checkflags
 	$(linkcmd) $^ -o $@
 
-objmain: objmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o assets.o
+objmain: objmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o assets.o|checkflags
 	$(linkcmd) $^ \
 	-lSDL2 \
 	-lGL -lGLEW \
 	$(opencv-libs) \
 	-o $@
 
-chunkmain: chunkmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o assets.o chunk.o random.o
+chunkmain: chunkmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o assets.o chunk.o random.o|checkflags
 	$(linkcmd) $^ \
 	-lSDL2 \
 	-lGL -lGLEW \
