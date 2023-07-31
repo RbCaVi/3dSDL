@@ -25,7 +25,18 @@ linkcmd = g++ $(flags) $(linkflags) $(CFLAGS)
 
 all: objmain randmain chunkmain
 
-%.o: %.c++ %.h++ shared.h++
+.flags:
+	if test \\\! -f .flags; touch .flags; fi
+
+checkflags: .flags
+	if echo "$(flags)" "$(compileflags)" "$(linkflags)" "$(compilecmd)" "$(linkcmd)" "$(opencv-libs)"|cmp .flags; then \
+		:; \
+	else \
+		echo "$(flags)" "$(compileflags)" "$(linkflags)" "$(compilecmd)" "$(linkcmd)" "$(opencv-libs)">.flags; \
+		make $(MAKECMDGOALS); \
+	fi
+
+%.o: %.c++ %.h++ shared.h++ .flags|checkflags
 	 $(compilecmd) -c $< -o $@
 
 window.o: texture.h++ shaders.h++

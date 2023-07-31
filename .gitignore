@@ -8,3 +8,4 @@ packedassets.S
 output/
 gmon.out
 *.dat
+.flags
