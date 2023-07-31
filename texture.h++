@@ -15,5 +15,6 @@
 
 //GLuint loadTexture(std::filesystem::path path);
 GLchar *readTexture(GLuint texture);
+int getRowSize(GLuint texture);
 
 #endif

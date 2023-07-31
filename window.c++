@@ -364,7 +364,7 @@ void Window::writeFrame(){
   DEBUGP(WINDOW_WRITEFRAME_DEBUG,"write frame\n");
   GLchar *pixels=readTexture(frameTexture);
   DEBUGP(WINDOW_WRITEFRAME_DEBUG,"got pixels array\n");
-  cv::Mat *image=new cv::Mat(height,width,CV_8UC3,pixels);
+  cv::Mat *image=new cv::Mat(height,width,CV_8UC3,pixels,getRowSize(frameTexture));
   DEBUGP(WINDOW_WRITEFRAME_DEBUG,"converted to cv::Mat\n");
   writer->write(*image);
   DEBUGP(WINDOW_WRITEFRAME_DEBUG,"write frame\n");
