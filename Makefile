@@ -18,12 +18,15 @@ ifdef OPENCV
 	opencv-libs := -lopencv_core -lopencv_highgui
 endif
 
-.PHONY: all clean packassets unpackassets
+compilecmd = g++ $(flags) $(compileflags) $(CFLAGS)
+linkcmd = g++ $(flags) $(linkflags) $(CFLAGS)
+
+.PHONY: all clean packassets unpackassets checkflags
 
 all: objmain randmain chunkmain
 
 %.o: %.c++ %.h++ shared.h++
-	 g++ $(flags) $(compileflags) $(CFLAGS) -c $< -o $@
+	 $(compilecmd) -c $< -o $@
 
 window.o: texture.h++ shaders.h++
 
@@ -41,28 +44,30 @@ packedassets.o: packedassets.S
 
 # merge is ld -r a.o b.o -o c.o
 
+getpackedassets.o: packedassets.c++
+	$(compilecmd) -c packedassets.c++ -o getpackedassets.o
+
 packedassets.S: packassets.sh assets/cat.obj assets/objshader.frag assets/objshader.vert
 	bash packassets.sh packedassets.S cat.obj objshader.frag objshader.vert
 
-packassets: packedassets.o
-	g++ $(flags) $(compileflags) $(CFLAGS) -c packedassets.c++ -o getpackedassets.o
+packassets: packedassets.o getpackedassets.o
 	ld -r getpackedassets.o packedassets.o -o assets.o
 
 unpackassets:
 	rm assets.o
 
 randmain: randmain.o random.o chunk.o
-	g++ $(flags) $(linkflags) $(CFLAGS) $^ -o $@
+	$(linkcmd) $^ -o $@
 
 objmain: objmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o assets.o
-	g++ $(flags) $(linkflags) $(CFLAGS) $^ \
+	$(linkcmd) $^ \
 	-lSDL2 \
 	-lGL -lGLEW \
 	$(opencv-libs) \
 	-o $@
 
 chunkmain: chunkmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o assets.o chunk.o random.o
-	g++ $(flags) $(linkflags) $(CFLAGS) $^ \
+	$(linkcmd) $^ \
 	-lSDL2 \
 	-lGL -lGLEW \
 	$(opencv-libs) \
