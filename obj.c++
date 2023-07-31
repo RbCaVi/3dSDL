@@ -14,7 +14,8 @@ obj::f::f(obj* p,int vi[],int vti[],int vni[],unsigned int size):parent(p),
   vertindexes(vi),verttexindexes(vti),vertnormindexes(vni),
   size(size){}
 
-obj::f::f(obj* p,int vi[],int vti[],int vni[],unsigned int size){
+obj::f::~f(){
+  printf("f deleted");
   free(vertindexes);
   free(verttexindexes);
   free(vertnormindexes);
@@ -347,7 +348,7 @@ void obj::_loadstr(char *source){
   loaded=true;
 }
 
-obj::renderdata *obj::makeRenderData(){
+obj::renderdata obj::makeRenderData(){
   unsigned int i;
   DEBUGR(OBJ_DEBUG,
     auto faces_front = faces->begin();
@@ -374,17 +375,24 @@ obj::renderdata *obj::makeRenderData(){
     for(i=0;i<face->size;i++){
       DEBUGP(OBJ_DEBUG,"%i %i %i\n",face->vertindexes[i],face->verttexindexes[i],face->vertnormindexes[i]);
       DEBUGP(OBJ_DEBUG,"%lu %lu %lu\n",verts->size(),verttexs->size(),vertnorms->size());
-      vs.append((*verts)[face->vertindexes[i]]->data(),4);
-      vts.append((*verttexs)[face->verttexindexes[i]]->data(),3);
-      vns.append((*vertnorms)[face->vertnormindexes[i]]->data(),3);
+      float *vdata=(*verts)[face->vertindexes[i]]->data();
+      float *vtdata=(*verttexs)[face->verttexindexes[i]]->data();
+      float *vndata=(*vertnorms)[face->vertnormindexes[i]]->data();
+      vs.append(vdata,4);
+      vts.append(vtdata,3);
+      vns.append(vndata,3);
+      free(vdata);
+      free(vtdata);
+      free(vndata);
     }
     size+=face->size;
   }
-  renderdata *r=new renderdata(size,vs.items,vts.items,vns.items);
+  renderdata r(size,vs.items,vts.items,vns.items);
   return r;
 }
 
 obj::~obj(){
+  printf("obj deleted");
   int i;
   for(i=faces->size()-1;i>0;i--){
     delete (f*)((*faces)[i]);
@@ -398,6 +406,7 @@ obj::~obj(){
   for(i=vertnorms->size()-1;i>0;i--){
     delete (vn*)((*vertnorms)[i]);
   }
+  printf("%li %li %li %li\n",faces->size(),verts->size(),verttexs->size(),vertnorms->size());
   delete faces;
   delete verts;
   delete verttexs;

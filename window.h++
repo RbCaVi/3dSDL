@@ -88,7 +88,7 @@ public:
   void makeShaderFromSource(char *vertex_shader_source, char *fragment_shader_source);
   void mainLoop();
   void addVertexData(const char* name,GLfloat data[],GLint size,GLint floatspervertex,GLint stride=0);
-  void setUniformMat4x4(const char* name,matrix4x4 &matrix);
+  void setUniformMat4x4(const char* name,const matrix4x4 &matrix);
   void setUniformVec3(const char* name,float *vec);
   void enableSaveFrames(int frames);
 

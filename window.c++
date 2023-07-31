@@ -9,7 +9,7 @@
 #include "texture.h++"
 
 #ifdef DEBUG
-void printArray(GLfloat data[],int length){
+void printArray(const GLfloat data[],int length){
   int i;
   for(i=0;i<length;i++){
     printf("%f ",data[i]);
@@ -111,6 +111,9 @@ const char* window_exception::what() const noexcept {
 Window::Window(int width, int height, const char* name):
     width(width),height(height),program(0),
     handles_array(NULL),numhandles(0),
+#if HAS_OPENCV 
+    saveframes(false),
+#endif
     draw(&defaultdraw),
     closed(false){
   window = SDL_CreateWindow(name, 0, 0,
@@ -250,7 +253,7 @@ void Window::addVertexData(const char* name,GLfloat data[],GLint size,GLint floa
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Window::setUniformMat4x4(const char* name,matrix4x4 &matrix){
+void Window::setUniformMat4x4(const char* name,const matrix4x4 &matrix){
   GLint uniform = glGetUniformLocation(program, name);
   DEBUGP(WINDOW_ATTR_DEBUG,"%s",name);
   DEBUGR(WINDOW_ATTR_DEBUG,

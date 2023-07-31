@@ -46,9 +46,9 @@ matrix4x4 &matrix4x4::operator *(int n){
   return *this;
 }
 
-matrix4x4 &matrix4x4::operator *(matrix4x4 &other){
+matrix4x4 matrix4x4::operator *(matrix4x4 other){
   int i,j,k;
-  matrix4x4 &m=*new matrix4x4();
+  matrix4x4 m;
   for(i=0;i<4;i++){ // row of this
     for(j=0;j<4;j++){ // col of other
       for(k=0;k<4;k++){ // index in row/column
@@ -60,7 +60,7 @@ matrix4x4 &matrix4x4::operator *(matrix4x4 &other){
 }
 
 matrix4x4::~matrix4x4(){
-  free(contents);
+  //free(contents);
 }
 
 

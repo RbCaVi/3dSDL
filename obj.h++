@@ -84,6 +84,7 @@ public:
   private:
     renderdata(int size, float *vs, float *vts, float *vns):size(size),vs(vs),vts(vts),vns(vns){}
 
+  public:
     ~renderdata(){
       free(vs);
       free(vts);
@@ -99,7 +100,7 @@ public:
 
   void loadstr(char *path);
 
-  renderdata *makeRenderData();
+  renderdata makeRenderData();
 
   ~obj();
 };

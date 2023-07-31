@@ -22,7 +22,7 @@ struct matrix4x4{ // a 4x4 column major matrix
   matrix4x4 &operator=(const matrix4x4 &other);
   float &operator [](int i);
   matrix4x4 &operator *(int n);
-  matrix4x4 &operator *(matrix4x4 &other);
+  matrix4x4 operator *(matrix4x4 other);
   ~matrix4x4();
 };
 typedef matrix4x4 matrix4x4;
