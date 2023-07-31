@@ -17,7 +17,7 @@
 
 #include "objmainfuncs.c++"
 
-static const GLuint WIDTH = 511;
+static const GLuint WIDTH = 512;
 static const GLuint HEIGHT = 512;
 
 void p(argdata adata){
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
   data.rot=getIdentity();
   data.trans=getIdentity();
   data.view=getTranslation(0,0,-200);
-  data.projection=getPerspective(45.0f, (float)HEIGHT/WIDTH, 0.1f, 800.0f);
+  data.projection=getPerspective(45.0f, ((float)WIDTH)/HEIGHT, 0.1f, 800.0f);
 
   obj *o=new obj();
   char *objsource=assets::getasset("cat.obj");

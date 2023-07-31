@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
   //data.trans=getIdentity();
   data.model=getIdentity();
   data.view=getTranslation(0,0,-200);
-  data.projection=getPerspective(45.0f, (float)HEIGHT/WIDTH, 0.1f, 800.0f);
+  data.projection=getPerspective(45.0f, ((float)WIDTH)/HEIGHT, 0.1f, 800.0f);
 
   obj o;
   //char *objsource=assets::getasset("cat.obj");

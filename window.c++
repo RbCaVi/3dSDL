@@ -356,7 +356,7 @@ void Window::setupSaveFrames(){
   const char* fourcc="MP42";
   int codec = CV_FOURCC(fourcc[0],fourcc[1],fourcc[2],fourcc[3]);
   const char* filename = "output/file.avi";
-  cv::Size frameSize(height,width);
+  cv::Size frameSize(width,height);
   writer=new cv::VideoWriter(filename, codec, 60, frameSize, true);
 }
 
