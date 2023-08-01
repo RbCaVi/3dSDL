@@ -1,12 +1,13 @@
 #include "shared.h++"
 
+#include "assets.h++"
 #include "obj.h++"
 
-obj_exception::obj_exception(const char* message): msg(message) {}
+obj_exception::obj_exception(const char *message): msg(message) {}
 
 obj_exception::~obj_exception() noexcept {}
 
-const char* obj_exception::what() const noexcept {
+const char *obj_exception::what() const noexcept {
    return msg;
 }
 
@@ -121,7 +122,13 @@ void obj::load(std::filesystem::path path){
   free(s);
 }
 
-void obj::loadstr(char *source){
+void obj::loadasset(const char *asset){
+  char *s=assets::getasset(asset);
+  _loadstr(s);
+  free(s);
+}
+
+void obj::loadstr(const char *source){
   int len=strlen(source);
   char *s=(char*)malloc(len+1);
   strcpy(s,source);

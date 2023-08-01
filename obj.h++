@@ -98,7 +98,8 @@ public:
 
   void load(std::filesystem::path path);
 
-  void loadstr(char *path);
+  void loadstr(const char *path);
+  void loadasset(const char *path);
 
   renderdata makeRenderData();
 

@@ -73,13 +73,9 @@ int main(int argc, char *argv[]) {
   data.view=getTranslation(0,0,-200);
   data.projection=getPerspective(45.0f, ((float)WIDTH)/HEIGHT, 0.1f, 800.0f);
 
-  obj *o=new obj();
-  char *objsource=assets::getasset("cat.obj");
-  o->loadstr(objsource);
-  free(objsource);
-  obj::renderdata rdata=o->makeRenderData();
-
-  delete o;
+  obj o;
+  o.loadasset("cat.obj");
+  obj::renderdata rdata=o.makeRenderData();
 
   window->setUniformMat4x4("model",data.model);
   window->setUniformMat4x4("view",data.view);
