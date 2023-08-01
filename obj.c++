@@ -16,7 +16,7 @@ obj::f::f(obj* p,int vi[],int vti[],int vni[],unsigned int size):parent(p),
   size(size){}
 
 obj::f::~f(){
-  printf("f deleted");
+  DEBUGP(OBJ_DEBUG,"f deleted\n");
   free(vertindexes);
   free(verttexindexes);
   free(vertnormindexes);
@@ -399,7 +399,7 @@ obj::renderdata obj::makeRenderData(){
 }
 
 obj::~obj(){
-  printf("obj deleted");
+  DEBUGP(OBJ_DEBUG,"obj deleted\n");
   int i;
   for(i=faces->size()-1;i>0;i--){
     delete (f*)((*faces)[i]);
@@ -413,7 +413,7 @@ obj::~obj(){
   for(i=vertnorms->size()-1;i>0;i--){
     delete (vn*)((*vertnorms)[i]);
   }
-  printf("%li %li %li %li\n",faces->size(),verts->size(),verttexs->size(),vertnorms->size());
+  DEBUGP(OBJ_DEBUG,"%li %li %li %li\n",faces->size(),verts->size(),verttexs->size(),vertnorms->size());
   delete faces;
   delete verts;
   delete verttexs;
