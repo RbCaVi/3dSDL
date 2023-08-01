@@ -2,6 +2,8 @@
 #define ASSETS_H
 #include "shared.h++"
 
+#include <filesystem>
+
 #ifdef ASSETS_DEBUG
 #define _ASSETS_DEBUG 1
 #else

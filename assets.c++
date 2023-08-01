@@ -1,7 +1,5 @@
 #include "shared.h++"
 
-#include <filesystem>
-
 #include "file.h++"
 #include "assets.h++"
 
