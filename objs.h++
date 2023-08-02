@@ -82,7 +82,7 @@ public:
     float *vns; // packed (stride 3)
 
   private:
-    renderdata(int size, float *vs, float *vts, float *vns):size(size),vs(vs),vts(vts),vns(vns){}
+    renderdata(int *sizes, int *lengths, float *vs, float *vts, float *vns);
 
   public:
     ~renderdata(){

@@ -355,6 +355,8 @@ void objs::_loadstr(char *source){
   loaded=true;
 }
 
+objs::renderdata::renderdata(int *sizes, int *lengths, float *vs, float *vts, float *vns):sizes(sizes),lengths(lengths),vs(vs),vts(vts),vns(vns){}
+
 objs::renderdata objs::makeRenderData(){
   unsigned int i;
   DEBUGR(OBJ_DEBUG,
