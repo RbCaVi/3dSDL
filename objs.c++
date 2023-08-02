@@ -3,28 +3,28 @@
 #include "assets.h++"
 #include "objs.h++"
 
-obj_exception::obj_exception(const char *message): msg(message) {}
+objs_exception::objs_exception(const char *message): msg(message) {}
 
-obj_exception::~obj_exception() noexcept {}
+objs_exception::~objs_exception() noexcept {}
 
-const char *obj_exception::what() const noexcept {
+const char *objs_exception::what() const noexcept {
    return msg;
 }
 
-obj::f::f(obj* p,int vi[],int vti[],int vni[],unsigned int size):parent(p),
+objs::f::f(objs* p,int vi[],int vti[],int vni[],unsigned int size):parent(p),
   vertindexes(vi),verttexindexes(vti),vertnormindexes(vni),
   size(size){}
 
-obj::f::~f(){
+objs::f::~f(){
   DEBUGP(OBJ_DEBUG,"f deleted\n");
   free(vertindexes);
   free(verttexindexes);
   free(vertnormindexes);
 }
 
-obj::v::v(obj* p,float x,float y,float z,float w=1):parent(p),x(x),y(y),z(z),w(w){}
+objs::v::v(objs* p,float x,float y,float z,float w=1):parent(p),x(x),y(y),z(z),w(w){}
 
-float *obj::v::data(){
+float *objs::v::data(){
   float* d=(float*)malloc(4*sizeof(float));
   d[0]=x;
   d[1]=y;
@@ -33,9 +33,9 @@ float *obj::v::data(){
   return d;
 }
 
-obj::vt::vt(obj* p,float u,float v=0,float w=0):parent(p),u(u),v(v),w(w){}
+objs::vt::vt(objs* p,float u,float v=0,float w=0):parent(p),u(u),v(v),w(w){}
 
-float *obj::vt::data(){
+float *objs::vt::data(){
   float* d=(float*)malloc(3*sizeof(float));
   d[0]=u;
   d[1]=v;
@@ -43,14 +43,14 @@ float *obj::vt::data(){
   return d;
 }
 
-obj::vn::vn(obj* p,float x,float y,float z):parent(p),x(x),y(y),z(z){
+objs::vn::vn(objs* p,float x,float y,float z):parent(p),x(x),y(y),z(z){
   float di=1.0/sqrt(x*x+y*y+z*z);
   x*=di;
   y*=di;
   z*=di;
 }
 
-float *obj::vn::data(){
+float *objs::vn::data(){
   float* d=(float*)malloc(3*sizeof(float));
   d[0]=x;
   d[1]=y;
@@ -108,27 +108,27 @@ public:
   }
 };
 
-obj::obj():loaded(false){
+objs::objs():loaded(false){
   faces=new std::vector<f*>();
   verts=new std::vector<v*>();
   verttexs=new std::vector<vt*>();
   vertnorms=new std::vector<vn*>();
 }
 
-void obj::load(std::filesystem::path path){
+void objs::load(std::filesystem::path path){
   DEBUGP(OBJ_DEBUG,"loading %s\n",path.string().c_str());
   char *s=pathtobuf(path);
   _loadstr(s);
   free(s);
 }
 
-void obj::loadasset(const char *asset){
+void objs::loadasset(const char *asset){
   char *s=assets::getasset(asset);
   _loadstr(s);
   free(s);
 }
 
-void obj::loadstr(const char *source){
+void objs::loadstr(const char *source){
   int len=strlen(source);
   char *s=(char*)malloc(len+1);
   strcpy(s,source);
@@ -136,9 +136,9 @@ void obj::loadstr(const char *source){
   free(s);
 }
 
-void obj::_loadstr(char *source){
+void objs::_loadstr(char *source){
   if(loaded){
-    throw new obj_exception("Cannot load twice");
+    throw new objs_exception("Cannot load twice");
   }
   char *data=source;
   char *start=data;
@@ -207,7 +207,7 @@ void obj::_loadstr(char *source){
         str=ss;
       }
       if(i<3){
-        throw obj_exception("Error in 'v': Not enough coords\n");
+        throw objs_exception("Error in 'v': Not enough coords\n");
       }
       if(i<4){
         f[3]=1.0;
@@ -230,7 +230,7 @@ void obj::_loadstr(char *source){
         str=ss;
       }
       if(i<1){
-        throw obj_exception("Error in 'vt': Not enough coords\n");
+        throw objs_exception("Error in 'vt': Not enough coords\n");
       }
       vt *verttex=new vt(this,f[0],f[1],f[2]);
       verttexs->push_back(verttex);
@@ -247,7 +247,7 @@ void obj::_loadstr(char *source){
         str=ss;
       }
       if(i<3){
-        throw obj_exception("Error in 'vn': Not enough coords\n");
+        throw objs_exception("Error in 'vn': Not enough coords\n");
       }
       vn *vertnorm=new vn(this,f[0],f[1],f[2]);
       vertnorms->push_back(vertnorm);
@@ -277,7 +277,7 @@ void obj::_loadstr(char *source){
         }
         val=strtol(str,&ss,0);
         if(str==ss){
-          throw obj_exception("No vertex index");
+          throw objs_exception("No vertex index");
           val=0;
         }
         vil.push_back(val);
@@ -355,7 +355,7 @@ void obj::_loadstr(char *source){
   loaded=true;
 }
 
-obj::renderdata obj::makeRenderData(){
+objs::renderdata objs::makeRenderData(){
   unsigned int i;
   DEBUGR(OBJ_DEBUG,
     auto faces_front = faces->begin();
@@ -377,7 +377,7 @@ obj::renderdata obj::makeRenderData(){
     DEBUGP(OBJ_DEBUG,"%i ",face->size);
     DEBUGP(OBJ_DEBUG,"%i\n",face->vertindexes[0]);
     if(face->size!=3){
-      throw obj_exception("There is a non triangular face\n");
+      throw objs_exception("There is a non triangular face\n");
     }
     for(i=0;i<face->size;i++){
       DEBUGP(OBJ_DEBUG,"%i %i %i\n",face->vertindexes[i],face->verttexindexes[i],face->vertnormindexes[i]);
@@ -398,8 +398,8 @@ obj::renderdata obj::makeRenderData(){
   return r;
 }
 
-obj::~obj(){
-  DEBUGP(OBJ_DEBUG,"obj deleted\n");
+objs::~objs(){
+  DEBUGP(OBJ_DEBUG,"objs deleted\n");
   int i;
   for(i=faces->size()-1;i>0;i--){
     delete (f*)((*faces)[i]);

@@ -12,50 +12,50 @@
 #define _OBJ_DEBUG 0
 #endif
 
-class obj_exception: public std::exception{
+class objs_exception: public std::exception{
 public:
-  explicit obj_exception(const char* message);
-  virtual ~obj_exception() noexcept;
+  explicit objs_exception(const char* message);
+  virtual ~objs_exception() noexcept;
   virtual const char* what() const noexcept;
 
   const char* msg;
 };
 
-class obj{
+class objs{
 private:
   struct f{
-    const obj* parent;
+    const objs* parent;
     int *vertindexes;
     int *verttexindexes;
     int *vertnormindexes;
     unsigned int size;
-    f(obj* p,int vi[],int vti[],int vni[],unsigned int size);
+    f(objs* p,int vi[],int vti[],int vni[],unsigned int size);
     ~f();
   };
 
   struct v{
-    const obj* parent;
+    const objs* parent;
     float x,y,z,w;
 
-    v(obj* p,float x,float y,float z,float w);
+    v(objs* p,float x,float y,float z,float w);
 
     float *data();
   };
 
   struct vt{
-    const obj* parent;
+    const objs* parent;
     float u,v,w;
 
-    vt(obj* p,float u,float v,float w);
+    vt(objs* p,float u,float v,float w);
 
     float *data();
   };
 
   struct vn{
-    const obj* parent;
+    const objs* parent;
     float x,y,z;
 
-    vn(obj* p,float x,float y,float z);
+    vn(objs* p,float x,float y,float z);
 
     float *data();
   };
@@ -91,10 +91,10 @@ public:
       free(vns);
     }
 
-    friend obj;
+    friend objs;
   };
 
-  obj();
+  objs();
 
   void load(std::filesystem::path path);
 
@@ -103,5 +103,5 @@ public:
 
   renderdata makeRenderData();
 
-  ~obj();
+  ~objs();
 };
