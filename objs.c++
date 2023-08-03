@@ -143,6 +143,7 @@ void objs::loadstr(const char *source){
 }
 
 void objs::_loadstr(char *source){
+  // the -1 is to account for the extra 'null' vertex at the start
   int voffset=verts->size()-1;
   int vtoffset=verttexs->size()-1;
   int vnoffset=vertnorms->size()-1;
