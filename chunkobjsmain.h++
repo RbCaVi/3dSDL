@@ -6,6 +6,7 @@
 #include "matrix.h++"
 #include "window.h++"
 #include "chunk.h++"
+#include "objs.h++"
 
 #ifdef MAIN_DEBUG
 #define _MAIN_DEBUG 1
@@ -32,7 +33,8 @@ struct sdata{
   //float horizAngle;
   //float vertAngle;
   float forward=0;
-  chunk<bool> *grid;
+  chunk<int> *grid;
+  objs::renderdata *blocks;
 };
 typedef sdata sdata;
 

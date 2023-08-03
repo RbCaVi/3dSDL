@@ -66,12 +66,13 @@ void onframe(Window *window, void *d){
 
 void draw(Window *window, void *d){
   sdata *data=(sdata*)d;
-  chunk<bool> *c=data->grid;
+  chunk<int> *c=data->grid;
   int i,j,k;
   for(i=0;i<5;i++){
     for(j=0;j<5;j++){
       for(k=0;k<5;k++){
-        if((*c)[i][j][k]){
+        int v=(*c)[i][j][k];
+        if(v!=0){
           float *vec=(float*)malloc(3*sizeof(float));
           //vec[0]=i*30;
           //vec[1]=j*100;
@@ -80,7 +81,7 @@ void draw(Window *window, void *d){
           vec[1]=j;
           vec[2]=k;
           window->setUniformVec3("position",vec);
-          glDrawArrays(GL_TRIANGLES, 0, window->draw_vertices);
+          glDrawArrays(GL_TRIANGLES, data->blocks->starts[v-1], data->blocks->lengths[v-1]);
         }
       }
     }
