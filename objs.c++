@@ -359,7 +359,12 @@ void objs::_loadstr(char *source){
   facestartidxs->push_back(faces->size());
 }
 
-objs::renderdata::renderdata(int *sizes, int *lengths, float *vs, float *vts, float *vns):sizes(sizes),lengths(lengths),vs(vs),vts(vts),vns(vns){}
+objs::renderdata::renderdata(int numberofshapes,int *sizes, int *lengths, float *vs, float *vts, float *vns):numberofshapes(numberofshapes),sizes(sizes),lengths(lengths),vs(vs),vts(vts),vns(vns),totalsize(0){
+  int i;
+  for(i=0;i<numberofshapes;i++){
+    totalsize+=sizes[i];
+  }
+}
 
 objs::renderdata objs::makeRenderData(){
   unsigned int i;
@@ -409,8 +414,12 @@ objs::renderdata objs::makeRenderData(){
       size=0;
     }
   }
-  renderdata r(starts,lengths,vs.items,vts.items,vns.items);
+  renderdata r(facestartidxs->size(),starts,lengths,vs,vts,vns);
   return r;
+}
+
+int objs::renderdata::size(){
+  return totalsize;
 }
 
 objs::~objs(){

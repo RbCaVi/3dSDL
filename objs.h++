@@ -75,14 +75,17 @@ private:
 
 public:
   struct renderdata{
+  public:
+    int numberofshapes;
     int *sizes; // number of points
     int *lengths;
     float *vs; // packed (stride 4)
     float *vts; // packed (stride 3)
     float *vns; // packed (stride 3)
+    int totalsize;
 
   private:
-    renderdata(int *sizes, int *lengths, float *vs, float *vts, float *vns);
+    renderdata(int numberofshapes,int *sizes, int *lengths, float *vs, float *vts, float *vns);
 
   public:
     ~renderdata(){
@@ -90,6 +93,8 @@ public:
       free(vts);
       free(vns);
     }
+
+    int size();
 
     friend objs;
   };

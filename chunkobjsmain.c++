@@ -12,7 +12,7 @@
 #include "window.h++"
 #include "matrix.h++"
 #include "parseargs.h++"
-#include "obj.h++"
+#include "objs.h++"
 #include "assets.h++"
 #include "random.h++"
 
@@ -76,9 +76,9 @@ int main(int argc, char *argv[]) {
   data.view=getTranslation(0,0,-200);
   data.projection=getPerspective(45.0f, ((float)WIDTH)/HEIGHT, 0.1f, 800.0f);
 
-  obj o;
+  objs o;
   o.loadasset("cube.obj");
-  obj::renderdata rdata=o.makeRenderData();
+  objs::renderdata rdata=o.makeRenderData();
 
   Rand *r=new randchance(0.2);
   chunk<bool> *c=new chunk<bool>(5,5,5);
@@ -100,14 +100,14 @@ int main(int argc, char *argv[]) {
   
   DEBUGR(MAIN_DEBUG,
     int i;
-    for(i=0;i<rdata.size*4;i+=4){
+    for(i=0;i<rdata.size()*4;i+=4){
       printf("vertex coord (%f,%f,%f,%f)\n",rdata.vs[i],rdata.vs[i+1],rdata.vs[i+2],rdata.vs[i+3]);
     }
   );
-  window->draw_vertices=rdata.size*4;
-  window->addVertexData("coord",rdata.vs,rdata.size*4*sizeof(float),3,4*sizeof(float));
-  window->addVertexData("normal",rdata.vns,rdata.size*3*sizeof(float),3);
-  DEBUGP(MAIN_DEBUG,"vertex count %i\n",rdata.size);
+  window->draw_vertices=rdata.size();
+  window->addVertexData("coord",rdata.vs,rdata.sizes[0]*4*sizeof(float),3,4*sizeof(float));
+  window->addVertexData("normal",rdata.vns,rdata.sizes[0]*3*sizeof(float),3);
+  DEBUGP(MAIN_DEBUG,"vertex count %i\n",rdata.size());
   
   window->mainLoop();
   
