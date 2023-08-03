@@ -108,11 +108,17 @@ public:
   }
 };
 
-objs::objs():loaded(false){
+objs::objs(){
   faces=new std::vector<f*>();
   verts=new std::vector<v*>();
   verttexs=new std::vector<vt*>();
   vertnorms=new std::vector<vn*>();
+  facestartidxs=new std::vector<int>();
+
+  verts->push_back(new v(0,0,0,0));
+  verttexs->push_back(new vt(0,0,0));
+  vertnorms->push_back(new vn(0,0,0,0));
+  facestartidxs->push_back(0);
 }
 
 void objs::load(std::filesystem::path path){
@@ -137,15 +143,8 @@ void objs::loadstr(const char *source){
 }
 
 void objs::_loadstr(char *source){
-  if(loaded){
-    throw new objs_exception("Cannot load twice");
-  }
   char *data=source;
   char *start=data;
-
-  verts->push_back(new v(0,0,0,0));
-  verttexs->push_back(new vt(0,0,0));
-  vertnorms->push_back(new vn(0,0,0,0));
 
   // for each line
   while (true){
@@ -352,7 +351,7 @@ void objs::_loadstr(char *source){
     for (auto const &v : *faces) printf("f %i\n",v->size);
     printf("\n");
   );
-  loaded=true;
+  facestartidxs->push_back(faces->size());
 }
 
 objs::renderdata::renderdata(int *sizes, int *lengths, float *vs, float *vts, float *vns):sizes(sizes),lengths(lengths),vs(vs),vts(vts),vns(vns){}
@@ -373,8 +372,12 @@ objs::renderdata objs::makeRenderData(){
   );
 
   int size=0;
+  int startsi=1;
+  int fi=0;
+  dynamiclist<int> starts,lengths;
   dynamiclist<float> vs,vts,vns;
   for(auto const &face:*faces){
+    fi++;
     DEBUGP(OBJ_DEBUG,"face - %lu ",(unsigned long)face);
     DEBUGP(OBJ_DEBUG,"%i ",face->size);
     DEBUGP(OBJ_DEBUG,"%i\n",face->vertindexes[0]);
@@ -395,8 +398,13 @@ objs::renderdata objs::makeRenderData(){
       free(vndata);
     }
     size+=face->size;
+    if(fi==(*facestartidxs)[startsi]){
+      starts.append(vs.getLength()/4);
+      lengths.append(size);
+      size=0;
+    }
   }
-  renderdata r(size,vs.items,vts.items,vns.items);
+  renderdata r(starts,lengths,vs.items,vts.items,vns.items);
   return r;
 }
 
@@ -420,4 +428,5 @@ objs::~objs(){
   delete verts;
   delete verttexs;
   delete vertnorms;
+  delete facestartidxs;
 }

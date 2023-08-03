@@ -69,14 +69,14 @@ private:
   std::vector<v*> *verts;
   std::vector<vt*> *verttexs;
   std::vector<vn*> *vertnorms;
+  std::vector<int> *facestartidxs;
 
   void _loadstr(char *source);
 
-  bool loaded;
-
 public:
   struct renderdata{
-    int size; // number of points
+    int *sizes; // number of points
+    int *lengths;
     float *vs; // packed (stride 4)
     float *vts; // packed (stride 3)
     float *vns; // packed (stride 3)
