@@ -45,6 +45,8 @@ window.o: texture.h++ shaders.h++
 
 obj.o: file.h++
 
+objs.o: file.h++
+
 assets.o: file.h++
 
 randmain.o: randmain.c++ random.h++ chunk.h++
@@ -80,6 +82,13 @@ objmain: objmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.
 	-o $@
 
 chunkmain: chunkmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o assets.o chunk.o random.o|checkflags
+	$(linkcmd) $^ \
+	-lSDL2 \
+	-lGL -lGLEW \
+	$(opencv-libs) \
+	-o $@
+
+chunkobjsmain: chunkobjsmain.o shaders.o window.o matrix.o texture.o parseargs.o objs.o file.o assets.o chunk.o random.o|checkflags
 	$(linkcmd) $^ \
 	-lSDL2 \
 	-lGL -lGLEW \
