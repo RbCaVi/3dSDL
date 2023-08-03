@@ -69,7 +69,7 @@ template<typename T>
 plane<T>::plane(T *data,size_t ysize,size_t zsize):ysize(ysize),zsize(zsize),data(data){}
 
 template<typename T>
-chunk<T>::chunk(size_t xsize,size_t ysize,size_t zsize):xsize(xsize),ysize(ysize),zsize(zsize),data((bool*)malloc(xsize*ysize*zsize*sizeof(T))){}
+chunk<T>::chunk(size_t xsize,size_t ysize,size_t zsize):xsize(xsize),ysize(ysize),zsize(zsize),data((T*)malloc(xsize*ysize*zsize*sizeof(T))){}
 
 template<typename T>
 T &line<T>::operator[](size_t z){
