@@ -25,7 +25,7 @@ linkcmd = g++ $(flags) $(linkflags) $(LDFLAGS)
 
 .PHONY: all clean packassets unpackassets checkflags
 
-all: objmain randmain chunkmain
+all: objmain randmain chunkobjsmain
 
 .flags:
 	if test \\\! -f .flags; touch .flags; fi
@@ -53,8 +53,6 @@ randmain.o: randmain.c++ random.h++ chunk.h++
 
 objmain.o: objmainfuncs.c++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ assets.h++
 
-chunkmain.o: chunkmainfuncs.c++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ assets.h++
-
 packedassets.o: packedassets.S
 
 # merge is ld -r a.o b.o -o c.o
@@ -81,13 +79,6 @@ objmain: objmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.
 	$(opencv-libs) \
 	-o $@
 
-chunkmain: chunkmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o assets.o chunk.o random.o|checkflags
-	$(linkcmd) $^ \
-	-lSDL2 \
-	-lGL -lGLEW \
-	$(opencv-libs) \
-	-o $@
-
 chunkobjsmain: chunkobjsmain.o shaders.o window.o matrix.o texture.o parseargs.o objs.o file.o assets.o chunk.o random.o|checkflags
 	$(linkcmd) $^ \
 	-lSDL2 \
@@ -98,7 +89,7 @@ chunkobjsmain: chunkobjsmain.o shaders.o window.o matrix.o texture.o parseargs.o
 clean:
 	rm -f *.o
 	rm -f objmain
-	rm -f chunkmain
+	rm -f chunkobjsmain
 	rm -f randmain
 	rm -f packedassets.S
 
