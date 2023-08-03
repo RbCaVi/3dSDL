@@ -359,10 +359,10 @@ void objs::_loadstr(char *source){
   facestartidxs->push_back(faces->size());
 }
 
-objs::renderdata::renderdata(int numberofshapes,int *sizes, int *lengths, float *vs, float *vts, float *vns):numberofshapes(numberofshapes),sizes(sizes),lengths(lengths),vs(vs),vts(vts),vns(vns),totalsize(0){
+objs::renderdata::renderdata(int numberofshapes,int *starts, int *lengths, float *vs, float *vts, float *vns):numberofshapes(numberofshapes),starts(starts),lengths(lengths),vs(vs),vts(vts),vns(vns),totalsize(0){
   int i;
   for(i=0;i<numberofshapes;i++){
-    totalsize+=sizes[i];
+    totalsize+=lengths[i];
   }
 }
 
@@ -382,10 +382,11 @@ objs::renderdata objs::makeRenderData(){
   );
 
   int size=0;
-  int startsi=1;
+  unsigned int startsi=1;
   int fi=0;
   dynamiclist<int> starts,lengths;
   dynamiclist<float> vs,vts,vns;
+  starts.append(0);
   for(auto const &face:*faces){
     fi++;
     DEBUGP(OBJ_DEBUG,"face - %lu ",(unsigned long)face);
@@ -395,8 +396,8 @@ objs::renderdata objs::makeRenderData(){
       throw objs_exception("There is a non triangular face\n");
     }
     for(i=0;i<face->size;i++){
-      DEBUGP(OBJ_DEBUG,"%i %i %i\n",face->vertindexes[i],face->verttexindexes[i],face->vertnormindexes[i]);
-      DEBUGP(OBJ_DEBUG,"%lu %lu %lu\n",verts->size(),verttexs->size(),vertnorms->size());
+      DEBUGP(OBJ_DEBUG,"vertex indices: %i %i %i\n",face->vertindexes[i],face->verttexindexes[i],face->vertnormindexes[i]);
+      DEBUGP(OBJ_DEBUG,"vertex list lengths: %lu %lu %lu\n",verts->size(),verttexs->size(),vertnorms->size());
       float *vdata=(*verts)[face->vertindexes[i]]->data();
       float *vtdata=(*verttexs)[face->verttexindexes[i]]->data();
       float *vndata=(*vertnorms)[face->vertnormindexes[i]]->data();
@@ -409,12 +410,15 @@ objs::renderdata objs::makeRenderData(){
     }
     size+=face->size;
     if(fi==(*facestartidxs)[startsi]){
-      starts.append(vs.getLength()/4);
+      if(startsi<facestartidxs->size()-1){
+        starts.append(vs.getLength()/4);
+      }
       lengths.append(size);
       size=0;
+      startsi++;
     }
   }
-  renderdata r(facestartidxs->size(),starts,lengths,vs,vts,vns);
+  renderdata r(facestartidxs->size()-1,starts,lengths,vs,vts,vns);
   return r;
 }
 

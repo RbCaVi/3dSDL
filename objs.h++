@@ -77,15 +77,15 @@ public:
   struct renderdata{
   public:
     int numberofshapes;
-    int *sizes; // number of points
-    int *lengths;
+    int *starts; // start index for each shape
+    int *lengths; // number of points in each shape
     float *vs; // packed (stride 4)
     float *vts; // packed (stride 3)
     float *vns; // packed (stride 3)
     int totalsize;
 
   private:
-    renderdata(int numberofshapes,int *sizes, int *lengths, float *vs, float *vts, float *vns);
+    renderdata(int numberofshapes,int *starts, int *lengths, float *vs, float *vts, float *vns);
 
   public:
     ~renderdata(){
