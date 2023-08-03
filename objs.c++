@@ -143,6 +143,10 @@ void objs::loadstr(const char *source){
 }
 
 void objs::_loadstr(char *source){
+  int voffset=verts->size()-1;
+  int vtoffset=verttexs->size()-1;
+  int vnoffset=vertnorms->size()-1;
+
   char *data=source;
   char *start=data;
 
@@ -279,7 +283,7 @@ void objs::_loadstr(char *source){
           throw objs_exception("No vertex index");
           val=0;
         }
-        vil.push_back(val);
+        vil.push_back(val+voffset);
         slash=strchr(str,'/');
         if(slash==NULL){
           str=space+1;
@@ -292,7 +296,7 @@ void objs::_loadstr(char *source){
         if(str==ss){
           val=0;
         }
-        vtil.push_back(val);
+        vtil.push_back(val+vtoffset);
         slash=strchr(str,'/');
         if(slash==NULL){
           str=space+1;
@@ -304,7 +308,7 @@ void objs::_loadstr(char *source){
         if(str==ss){
           val=0;
         }
-        vnil.push_back(val);
+        vnil.push_back(val+vnoffset);
         str=space+1;
       }
       unsigned int i;
