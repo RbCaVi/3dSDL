@@ -8,7 +8,10 @@
 
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
+
+#if HAS_OPENCV
 #include <opencv2/highgui/highgui.hpp>
+#endif
 
 #include "matrix.h++"
 

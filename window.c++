@@ -111,7 +111,7 @@ const char* window_exception::what() const noexcept {
 Window::Window(int width, int height, const char* name):
     width(width),height(height),program(0),
     handles_array(NULL),numhandles(0),
-#if HAS_OPENCV 
+#if HAS_OPENCV
     saveframes(false),
 #endif
     draw(&defaultdraw),

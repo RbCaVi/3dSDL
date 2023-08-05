@@ -2,7 +2,7 @@
 #.SILENT:
 
 flags := -Wall -Wpedantic -pedantic-errors -Wextra
-compileflags := -std=c++20
+compileflags := -std=c++2a
 linkflags := -Wl,-rpath=/opt/gcc-12.2.0/lib64
 
 ifdef DEBUG
