@@ -2,7 +2,7 @@
 #.SILENT:
 
 flags := -Wall -Wpedantic -pedantic-errors -Wextra
-compileflags := -std=c++2a
+compileflags := -std=c++2a -I.
 linkflags := -Wl,-rpath=/opt/gcc-12.2.0/lib64
 
 ifdef DEBUG
@@ -25,10 +25,10 @@ linkcmd = g++ $(flags) $(linkflags) $(LDFLAGS)
 
 .PHONY: all clean packassets unpackassets checkflags
 
-all: objmain randmain chunkobjsmain
+all: out/objmain out/randmain out/chunkmain
 
 .flags:
-	if test \\\! -f .flags; touch .flags; fi
+	if test \\\! -f .flags; then touch .flags; fi
 
 checkflags: .flags
 	if echo "$(compilecmd)" "$(linkcmd)" "$(opencv-libs)"|cmp .flags; then \
@@ -47,51 +47,60 @@ obj.o: file.h++
 
 objs.o: file.h++
 
-assets.o: file.h++
+assets/assets.o: file.h++ out/assets
 
-randmain.o: randmain.c++ random.h++ chunk.h++
+randmain/randmain.o: randmain/randmain.c++ random.h++ chunk.h++
 
-objmain.o: objmainfuncs.c++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ assets.h++
+objmain/objmain.o: objmain/objmainfuncs.c++ window.h++ shaders.h++ matrix.h++ parseargs.h++ obj.h++ assets/assets.h++
 
-packedassets.o: packedassets.S
+chunkmain/chunkmain.o: chunkmain/chunkmainfuncs.c++ chunkmain/chunkmain.h++ assets/assets.h++ parseargs.h++ shaders.h++ window.h++ matrix.h++ random.h++ chunk.h++ objs.h++
+
+assets/packedassets.o: assets/packedassets.S
 
 # merge is ld -r a.o b.o -o c.o
 
-getpackedassets.o: packedassets.c++|checkflags
-	$(compilecmd) -c packedassets.c++ -o getpackedassets.o
+assets/getpackedassets.o: assets/packedassets.c++|checkflags
+	$(compilecmd) -c assets/packedassets.c++ -o assets/getpackedassets.o
 
-packedassets.S: packassets.sh assets/cat.obj assets/objshader.frag assets/objshader.vert
-	bash packassets.sh packedassets.S cat.obj objshader.frag objshader.vert
+assets/packedassets.S: assets/packassets.sh assets/assets/cat.obj assets/assets/objshader.frag assets/assets/objshader.vert
+	bash assets/packassets.sh assets/packedassets.S assets/cat.obj assets/objshader.frag assets/objshader.vert
 
-packassets: packedassets.o getpackedassets.o
-	ld -r getpackedassets.o packedassets.o -o assets.o
+packassets: assets/packedassets.o assets/getpackedassets.o
+	ld -r assets/getpackedassets.o assets/packedassets.o -o assets/assets.o
 
 unpackassets:
-	rm assets.o
+	rm assets/assets.o
 
-randmain: randmain.o random.o chunk.o|checkflags
+out/randmain: randmain/randmain.o random.o chunk.o|checkflags
 	$(linkcmd) $^ -o $@
 
-objmain: objmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o assets.o|checkflags
+out/objmain: objmain/objmain.o shaders.o window.o matrix.o texture.o parseargs.o obj.o file.o assets/assets.o|checkflags
 	$(linkcmd) $^ \
 	-lSDL2 \
 	-lGL -lGLEW \
 	$(opencv-libs) \
 	-o $@
 
-chunkobjsmain: chunkobjsmain.o shaders.o window.o matrix.o texture.o parseargs.o objs.o file.o assets.o chunk.o random.o|checkflags
+out/chunkmain: chunkmain/chunkmain.o shaders.o window.o matrix.o texture.o parseargs.o objs.o file.o assets/assets.o chunk.o random.o|checkflags
 	$(linkcmd) $^ \
 	-lSDL2 \
 	-lGL -lGLEW \
 	$(opencv-libs) \
 	-o $@
+
+out:
+	mkdir -p out
+
+out/assets: out assets/assets/*
+	cp -r assets/assets out
 
 clean:
 	rm -f *.o
-	rm -f objmain
-	rm -f chunkobjsmain
-	rm -f randmain
-	rm -f packedassets.S
+	rm -f */*.o
+	rm -f out/objmain
+	rm -f out/chunkmain
+	rm -f out/randmain
+	rm -f assets/packedassets.S
 
 debug-%:
 	make $* DEBUG=1

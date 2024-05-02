@@ -1,8 +1,5 @@
 *.o
-objmain
-randmain
-chunkmain
-chunkobjsmain
+out/
 a.out
 token
 packedassets.S
