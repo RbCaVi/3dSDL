@@ -4,7 +4,7 @@
 
 #include <SDL2/SDL.h>
 
-#include "chunkobjsmain.h++"
+#include "chunkmain.h++"
 #include "window.h++"
 
 struct closedata{

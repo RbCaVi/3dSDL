@@ -7,7 +7,7 @@
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 
-#include "chunkobjsmain.h++"
+#include "chunkmain.h++"
 #include "shaders.h++"
 #include "window.h++"
 #include "matrix.h++"
@@ -15,7 +15,7 @@
 #include "assets/assets.h++"
 #include "random.h++"
 
-#include "chunkobjsmainfuncs.c++"
+#include "chunkmainfuncs.c++"
 
 static const GLuint WIDTH = 512;
 static const GLuint HEIGHT = 512;
