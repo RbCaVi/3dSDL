@@ -12,7 +12,7 @@
 #include "window.h++"
 #include "matrix.h++"
 #include "parseargs.h++"
-#include "assets.h++"
+#include "assets/assets.h++"
 #include "random.h++"
 
 #include "chunkobjsmainfuncs.c++"

@@ -1,7 +1,7 @@
 #include "shared.h++"
 
 #include "assets.h++"
-#include "objs.h++"
+#include "assets/objs.h++"
 
 objs_exception::objs_exception(const char *message): msg(message) {}
 

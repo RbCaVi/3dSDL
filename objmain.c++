@@ -13,7 +13,7 @@
 #include "matrix.h++"
 #include "parseargs.h++"
 #include "obj.h++"
-#include "assets.h++"
+#include "assets/assets.h++"
 
 #include "objmainfuncs.c++"
 

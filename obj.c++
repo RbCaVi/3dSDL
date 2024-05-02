@@ -1,6 +1,6 @@
 #include "shared.h++"
 
-#include "assets.h++"
+#include "assets/assets.h++"
 #include "obj.h++"
 
 obj_exception::obj_exception(const char *message): msg(message) {}
