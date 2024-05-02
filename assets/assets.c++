@@ -1,7 +1,7 @@
 #include "shared.h++"
 
 #include "file.h++"
-#include "assets.h++"
+#include "assets/assets.h++"
 
 std::filesystem::path root;
 
