@@ -55,6 +55,8 @@ objmain/objmain.o: objmain/objmainfuncs.c++ window.h++ shaders.h++ matrix.h++ pa
 
 chunkmain/chunkmain.o: chunkmain/chunkmainfuncs.c++ chunkmain/chunkmain.h++ assets/assets.h++ parseargs.h++ shaders.h++ window.h++ matrix.h++ random.h++ chunk.h++ objs.h++
 
+2dmain/2dmain.o: 2dmain/2dmainfuncs.c++ 2dmain/2dmain.h++ assets/assets.h++ parseargs.h++ shaders.h++ window.h++ matrix.h++ random.h++ chunk.h++ objs.h++
+
 assets/packedassets.o: assets/packedassets.S
 
 # merge is ld -r a.o b.o -o c.o
@@ -82,6 +84,13 @@ out/objmain: objmain/objmain.o shaders.o window.o matrix.o texture.o parseargs.o
 	-o $@
 
 out/chunkmain: chunkmain/chunkmain.o shaders.o window.o matrix.o texture.o parseargs.o objs.o file.o assets/assets.o chunk.o random.o|checkflags
+	$(linkcmd) $^ \
+	-lSDL2 \
+	-lGL -lGLEW \
+	$(opencv-libs) \
+	-o $@
+
+out/2dmain: 2dmain/2dmain.o shaders.o window.o matrix.o texture.o parseargs.o objs.o file.o assets/assets.o chunk.o random.o|checkflags
 	$(linkcmd) $^ \
 	-lSDL2 \
 	-lGL -lGLEW \
