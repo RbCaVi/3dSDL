@@ -274,6 +274,15 @@ void Window::setUniformVec3(const char* name,float *vec){
   glUniform3fv(uniform, 1, vec);
 }
 
+void Window::setUniformFloat(const char* name,float f){
+  GLint uniform = glGetUniformLocation(program, name);
+  DEBUGP(WINDOW_ATTR_DEBUG,"%s",name);
+  DEBUGR(WINDOW_ATTR_DEBUG,
+    printf("%f\n",f);
+  );
+  glUniform1f(uniform, f);
+}
+
 #if HAS_OPENCV
 void Window::setupSaveFrames(){
   // create a framebuffer

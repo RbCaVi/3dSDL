@@ -93,6 +93,7 @@ public:
   void addVertexData(const char* name,GLfloat data[],GLint size,GLint floatspervertex,GLint stride=0);
   void setUniformMat4x4(const char* name,const matrix4x4 &matrix);
   void setUniformVec3(const char* name,float *vec);
+  void setUniformFloat(const char* name,float f);
   void enableSaveFrames(int frames);
 
 #if HAS_OPENCV
