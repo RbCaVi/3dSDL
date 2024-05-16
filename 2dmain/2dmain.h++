@@ -23,18 +23,10 @@
 Window* window;
 
 struct sdata{
-  matrix4x4 model;
-  matrix4x4 view;
-  matrix4x4 projection;
   signed char rl=0;
   signed char ud=0;
-  signed char mrl=0;
-  signed char mud=0;
-  //float horizAngle;
-  //float vertAngle;
-  float forward=0;
-  chunk<int> *grid;
-  objs::renderdata *blocks;
+  float x=0;
+  float y=0;
 };
 typedef sdata sdata;
 

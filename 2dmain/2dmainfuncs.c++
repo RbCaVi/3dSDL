@@ -41,21 +41,10 @@ void handlesigint(int signal){
 
 void onframe(Window *window, void *d){
   sdata *data=(sdata*)d;
-  //data->vertAngle+=data->ud;
-  //data->horizAngle+=data->rl;
-  data->view=getRotation(1,2,-0.02*data->ud)*data->view;
-  data->view=getRotation(0,2,-0.02*data->rl)*data->view;
-  data->view=getTranslation(0,0,1*data->forward)*data->view;
-  data->view=getTranslation(0,-1*data->mud,0)*data->view;
-  data->view=getTranslation(-1*data->mrl,0,0)*data->view;
-  //data->rot=getRotation(1,2,0.1*data->ud)*data->rot;
-  //data->rot=getRotation(0,2,0.1*data->rl)*data->rot;
-  //data->trans=getTranslation(1*data->rl,0,0)*data->trans;
-  //data->trans=getTranslation(0,1*data->ud,0)*data->trans;
-  //data->model=data->trans*data->rot;
-  //window->setUniformMat4x4("model",data->model);
-  window->setUniformMat4x4("view",data->view);
-  window->setUniformMat4x4("mvp",data->projection*data->view*data->model);
+  data->x += 0.02 * data->rl;
+  data->y += 0.02 * data->ud;
+  window->setUniformFloat("x",data->x);
+  window->setUniformFloat("y",data->y);
   
   closedata *cd=cdata.load();
   while(cd!=NULL){
@@ -66,35 +55,15 @@ void onframe(Window *window, void *d){
 
 void draw(Window *window, void *d){
   sdata *data=(sdata*)d;
-  chunk<int> *c=data->grid;
-  int i,j,k;
-  for(i=0;i<5;i++){
-    for(j=0;j<5;j++){
-      for(k=0;k<5;k++){
-        int v=(*c)[i][j][k];
-        if(v!=0){
-          float *vec=(float*)malloc(3*sizeof(float));
-          vec[0]=i;
-          vec[1]=j;
-          vec[2]=k;
-          window->setUniformVec3("position",vec);
-          glDrawArrays(GL_TRIANGLES, data->blocks->starts[v-1], data->blocks->lengths[v-1]);
-        }
-      }
-    }
-  }
+  IGNORE(data);
+  IGNORE(window);
+  glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 void onkeydown(Window *w, SDL_Keysym ks, void *d){
   IGNORE(w);
   sdata *data=(sdata*)d;
   switch(ks.sym){
-   case SDLK_SPACE:
-    data->forward=1;
-    break;
-   case SDLK_BACKSPACE:
-    data->forward=-1;
-    break;
    case SDLK_UP:
     data->ud=1;
     break;
@@ -108,16 +77,16 @@ void onkeydown(Window *w, SDL_Keysym ks, void *d){
     data->rl=1;
     break;
    case SDLK_w:
-    data->mud=1;
+    data->ud=1;
     break;
    case SDLK_s:
-    data->mud=-1;
+    data->ud=-1;
     break;
    case SDLK_a:
-    data->mrl=-1;
+    data->rl=-1;
     break;
    case SDLK_d:
-    data->mrl=1;
+    data->rl=1;
     break;
   }
 }
@@ -126,16 +95,6 @@ void onkeyup(Window *w, SDL_Keysym ks, void *d){
   IGNORE(w);
   sdata *data=(sdata*)d;
   switch(ks.sym){
-   case SDLK_SPACE:
-    if(data->forward>0){
-      data->forward=0;
-    }
-    break;
-   case SDLK_BACKSPACE:
-    if(data->forward<0){
-      data->forward=0;
-    }
-    break;
    case SDLK_UP:
     if(data->ud>0){
       data->ud=0;
@@ -157,23 +116,23 @@ void onkeyup(Window *w, SDL_Keysym ks, void *d){
     }
     break;
    case SDLK_w:
-    if(data->mud>0){
-      data->mud=0;
+    if(data->ud>0){
+      data->ud=0;
     }
     break;
    case SDLK_s:
-    if(data->mud<0){
-      data->mud=0;
+    if(data->ud<0){
+      data->ud=0;
     }
     break;
    case SDLK_a:
-    if(data->mrl<0){
-      data->mrl=0;
+    if(data->rl<0){
+      data->rl=0;
     }
     break;
    case SDLK_d:
-    if(data->mrl>0){
-      data->mrl=0;
+    if(data->rl>0){
+      data->rl=0;
     }
     break;
   }

@@ -24,6 +24,15 @@ void p(argdata adata){
   printf("%i %i %i\n",adata.error,adata.capture,adata.framecount);
 }
 
+static float verts[] = {
+  -0.2,-0.2,
+  -0.2, 0.2,
+   0.2, 0.2,
+   0.2,-0.2,
+  -0.2,-0.2,
+   0.2, 0.2,
+};
+
 int main(int argc, char *argv[]) {
   IGNORE(argc);
   // assuming that argv[0] is the program's path
@@ -64,51 +73,18 @@ int main(int argc, char *argv[]) {
 
   glClearColor (0.0, 0.0, 0.0, 0.0);
   
-  char *vertsource=assets::getasset("chunkshader.vert");
-  char *fragsource=assets::getasset("objshader.frag");
+  char *vertsource=assets::getasset("2dshader.vert");
+  char *fragsource=assets::getasset("2dshader.frag");
   window->makeShaderFromSource(vertsource,fragsource);
   free(vertsource);
   free(fragsource);
-  //data.rot=getIdentity();
-  //data.trans=getIdentity();
-  data.model=getIdentity();
-  data.view=getTranslation(0,0,-200);
-  data.projection=getPerspective(45.0f, ((float)WIDTH)/HEIGHT, 0.1f, 800.0f);
+  data.x=0;
+  data.y=0;
 
-  objs o;
-  o.loadasset("cube.obj");
-  o.loadasset("oct.obj");
-  objs::renderdata rdata=o.makeRenderData();
-  data.blocks=&rdata;
+  window->setUniformFloat("x",data.x);
+  window->setUniformFloat("y",data.y);
 
-  Rand *r=new randchance(0.2);
-  chunk<int> *c=new chunk<int>(5,5,5);
-  size_t i,j,k;
-  for(i=0;i<5;i++){
-    for(j=0;j<5;j++){
-      for(k=0;k<5;k++){
-        (*c)[i][j][k]=(*r)()*((*r)()+1);
-      }
-    }
-  }
-
-  data.grid=c;
-
-  window->setUniformMat4x4("model",data.model);
-  window->setUniformMat4x4("view",data.view);
-  window->setUniformMat4x4("projection",data.projection);
-  window->setUniformMat4x4("mvp",data.projection*data.view*data.model);
-  
-  DEBUGR(MAIN_DEBUG,
-    int i;
-    for(i=0;i<rdata.size()*4;i+=4){
-      printf("vertex coord (%f,%f,%f,%f)\n",rdata.vs[i],rdata.vs[i+1],rdata.vs[i+2],rdata.vs[i+3]);
-    }
-  );
-  //window->draw_vertices=rdata.size();
-  window->addVertexData("coord",rdata.vs,rdata.size()*4*sizeof(float),3,4*sizeof(float));
-  window->addVertexData("normal",rdata.vns,rdata.size()*3*sizeof(float),3);
-  DEBUGP(MAIN_DEBUG,"vertex count %i\n",rdata.size());
+  window->addVertexData("coord",verts,6*2*sizeof(float),2,2*sizeof(float));
   
   window->mainLoop();
   
