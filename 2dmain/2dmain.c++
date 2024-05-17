@@ -61,8 +61,8 @@ int main(int argc, char *argv[]) {
   
   SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
 
-  char *imagedata=assets::getasset("yahia-potato.png");
-  SDL_RWops *imagerw=SDL_RWFromConstMem(imagedata, strlen(imagedata));
+  assets::sizeasset imagedata = imagedata=assets::getassetwithsize("yahia-potato.png");
+  SDL_RWops *imagerw=SDL_RWFromConstMem(imagedata.asset, imagedata.size);
   SDL_Surface *sdlimg = IMG_Load_RW(imagerw,true);
   if(!sdlimg){
     exit(1);

@@ -11,7 +11,12 @@
 #endif
 
 namespace assets{
+  struct sizeasset{
+    char *asset;
+    int size; // hopefully enough
+  };
   void setroot(std::filesystem::path newroot);
   char *getasset(std::filesystem::path path);
+  sizeasset getassetwithsize(std::filesystem::path path);
 }
 #endif

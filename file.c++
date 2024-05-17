@@ -4,6 +4,11 @@
 
 // A function that will read a file at a path into an allocated char pointer buffer 
 char* pathtobuf(std::filesystem::path path) {
+  return pathtobufsize(path,NULL);
+}
+
+// A function that will read a file at a path into an allocated char pointer buffer 
+char* pathtobufsize(std::filesystem::path path, int *size) {
   FILE *fptr;
   long length;
   char *buf;
@@ -18,6 +23,10 @@ char* pathtobuf(std::filesystem::path path) {
   fread(buf, length, 1, fptr); // Read the contents of the file in to the buffer 
   fclose(fptr); // Close the file 
   buf[length] = 0; // Null terminator 
+
+  if (size != NULL) {
+    *size = length;
+  }
 
   return buf; // Return the buffer 
 }

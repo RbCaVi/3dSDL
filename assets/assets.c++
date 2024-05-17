@@ -13,3 +13,10 @@ char *assets::getasset(std::filesystem::path path){
   std::filesystem::path rootpath=root/path;
   return pathtobuf(rootpath);
 }
+
+assets::sizeasset assets::getassetwithsize(std::filesystem::path path){
+  std::filesystem::path rootpath=root/path;
+  int size;
+  char *buf = pathtobufsize(rootpath,&size);
+  return {buf,size};
+}
