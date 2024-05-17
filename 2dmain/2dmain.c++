@@ -61,20 +61,19 @@ int main(int argc, char *argv[]) {
   
   SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
 
-  assets::sizeasset imagedata = imagedata=assets::getassetwithsize("yahia-potato.png");
+  assets::sizeasset imagedata = assets::getassetwithsize("yahia-potato.png");
   SDL_RWops *imagerw=SDL_RWFromConstMem(imagedata.asset, imagedata.size);
   SDL_Surface *sdlimg = IMG_Load_RW(imagerw,true);
   if(!sdlimg){
     exit(1);
   }
-  // texture ret;
-  // glGenTextures(1, &ret);
-  // glBindTexture(GL_TEXTURE_2D, ret);
-  // glTexImage2D(GL_TEXTURE_2D, 0, 3, tex_surf->w, tex_surf->h, 0, GL_RGB, GL_UNSIGNED_BYTE, tex_surf->pixels);
-  // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  // SDL_FreeSurface(tex_surf);
-  // return ret;
+  GLuint gltex;
+  glGenTextures(1, &gltex);
+  glBindTexture(GL_TEXTURE_2D, gltex);
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, sdlimg->w, sdlimg->h, 0, GL_RGB, GL_UNSIGNED_BYTE, sdlimg->pixels);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  SDL_FreeSurface(sdlimg);
   
   sdata data;
   window=new Window(WIDTH,HEIGHT,__FILE__);
