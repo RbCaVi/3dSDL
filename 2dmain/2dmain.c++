@@ -27,12 +27,12 @@ void p(argdata adata){
 }
 
 static float verts[] = {
-  -0.2,-0.2,
-  -0.2, 0.2,
-   0.2, 0.2,
-   0.2,-0.2,
-  -0.2,-0.2,
-   0.2, 0.2,
+  -0.2,-0.2, 0,0,
+  -0.2, 0.2, 0,1,
+   0.2, 0.2, 1,1,
+   0.2,-0.2, 1,0,
+  -0.2,-0.2, 0,0,
+   0.2, 0.2, 1,1,
 };
 
 int main(int argc, char *argv[]) {
@@ -100,7 +100,8 @@ int main(int argc, char *argv[]) {
   window->setUniformFloat("x",data.x);
   window->setUniformFloat("y",data.y);
 
-  window->addVertexData("coord",verts,6*2*sizeof(float),2,2*sizeof(float));
+  window->addVertexData("coord",verts,6*4*sizeof(float),2,4*sizeof(float));
+  window->addVertexData("uv",verts+2,6*4*sizeof(float),2,4*sizeof(float));
   
   window->mainLoop();
   
