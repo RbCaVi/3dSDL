@@ -9,7 +9,7 @@
 #include "texture.h++"
 
 #ifdef DEBUG
-void printArray(const GLfloat data[],int length){
+static void printArray(const GLfloat data[],int length){
   int i;
   for(i=0;i<length;i++){
     printf("%f ",data[i]);
@@ -17,7 +17,7 @@ void printArray(const GLfloat data[],int length){
   printf("\n");
 }
 
-void printGlError(){
+static void printGlError(){
   while(true){
     GLenum err=glGetError();
     printf("gl error code: %i\n",err);
@@ -56,7 +56,7 @@ void printGlError(){
   }
 }
 
-bool checkFramebuffer(){
+static bool checkFramebuffer(){
   // check if the frame buffer is initialized properly
   // and if not, exit
   switch(glCheckFramebufferStatus(GL_FRAMEBUFFER)){
@@ -283,6 +283,15 @@ void Window::setUniformFloat(const char* name,float f){
   glUniform1f(uniform, f);
 }
 
+void Window::setUniformInt(const char* name,GLuint i){
+  GLint uniform = glGetUniformLocation(program, name);
+  DEBUGP(WINDOW_ATTR_DEBUG,"%s",name);
+  DEBUGR(WINDOW_ATTR_DEBUG,
+    printf("%i\n",i);
+  );
+  glUniform1i(uniform, i);
+}
+
 #if HAS_OPENCV
 void Window::setupSaveFrames(){
   // create a framebuffer
@@ -297,6 +306,7 @@ void Window::setupSaveFrames(){
   // create a texture to render the framebuffer to
   frameTexture=0;
   glGenTextures(1,&frameTexture);
+  glActiveTexture(GL_TEXTURE0);
   DEBUGR(WINDOW_GL_DEBUG,printGlError());
   DEBUGR(WINDOW_GL_DEBUG,checkFramebuffer());
   glBindTexture(GL_TEXTURE_2D,frameTexture);

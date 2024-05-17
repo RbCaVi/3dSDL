@@ -94,6 +94,7 @@ public:
   void setUniformMat4x4(const char* name,const matrix4x4 &matrix);
   void setUniformVec3(const char* name,float *vec);
   void setUniformFloat(const char* name,float f);
+  void setUniformInt(const char* name,GLuint i);
   void enableSaveFrames(int frames);
 
 #if HAS_OPENCV

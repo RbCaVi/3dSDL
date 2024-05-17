@@ -60,20 +60,6 @@ int main(int argc, char *argv[]) {
   DEBUGR(MAIN_DEBUG,p(adata));
   
   SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
-
-  assets::sizeasset imagedata = assets::getassetwithsize("yahia-potato.png");
-  SDL_RWops *imagerw=SDL_RWFromConstMem(imagedata.asset, imagedata.size);
-  SDL_Surface *sdlimg = IMG_Load_RW(imagerw,true);
-  if(!sdlimg){
-    exit(1);
-  }
-  GLuint gltex;
-  glGenTextures(1, &gltex);
-  glBindTexture(GL_TEXTURE_2D, gltex);
-  glTexImage2D(GL_TEXTURE_2D, 0, 3, sdlimg->w, sdlimg->h, 0, GL_RGB, GL_UNSIGNED_BYTE, sdlimg->pixels);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  SDL_FreeSurface(sdlimg);
   
   sdata data;
   window=new Window(WIDTH,HEIGHT,__FILE__);
@@ -96,6 +82,27 @@ int main(int argc, char *argv[]) {
   free(fragsource);
   data.x=0;
   data.y=0;
+
+  assets::sizeasset imagedata = assets::getassetwithsize("hecker.png");
+  SDL_RWops *imagerw=SDL_RWFromConstMem(imagedata.asset, imagedata.size);
+  SDL_Surface *image = IMG_Load_RW(imagerw,true);
+  if(!image){
+    exit(1);
+  }
+
+  image = SDL_ConvertSurfaceFormat(image, SDL_PIXELFORMAT_RGBA8888, 0);
+  GLuint gltex;
+  glGenTextures(1,&gltex);
+  glActiveTexture(GL_TEXTURE1);
+  glBindTexture(GL_TEXTURE_2D,gltex);
+  glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+  glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+  glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+  glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+  glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,image->w,image->h,0,GL_RGBA,GL_UNSIGNED_BYTE,image->pixels);
+  SDL_FreeSurface(image);
+
+  window->setUniformInt("img",gltex);
 
   window->setUniformFloat("x",data.x);
   window->setUniformFloat("y",data.y);
