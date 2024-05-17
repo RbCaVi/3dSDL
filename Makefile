@@ -25,7 +25,7 @@ linkcmd = g++ $(flags) $(linkflags) $(LDFLAGS)
 
 .PHONY: all clean packassets unpackassets checkflags
 
-all: out/objmain out/randmain out/chunkmain
+all: out/objmain out/randmain out/chunkmain out/2dmain
 
 .flags:
 	if test \\\! -f .flags; then touch .flags; fi
@@ -92,7 +92,7 @@ out/chunkmain: chunkmain/chunkmain.o shaders.o window.o matrix.o texture.o parse
 
 out/2dmain: 2dmain/2dmain.o shaders.o window.o matrix.o texture.o parseargs.o objs.o file.o assets/assets.o chunk.o random.o|checkflags
 	$(linkcmd) $^ \
-	-lSDL2 \
+	-lSDL2 -lSDL2_image \
 	-lGL -lGLEW \
 	$(opencv-libs) \
 	-o $@

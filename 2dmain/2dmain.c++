@@ -5,6 +5,8 @@
 #include <signal.h>
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_rwops.h>
+#include <SDL2/SDL_image.h>
 #include <GL/glew.h>
 
 #include "2dmain.h++"
@@ -58,6 +60,21 @@ int main(int argc, char *argv[]) {
   DEBUGR(MAIN_DEBUG,p(adata));
   
   SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
+
+  char *imagedata=assets::getasset("yahia-potato.png");
+  SDL_RWops *imagerw=SDL_RWFromConstMem(imagedata, strlen(imagedata));
+  SDL_Surface *sdlimg = IMG_Load_RW(imagerw,true);
+  if(!sdlimg){
+    exit(1);
+  }
+  // texture ret;
+  // glGenTextures(1, &ret);
+  // glBindTexture(GL_TEXTURE_2D, ret);
+  // glTexImage2D(GL_TEXTURE_2D, 0, 3, tex_surf->w, tex_surf->h, 0, GL_RGB, GL_UNSIGNED_BYTE, tex_surf->pixels);
+  // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  // SDL_FreeSurface(tex_surf);
+  // return ret;
   
   sdata data;
   window=new Window(WIDTH,HEIGHT,__FILE__);
