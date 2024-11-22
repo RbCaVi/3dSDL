@@ -84,13 +84,16 @@ int main(int argc, char *argv[]) {
   
   DEBUGR(MAIN_DEBUG,
     int i;
-    for(i=0;i<rdata.size*4;i+=4){
+    for(i=0;i<rdata.size*10;i+=10){
       printf("vertex coord (%f,%f,%f,%f)\n",rdata.vs[i],rdata.vs[i+1],rdata.vs[i+2],rdata.vs[i+3]);
+      printf("tex coord (%f,%f,%f)\n",rdata.vs[i+4],rdata.vs[i+5],rdata.vs[i+6]);
+      printf("normal (%f,%f,%f)\n",rdata.vs[i+7],rdata.vs[i+8],rdata.vs[i+9]);
     }
   );
   window->draw_vertices=rdata.size*4;
-  window->addVertexData("coord",rdata.vs,rdata.size*4*sizeof(float),3,4*sizeof(float));
-  window->addVertexData("normal",rdata.vns,rdata.size*3*sizeof(float),3);
+  Window::vertexdata vertices = window->addVertexData(rdata.vs,rdata.size,10);
+  window->applyVertexData(vertices,"coord",3);
+  window->applyVertexData(vertices,"normal",3,7);
   DEBUGP(MAIN_DEBUG,"vertex count %i\n",rdata.size);
   
   window->mainLoop();

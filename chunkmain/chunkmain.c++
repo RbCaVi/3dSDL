@@ -106,8 +106,9 @@ int main(int argc, char *argv[]) {
     }
   );
   //window->draw_vertices=rdata.size();
-  window->addVertexData("coord",rdata.vs,rdata.size()*4*sizeof(float),3,4*sizeof(float));
-  window->addVertexData("normal",rdata.vns,rdata.size()*3*sizeof(float),3);
+  Window::vertexdata vertices = window->addVertexData(rdata.vs,rdata.size(),10);
+  window->applyVertexData(vertices,"coord",3);
+  window->applyVertexData(vertices,"normal",3,7);
   DEBUGP(MAIN_DEBUG,"vertex count %i\n",rdata.size());
   
   window->mainLoop();

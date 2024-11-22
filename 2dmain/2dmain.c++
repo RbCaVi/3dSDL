@@ -107,8 +107,9 @@ int main(int argc, char *argv[]) {
   window->setUniformFloat("x",data.x);
   window->setUniformFloat("y",data.y);
 
-  window->addVertexData("coord",verts,6*4*sizeof(float),2,4*sizeof(float));
-  window->addVertexData("uv",verts+2,6*4*sizeof(float),2,4*sizeof(float));
+  Window::vertexdata vertices = window->addVertexData(verts,6,4);
+  window->applyVertexData(vertices,"coord",2);
+  window->applyVertexData(vertices,"uv",2,2);
   
   window->mainLoop();
   
