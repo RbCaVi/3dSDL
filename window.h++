@@ -61,8 +61,8 @@ private:
   int width;
   int height;
   GLuint program;
-  std::unordered_map<const char*,int> handles;
   GLuint* handles_array;
+  GLuint* strides_array;
   int numhandles;
 
 public:
@@ -79,6 +79,14 @@ private:
 #endif
 
 public:
+  struct vertexdata {
+  private:
+    int handle;
+    vertexdata(int handle);
+
+    friend Window;
+  };
+
   void (*onframe)(Window*,void*)=NULL;
   void (*draw)(Window*,void*)=NULL;
   void (*onkeyup)(Window*,SDL_Keysym,void*)=NULL;
@@ -90,7 +98,8 @@ public:
   void makeShader(std::filesystem::path vertex_shader_path, std::filesystem::path fragment_shader_path);
   void makeShaderFromSource(char *vertex_shader_source, char *fragment_shader_source);
   void mainLoop();
-  void addVertexData(const char* name,GLfloat data[],GLint size,GLint floatspervertex,GLint stride=0);
+  vertexdata addVertexData(GLfloat data[],GLint size,GLint stride);
+  void applyVertexData(vertexdata v,const char* name,GLint floatspervertex,GLint offset=0);
   void setUniformMat4x4(const char* name,const matrix4x4 &matrix);
   void setUniformVec3(const char* name,float *vec);
   void setUniformFloat(const char* name,float f);

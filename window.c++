@@ -174,12 +174,12 @@ void Window::makeShaderFromSource(char *vertex_shader_source, char *fragment_sha
 }
 
 void Window::mainLoop(){
-  for(auto attr:handles){
-    DEBUGP(WINDOW_GL_DEBUG,"%s %i\n",attr.first,attr.second);
-    DEBUGR(WINDOW_GL_DEBUG,errno=0);
-    glEnableVertexAttribArray(glGetAttribLocation(program,attr.first));
-    DEBUGP(WINDOW_GL_DEBUG,"enable %i\n",errno);
-  }
+  // for(auto attr:handles){
+  //   DEBUGP(WINDOW_GL_DEBUG,"%s %i\n",attr.first,attr.second);
+  //   DEBUGR(WINDOW_GL_DEBUG,errno=0);
+  //   glEnableVertexAttribArray(glGetAttribLocation(program,attr.first));
+  //   DEBUGP(WINDOW_GL_DEBUG,"enable %i\n",errno);
+  // }
   
   closed=false;
   
@@ -229,28 +229,36 @@ void Window::mainLoop(){
 #endif
   }
   
-  for(auto attr:handles){
-    DEBUGP(WINDOW_DEBUG,"%s %i\n",attr.first,attr.second);
-    glDisableVertexAttribArray(glGetAttribLocation(program,attr.first));
-  }
+  // for(auto attr:handles){
+  //   DEBUGP(WINDOW_DEBUG,"%s %i\n",attr.first,attr.second);
+  //   glDisableVertexAttribArray(glGetAttribLocation(program,attr.first));
+  // }
 }
 
-void Window::addVertexData(const char* name,GLfloat data[],GLint size,GLint floatspervertex,GLint stride){
+Window::vertexdata::vertexdata(int handle):handle(handle){}
+
+Window::vertexdata Window::addVertexData(GLfloat data[],GLint size,GLint stride){
   GLuint handle;
-  GLint attribute = glGetAttribLocation(program, name);
-  if(!handles.contains(name)){
-    glGenBuffers(1, &handle);
-    int handlei=numhandles++;
-    handles_array=(GLuint*)realloc(handles_array,numhandles*sizeof(GLuint));
-    handles[name]=handlei;
-    handles_array[handlei]=handle;
-  }else{
-    handle=handles_array[handles[name]];
-  }
+  glGenBuffers(1, &handle);
+  int handlei=numhandles++;
+  handles_array=(GLuint*)realloc(handles_array,numhandles*sizeof(GLuint));
+  strides_array=(GLuint*)realloc(strides_array,numhandles*sizeof(GLuint));
+  handles_array[handlei]=handle;
+  strides_array[handlei]=stride;
   glBindBuffer(GL_ARRAY_BUFFER, handle);
-  glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-  glVertexAttribPointer(attribute, floatspervertex, GL_FLOAT, GL_FALSE, stride, 0);
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  DEBUGP(WINDOW_GL_DEBUG, "%i %i %i\n",handlei,stride,handle);
+  DEBUGP(WINDOW_GL_DEBUG, "%li\n",size*stride*sizeof(float));
+  glBufferData(GL_ARRAY_BUFFER, size*stride*sizeof(float), data, GL_STATIC_DRAW);
+  return Window::vertexdata(handlei);
+}
+
+void Window::applyVertexData(vertexdata v,const char* name,GLint floatspervertex,GLint offset){
+  GLint attribute = glGetAttribLocation(program, name);
+  GLuint handle=handles_array[v.handle],stride=strides_array[v.handle];
+  glBindBuffer(GL_ARRAY_BUFFER, handle);
+  DEBUGP(WINDOW_GL_DEBUG, "%i %i %i %li %li\n",v.handle,stride,handle,stride*sizeof(float), offset*sizeof(float));
+  glVertexAttribPointer(attribute, floatspervertex, GL_FLOAT, GL_FALSE, stride*sizeof(float), (const GLvoid*)(offset*sizeof(float)));
+  glEnableVertexAttribArray(attribute);
 }
 
 void Window::setUniformMat4x4(const char* name,const matrix4x4 &matrix){
