@@ -77,18 +77,14 @@ private:
 public:
   struct renderdata{
     int size; // number of points
-    float *vs; // packed (stride 4)
-    float *vts; // packed (stride 3)
-    float *vns; // packed (stride 3)
+    float *vs; // packed (stride 10) - vertex 4 floats + uv 3 floats + normal 3 floats
 
   private:
-    renderdata(int size, float *vs, float *vts, float *vns):size(size),vs(vs),vts(vts),vns(vns){}
+    renderdata(int size, float *vs):size(size),vs(vs){}
 
   public:
     ~renderdata(){
       free(vs);
-      free(vts);
-      free(vns);
     }
 
     friend obj;

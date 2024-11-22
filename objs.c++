@@ -359,7 +359,7 @@ void objs::_loadstr(char *source){
   facestartidxs->push_back(faces->size());
 }
 
-objs::renderdata::renderdata(int numberofshapes,int *starts, int *lengths, float *vs, float *vts, float *vns):numberofshapes(numberofshapes),starts(starts),lengths(lengths),vs(vs),vts(vts),vns(vns),totalsize(0){
+objs::renderdata::renderdata(int numberofshapes,int *starts, int *lengths, float *vs):numberofshapes(numberofshapes),starts(starts),lengths(lengths),vs(vs),totalsize(0){
   int i;
   for(i=0;i<numberofshapes;i++){
     totalsize+=lengths[i];
@@ -385,7 +385,7 @@ objs::renderdata objs::makeRenderData(){
   unsigned int startsi=1;
   int fi=0;
   dynamiclist<int> starts,lengths;
-  dynamiclist<float> vs,vts,vns;
+  dynamiclist<float> vs;
   starts.append(0);
   for(auto const &face:*faces){
     fi++;
@@ -402,8 +402,8 @@ objs::renderdata objs::makeRenderData(){
       float *vtdata=(*verttexs)[face->verttexindexes[i]]->data();
       float *vndata=(*vertnorms)[face->vertnormindexes[i]]->data();
       vs.append(vdata,4);
-      vts.append(vtdata,3);
-      vns.append(vndata,3);
+      vs.append(vtdata,3);
+      vs.append(vndata,3);
       free(vdata);
       free(vtdata);
       free(vndata);
@@ -418,7 +418,7 @@ objs::renderdata objs::makeRenderData(){
       startsi++;
     }
   }
-  renderdata r(facestartidxs->size()-1,starts,lengths,vs,vts,vns);
+  renderdata r(facestartidxs->size()-1,starts,lengths,vs);
   return r;
 }
 

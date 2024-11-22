@@ -371,7 +371,7 @@ obj::renderdata obj::makeRenderData(){
   );
 
   int size=0;
-  dynamiclist<float> vs,vts,vns;
+  dynamiclist<float> vs;
   for(auto const &face:*faces){
     DEBUGP(OBJ_DEBUG,"face - %lu ",(unsigned long)face);
     DEBUGP(OBJ_DEBUG,"%i ",face->size);
@@ -386,15 +386,15 @@ obj::renderdata obj::makeRenderData(){
       float *vtdata=(*verttexs)[face->verttexindexes[i]]->data();
       float *vndata=(*vertnorms)[face->vertnormindexes[i]]->data();
       vs.append(vdata,4);
-      vts.append(vtdata,3);
-      vns.append(vndata,3);
+      vs.append(vtdata,3);
+      vs.append(vndata,3);
       free(vdata);
       free(vtdata);
       free(vndata);
     }
     size+=face->size;
   }
-  renderdata r(size,vs.items,vts.items,vns.items);
+  renderdata r(size,vs.items);
   return r;
 }
 

@@ -79,19 +79,15 @@ public:
     int numberofshapes;
     int *starts; // start index for each shape
     int *lengths; // number of points in each shape
-    float *vs; // packed (stride 4)
-    float *vts; // packed (stride 3)
-    float *vns; // packed (stride 3)
+    float *vs; // packed (stride 10) - vertex 4 floats + uv 3 floats + normal 3 floats
     int totalsize;
 
   private:
-    renderdata(int numberofshapes,int *starts, int *lengths, float *vs, float *vts, float *vns);
+    renderdata(int numberofshapes,int *starts, int *lengths, float *vs);
 
   public:
     ~renderdata(){
       free(vs);
-      free(vts);
-      free(vns);
     }
 
     int size();
